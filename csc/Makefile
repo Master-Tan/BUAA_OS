@@ -3,4 +3,3 @@ all:
 
 clean:
 	cd ./code && rm fibo.o && rm main.o
-
