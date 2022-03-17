@@ -14,4 +14,3 @@ a=$[$a+1]
 done
 fi
 pwd >> result.txt
-
