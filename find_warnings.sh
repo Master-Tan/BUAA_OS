@@ -15,4 +15,3 @@ done
 fi
 pwd >> result.txt
 
-
