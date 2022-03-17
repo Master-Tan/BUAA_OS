@@ -1,11 +1,11 @@
 #!/bin/bash
 gcc -Wall ${1} -o test 2> warning.txt
-grep "warning" warning.txt > result.txt
-sed 's/warning: //g' result.txt > 1.txt
-cat 1.txt > result.txt
-rm 1.txt
+b=$?
+grep "warning" warning.txt > tanlide.txt
+sed 's/warning: //g' tanlide.txt >result.txt
+rm tanlide.txt
 a=1
-if [ $? -eq 0 ]
+if [ $b -eq 0 ]
 then
 while [ $a -le ${2} ]
 do

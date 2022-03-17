@@ -1,5 +1,6 @@
 #include<stdio.h>
-int main(){
+int main()
+{
 	int a,b;
 	if(2<3<4)
 	{

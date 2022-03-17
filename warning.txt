@@ -1,7 +1,7 @@
-test.c: In function 'main':
-test.c:4:8: warning: comparisons like 'X<=Y<=Z' do not have their mathematical meaning [-Wparentheses]
-    4 |  if(2<3<4)
+./test.c: In function 'main':
+./test.c:5:8: warning: comparisons like 'X<=Y<=Z' do not have their mathematical meaning [-Wparentheses]
+    5 |  if(2<3<4)
       |        ^
-test.c:3:8: warning: unused variable 'b' [-Wunused-variable]
-    3 |  int a,b;
+./test.c:4:8: warning: unused variable 'b' [-Wunused-variable]
+    4 |  int a,b;
       |        ^
