@@ -1,0 +1,18 @@
+[33m[01m[05m[ You are changing the branch: lab0-Extra ][0m
+Autotest: Begin at Thu Mar 17 15:04:35 CST 2022
+Files /home/git/ostest/target/20373864/lab0-Extra-2022-03-17T15:04:35+08:00-ihNYh/result.txt and /home/git/ostest/target/20373864/lab0-Extra-2022-03-17T15:04:35+08:00-ihNYh/result_ans.txt differ
+[31m[01m[ You have not passed testcase 1/10. ][0m
+Files /home/git/ostest/target/20373864/lab0-Extra-2022-03-17T15:04:35+08:00-ihNYh/result.txt and /home/git/ostest/target/20373864/lab0-Extra-2022-03-17T15:04:35+08:00-ihNYh/result_ans.txt differ
+[31m[01m[ You have not passed testcase 2/10. ][0m
+Files /home/git/ostest/target/20373864/lab0-Extra-2022-03-17T15:04:35+08:00-ihNYh/result.txt and /home/git/ostest/target/20373864/lab0-Extra-2022-03-17T15:04:35+08:00-ihNYh/result_ans.txt differ
+[31m[01m[ You have not passed testcase 3/10. ][0m
+Files /home/git/ostest/target/20373864/lab0-Extra-2022-03-17T15:04:35+08:00-ihNYh/result.txt and /home/git/ostest/target/20373864/lab0-Extra-2022-03-17T15:04:35+08:00-ihNYh/result_ans.txt differ
+[31m[01m[ You have not passed testcase 4/10. ][0m
+[32m[ You have passed testcase 5/10. ][0m
+[32m[ You have passed testcase 6/10. ][0m
+[32m[ You have passed testcase 7/10. ][0m
+[32m[ You have passed testcase 8/10. ][0m
+[32m[ You have passed testcase 9/10. ][0m
+[32m[ You have passed testcase 10/10. ][0m
+[33m[01m[ You got 60 (of 100) this time. Thu Mar 17 15:19:08 CST 2022 ][0m
+Autotest: End at Thu Mar 17 15:19:08 CST 2022
