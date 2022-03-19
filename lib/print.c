@@ -96,7 +96,7 @@ lp_Print(void (*output)(void *, char *, int),
 	/* check for long */
 	padc = ' ';
 	ladjust = 0;
-	if (*fmt == '-'){
+	if (*fmt == '-' || *fmt == '0'){
 		if (*fmt == '-') {
 			ladjust = 1;
 		}
@@ -105,7 +105,7 @@ lp_Print(void (*output)(void *, char *, int),
 		}
 		fmt ++;
 	}
-	if (*fmt == '0'){
+	if (*fmt == '-' || *fmt == '0'){
 	    if (*fmt == '-') {
 			ladjust = 1;
 		}
@@ -167,7 +167,11 @@ lp_Print(void (*output)(void *, char *, int),
 			Refer to other part (case 'b',case 'o' etc.) and func PrintNum to complete this part.
 			Think the difference between case 'd' and others. (hint: negFlag).
 		*/
-	    length = PrintNum(buf, num, 10, 0, width, ladjust, padc, 0);
+		if (num < 0) {
+			num = -num;
+			negflag = 1;
+		}
+	    length = PrintNum(buf, num, 10, negFlag, width, ladjust, padc, 0);
 		OUTPUT(arg, buf, length);
 
 		break;
