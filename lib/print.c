@@ -91,9 +91,7 @@ lp_Print(void (*output)(void *, char *, int),
 
 	
 	/* we found a '%' */
-	if (*fmt == '%') {
-		fmt ++;
-	}
+	fmt ++;
 	/* check for long */
 	padc = ' ';
 	ladjust = 0;
