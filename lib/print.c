@@ -49,12 +49,12 @@ lp_Print(void (*output)(void *, char *, int),
 
 	
 
-    int longFlag;
-    int negFlag;
-    int width;
-    int prec;
-    int ladjust;
-    char padc;
+    int longFlag;  // 标记是否为long型
+    int negFlag;   // 标记是否为负数
+    int width;     // 标记输出长度
+    int prec;      // 标记小数精度
+    int ladjust;   // 标记是否左对齐
+    char padc;     // 填充多余位置所用的字符
 
     int length;
 
@@ -68,20 +68,80 @@ lp_Print(void (*output)(void *, char *, int),
 
 	{ 
 	    /* scan for the next '%' */
+		char* next = fmt;
+		while (1) {
+			if (*next == '\0') {
+				break;
+			}
+			if (*next == '%') {
+				break;
+			}
+			next ++;
+		} 
 	    /* flush the string found so far */
 
-	    /* check "are we hitting the end?" */
+	    OUTPUT(arg, fmt, next-fmt);
+		fmt = next;
+
+		/* check "are we hitting the end?" */
+		if (*fmt == '\0') {
+			break;
+		}
 	}
 
 	
 	/* we found a '%' */
-	
+	if (*fmt == '%') {
+		fmt ++;
+	}
 	/* check for long */
+	padc = ' ';
+	ladjust = 0;
+	if (*fmt == '-' || *fmt == '0'){
+		if (*fmt == '-') {
+			ladjust = 1;
+		}
+		if (*fmt == '0') {
+			padc = '0';
+		}
+		fmt ++;
+	}
+	if (*fmt == '-' || *fmt == '0'){
+	    if (*fmt == '-') {
+			ladjust = 1;
+		}
+		if (*fmt == '0') {
+			padc = '0';
+		}
+		fmt ++;
+	}
+
+	width = 0;
+	
+	while (IsDigit(*fmt)) {
+		width = width * 10 + Ctod(*fmt);
+		fmt++;
+	}
 
 	/* check for other prefixes */
+	if (*fmt == '.') {
+		prec = 0;
+		fmt ++;
+		while (IsDigit(*fmt)) {
+			prec = prec * 10 + Ctod(*fmt);
+			fmt ++;
+		}
+	}
+	else {
+		prec = 6;
+	}
 
 	/* check format flag */
-	
+	longFlag = 0;
+	if (*fmt == 'l') {
+		longFlag = 1;
+		fmt ++;
+	}
 
 	negFlag = 0;
 	switch (*fmt) {
@@ -108,7 +168,9 @@ lp_Print(void (*output)(void *, char *, int),
 			Refer to other part (case 'b',case 'o' etc.) and func PrintNum to complete this part.
 			Think the difference between case 'd' and others. (hint: negFlag).
 		*/
-	    
+	    length = PrintNum(buf, num, 10, 0, width, ladjust, padc, 0);
+		OUTPUT(arg, buf, length);
+
 		break;
 
 	 case 'o':
