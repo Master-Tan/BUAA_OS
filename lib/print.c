@@ -61,8 +61,7 @@ lp_Print(void (*output)(void *, char *, int),
     /*
         Exercise 1.5. Please fill in two parts in this file.
     */
-
-    for(;;) {
+ for(;;) {
 
         /* Part1: your code here */
 
@@ -91,11 +90,13 @@ lp_Print(void (*output)(void *, char *, int),
 
 	
 	/* we found a '%' */
-	fmt ++;
+	if (*fmt == '%') {
+		fmt ++;
+	}
 	/* check for long */
 	padc = ' ';
 	ladjust = 0;
-	if (*fmt == '-' || *fmt == '0'){
+	if (*fmt == '-'){
 		if (*fmt == '-') {
 			ladjust = 1;
 		}
@@ -104,7 +105,7 @@ lp_Print(void (*output)(void *, char *, int),
 		}
 		fmt ++;
 	}
-	if (*fmt == '-' || *fmt == '0'){
+	if (*fmt == '0'){
 	    if (*fmt == '-') {
 			ladjust = 1;
 		}
