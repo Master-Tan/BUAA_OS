@@ -40,7 +40,7 @@ int main(int argc,char *argv[])
         p[fsize] = 0;
 
 
-	readelf(p,fsize);
+		readelf(p,fsize);
         return 0;
 }
 
