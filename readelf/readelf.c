@@ -83,7 +83,7 @@ int readelf(u_char *binary, int size)
 			addrs_end[Nr] = (phdr + Nr)->p_vaddr + (Elf32_Addr)((phdr + Nr)->p_memsz);
 			pages[Nr] = addr - (addr % (Elf32_Addr)4096);
 			for (int i = 0; i < Nr; i++){
-				if (addrs_begin[i] > addr && addrs_end[i] < addr){
+				if (addrs_begin[i] < addr && addrs_end[i] > addr){
 					flag = 1;
 					first_page = addr - (addr % (Elf32_Addr)4096);
 					break;
