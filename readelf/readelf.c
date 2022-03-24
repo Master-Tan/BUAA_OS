@@ -77,7 +77,7 @@ int readelf(u_char *binary, int size)
 			if (Nr != ph_entry_count - 1) {
 				Elf32_Addr addr = (phdr + Nr)->p_vaddr + (Elf32_Addr)((phdr + Nr)->p_memsz) - (Elf32_Addr)1;
 				Elf32_Addr next_addr = (phdr + (Nr + 1))->p_vaddr - (Elf32_Addr)1;
-//				if ((next_addr) != (Elf32_Addr)0){
+				if ((next_addr) != (Elf32_Addr)0){
 					if (addr >= next_addr){
 						flag = 1;
 						first_page = addr - (addr % (Elf32_Addr)4096);
@@ -91,7 +91,7 @@ int readelf(u_char *binary, int size)
 							first_page = addr - (addr % (Elf32_Addr)4096);
 							break;
 						}
-//					}
+					}
 				}
 			}
 		}
