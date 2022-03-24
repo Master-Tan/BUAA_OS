@@ -100,12 +100,12 @@ int readelf(u_char *binary, int size)
 				printf("%d:0x%x,0x%x\n", Nr, (phdr + Nr)->p_filesz, (phdr + Nr)->p_memsz);
 			}
 		}
-		else if (flag == 1) {
-			printf("Conflict at page va : 0x%x\n", first_page);
-		}
-		else if (flag == 2) {
-			printf("Overlay at page va : 0x%x\n", first_page);
-		}
+//		else if (flag == 1) {
+//			printf("Conflict at page va : 0x%x\n", first_page);
+//		}
+//		else if (flag == 2) {
+//			printf("Overlay at page va : 0x%x\n", first_page);
+//		}
 
         return 0;
 }
