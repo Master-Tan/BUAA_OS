@@ -73,28 +73,33 @@ int readelf(u_char *binary, int size)
 		phdr = (Elf32_Phdr*)(ptr_ph_table);
 		int flag = 0;
 		Elf32_Off first_page;
+		Elf32_Off pages[10];
+		Elf32_Off addrs_end[10];
+		Elf32_Off addrs_begin[10];
 		for (Nr = 0; Nr < ph_entry_count; Nr++){
-			if (Nr != ph_entry_count - 1) {
-				Elf32_Addr addr = (phdr + Nr)->p_vaddr + (Elf32_Addr)((phdr + Nr)->p_memsz) - (Elf32_Addr)1;
-				Elf32_Addr next_addr = (phdr + (Nr + 1))->p_vaddr - (Elf32_Addr)1;
-				if ((next_addr) != (Elf32_Addr)0){
-					if (addr >= next_addr){
-						flag = 1;
+			Elf32_Addr addr = (phdr + Nr)->p_vaddr;
+			addrs_begin[Nr] = (phdr + Nr)->p_vaddr;
+			addrs_end[Nr] = (phdr + Nr)->p_vaddr + (Elf32_Addr)((phdr + Nr)->p_memsz);
+			pages[Nr] = addr - (addr % (Elf32_Addr)4096);
+			for (int i = 0; i < Nr; i++){
+				if (addrs_begin[i] > addr && addrs_end[i] < addr){
+					flag = 1;
+					first_page = addr - (addr % (Elf32_Addr)4096);
+					break;
+				}
+				else {
+					if ((addr - (addr % (Elf32_Addr)4096)) == pages[i]) {
+						flag = 2;
 						first_page = addr - (addr % (Elf32_Addr)4096);
 						break;
 					}
-					else{
-						Elf32_Addr page = addr % (Elf32_Addr)4096;
-		                Elf32_Addr next_page = next_addr % (Elf32_Addr)4096;
-		                if ((addr - (addr % (Elf32_Addr)4096)) == (next_addr - (next_addr % (Elf32_Addr)4096))){
-							flag = 2;
-							first_page = addr - (addr % (Elf32_Addr)4096);
-							break;
-						}
-					}
 				}
 			}
+			if (flag != 0){
+				break;
+			}
 		}
+	
 		if (flag == 0) {
 			for (Nr = 0; Nr < ph_entry_count; Nr++) {
 				printf("%d:0x%x,0x%x\n", Nr, (phdr + Nr)->p_filesz, (phdr + Nr)->p_memsz);
