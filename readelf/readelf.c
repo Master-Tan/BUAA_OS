@@ -49,11 +49,11 @@ int readelf(u_char *binary, int size)
 
         int Nr;
 
-        Elf32_Shdr *shdr = NULL;
+        Elf32_Phdr *phdr = NULL;
 
-        u_char *ptr_sh_table = NULL;
-        Elf32_Half sh_entry_count;
-        Elf32_Half sh_entry_size;
+        u_char *ptr_ph_table = NULL;
+        Elf32_Half ph_entry_count;
+        Elf32_Half ph_entry_size;
 
 
         // check whether `binary` is a ELF file.
@@ -64,17 +64,48 @@ int readelf(u_char *binary, int size)
 
         // get section table addr, section header number and section header size.
 		
-		ptr_sh_table = (u_char *)(ehdr->e_shoff + binary);
-		sh_entry_count = ehdr->e_shnum;
-		sh_entry_size = ehdr->e_shentsize;
+		ptr_ph_table = (u_char *)(ehdr->e_phoff + binary);
+		ph_entry_count = ehdr->e_phnum;
+		ph_entry_size = ehdr->e_phentsize;
         
 		// for each section header, output section number and section addr. 
         // hint: section number starts at 0.
-		shdr = (Elf32_Shdr*)(ptr_sh_table);
-		for (Nr = 0; Nr < sh_entry_count; Nr++) {
-			printf("%d:0x%x\n", Nr, (shdr + Nr)->sh_addr);
+		phdr = (Elf32_Phdr*)(ptr_ph_table);
+		int flag = 0;
+		Elf32_Off first_page;
+		for (Nr = 0; Nr < ph_entry_count; Nr++){
+			if (Nr != ph_entry_count - 1) {
+				Elf32_Addr addr = (phdr + Nr)->p_paddr + (Elf32_Addr)((phdr + Nr)->p_memsz);
+				Elf32_Addr next_addr = (phdr + (Nr + 1))->p_paddr;
+				if ((next_addr) != 0){
+					if (addr > next_addr){
+						flag = 1;
+						first_page = addr - (addr % (Elf32_Addr)4096);
+						break;
+					}
+					else{
+						Elf32_Addr page = addr % 4096;
+		                Elf32_Addr next_page = next_addr % 4096;
+		                if ((addr - page) == (next_addr - next_page)){
+							flag = 2;
+							first_page = addr - (addr % (Elf32_Addr)4096);
+							break;
+						}
+					}
+				}
+			}
 		}
-
+		if (flag == 0) {
+			for (Nr = 0; Nr < ph_entry_count; Nr++) {
+				printf("%d:0x%x,0x%x\n", Nr, (phdr + Nr)->p_filesz, (phdr + Nr)->p_memsz);
+			}
+		}
+		else if (flag == 1) {
+			printf("Conflict at page va : 0x%x\n", first_page);
+		}
+		else if (flag == 2) {
+			printf("Overlay at page va : 0x%x\n", first_page);
+		}
 
         return 0;
 }
