@@ -77,7 +77,7 @@ int readelf(u_char *binary, int size)
 			if (Nr != ph_entry_count - 1) {
 				Elf32_Addr addr = (phdr + Nr)->p_paddr + (Elf32_Addr)((phdr + Nr)->p_memsz);
 				Elf32_Addr next_addr = (phdr + (Nr + 1))->p_paddr;
-				if ((next_addr) != 0){
+				if ((next_addr) != (Elf32_Addr)0){
 					if (addr >= next_addr){
 						flag = 1;
 						first_page = addr - (addr % (Elf32_Addr)4096);
@@ -86,7 +86,7 @@ int readelf(u_char *binary, int size)
 					else{
 						Elf32_Addr page = addr % (Elf32_Addr)4096;
 		                Elf32_Addr next_page = next_addr % (Elf32_Addr)4096;
-		                if ((addr - page) == (next_addr - next_page)){
+		                if ((addr - page) == (next_addr - next_page) && (page != (Elf32_Addr)0)){
 							flag = 2;
 							first_page = addr - (addr % (Elf32_Addr)4096);
 							break;
@@ -103,9 +103,9 @@ int readelf(u_char *binary, int size)
 		else if (flag == 1) {
 			printf("Conflict at page va : 0x%x\n", first_page);
 		}
-//		else if (flag == 2) {
-//			printf("Overlay at page va : 0x%x\n", first_page);
-//		}
+		else if (flag == 2) {
+			printf("Overlay at page va : 0x%x\n", first_page);
+		}
 
         return 0;
 }
