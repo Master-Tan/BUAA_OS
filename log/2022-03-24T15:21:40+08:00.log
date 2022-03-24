@@ -1,0 +1,22 @@
+[33m[01m[05m[ You are changing the branch: lab1-1-Extra ][0m
+Autotest: Begin at Thu Mar 24 15:21:40 CST 2022
+[32m[ readelf.c found ][0m
+rm -rf *.o
+rm readelf
+rm: cannot remove 'readelf': No such file or directory
+make: *** [Makefile:16: clean] Error 1
+gcc -I./ -c main.c
+gcc -I./ -c readelf.c
+readelf.c: In function 'readelf':
+readelf.c:78:36: error: 'Elf32_Phdr' {aka 'struct <anonymous>'} has no member named 'v_paddr'; did you mean 'p_paddr'?
+   78 |     Elf32_Addr addr = (phdr + Nr)->v_paddr + (Elf32_Addr)((phdr + Nr)->p_memsz);
+      |                                    ^~~~~~~
+      |                                    p_paddr
+readelf.c:79:47: error: 'Elf32_Phdr' {aka 'struct <anonymous>'} has no member named 'v_paddr'; did you mean 'p_paddr'?
+   79 |     Elf32_Addr next_addr = (phdr + (Nr + 1))->v_paddr;
+      |                                               ^~~~~~~
+      |                                               p_paddr
+make: *** [Makefile:6: readelf.o] Error 1
+[31m[01m[ Cannot find your readelf. Please check your readelf.c. ][0m
+[33m[01m[ You got 0 (of 100) this time. Thu Mar 24 15:21:44 CST 2022 ][0m
+Autotest: End at Thu Mar 24 15:21:44 CST 2022
