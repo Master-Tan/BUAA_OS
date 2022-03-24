@@ -75,8 +75,8 @@ int readelf(u_char *binary, int size)
 		Elf32_Off first_page;
 		for (Nr = 0; Nr < ph_entry_count; Nr++){
 			if (Nr != ph_entry_count - 1) {
-				Elf32_Addr addr = (phdr + Nr)->v_paddr + (Elf32_Addr)((phdr + Nr)->p_memsz);
-				Elf32_Addr next_addr = (phdr + (Nr + 1))->v_paddr;
+				Elf32_Addr addr = (phdr + Nr)->p_vaddr + (Elf32_Addr)((phdr + Nr)->p_memsz);
+				Elf32_Addr next_addr = (phdr + (Nr + 1))->p_vaddr;
 				if ((next_addr) != (Elf32_Addr)0){
 					if (addr >= next_addr){
 						flag = 1;
