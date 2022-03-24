@@ -78,6 +78,7 @@ int readelf(u_char *binary, int size)
 		Elf32_Off addrs_begin[10];
 		for (Nr = 0; Nr < ph_entry_count; Nr++){
 			Elf32_Addr addr = (phdr + Nr)->p_vaddr;
+			if (addr != 0){
 			addrs_begin[Nr] = (phdr + Nr)->p_vaddr;
 			addrs_end[Nr] = (phdr + Nr)->p_vaddr + (Elf32_Addr)((phdr + Nr)->p_memsz);
 			pages[Nr] = addr - (addr % (Elf32_Addr)4096);
@@ -97,6 +98,7 @@ int readelf(u_char *binary, int size)
 			}
 			if (flag != 0){
 				break;
+			}
 			}
 		}
 	
