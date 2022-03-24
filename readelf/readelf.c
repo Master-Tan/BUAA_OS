@@ -84,8 +84,8 @@ int readelf(u_char *binary, int size)
 						break;
 					}
 					else{
-						Elf32_Addr page = addr % 4096;
-		                Elf32_Addr next_page = next_addr % 4096;
+						Elf32_Addr page = addr % (Elf32_Addr)4096;
+		                Elf32_Addr next_page = next_addr % (Elf32_Addr)4096;
 		                if ((addr - page) == (next_addr - next_page)){
 							flag = 2;
 							first_page = addr - (addr % (Elf32_Addr)4096);
