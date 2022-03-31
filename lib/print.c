@@ -147,7 +147,7 @@ lp_Print(void (*output)(void *, char *, int),
 	long int ii;
 	switch (*fmt) {
 	 case 'T':
-		OUTPUT(arg, '{', 1);
+//		OUTPUT(arg, '{', 1);
 //		sss = (my_struct*)va_arg(ap, my_struct *);
 //		size0 = sss->size0;
 //		c0 = sss->c0;
@@ -170,7 +170,7 @@ lp_Print(void (*output)(void *, char *, int),
 //        	length = PrintNum(buf, num0, 10, negFlag, width, ladjust, padc, 0);
 //        	OUTPUT(arg, buf, length);
 //		}
-		OUTPUT(arg, '}', 1);
+//		OUTPUT(arg, '}', 1);
 		break;
 
 	 case 'b':
