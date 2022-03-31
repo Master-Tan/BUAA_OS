@@ -155,8 +155,7 @@ lp_Print(void (*output)(void *, char *, int),
 		if (size0 < 0) {
 			size0 = -size0;
 			negFlag = 1;
-		}
-		
+		}		
 		length = PrintNum(buf, size0, 10, negFlag, width, ladjust, padc, 0);
 		OUTPUT(arg, buf, length);
 		OUTPUT(arg, ',', 1);
@@ -172,7 +171,9 @@ lp_Print(void (*output)(void *, char *, int),
        		}
         	length = PrintNum(buf, num0, 10, negFlag, width, ladjust, padc, 0);
         	OUTPUT(arg, buf, length);
-			OUTPUT(arg, ',', 1);
+			if (ii != size0 - 1) {
+				OUTPUT(arg, ',', 1);
+			}
 		}
 		OUTPUT(arg, '}', 1);
 		break;
