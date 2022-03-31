@@ -23,6 +23,12 @@ extern int PrintNum(char *, unsigned long, int, int, int, int, char, int);
 /* private variable */
 static const char theFatalMsg[] = "fatal error in lp_Print!";
 
+struct my_struct {
+        int size0;
+        char c0;
+        int * array0;
+    };
+
 /* -*-
  * A low level printf() function.
  */
@@ -47,7 +53,6 @@ lp_Print(void (*output)(void *, char *, int),
     char *s;
     long int num;
 
-	
 
     int longFlag;  // 标记是否为long型
     int negFlag;   // 标记是否为负数
@@ -135,6 +140,22 @@ lp_Print(void (*output)(void *, char *, int),
 
 	negFlag = 0;
 	switch (*fmt) {
+	 case 'T':
+//			struct my_struct* s = (struct my_struct *)va_arg(ap, int *);
+//			int num0 = s->size0;
+//			char c0 = s->c0;
+//			int* array0 = s->array0;
+//			if (num < 0) {
+//				num = -num;
+//				negFlag = 1;
+//			}
+//			length = PrintNum(buf, num, 10, negFlag, width, ladjust, padc, 0);
+//			OUTPUT(arg, buf, length);
+//			length = PrintChar(buf, c, width, ladjust);
+// 	      	OUTPUT(arg, buf, length);
+        	
+			break;
+
 	 case 'b':
 	    if (longFlag) { 
 		num = va_arg(ap, long int); 
