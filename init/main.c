@@ -27,9 +27,8 @@ int main()
 	t1.c = 'Q';
 	t1.array[0]=0;
 	t1.array[1]=1;
-	printf("%T",&t1};
+	printf("%T",&t1);
 	printf("%04d\n",30);
-	printf("HHH\n");
 	mips_init();
 	panic("main is over is error!");
 

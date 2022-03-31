@@ -156,10 +156,8 @@ lp_Print(void (*output)(void *, char *, int),
 			size0 = -size0;
 			negFlag = 1;
 		}
-		buf[0]='\0';
 		length = PrintNum(buf, size0, 10, negFlag, width, ladjust, padc, 0);
 		OUTPUT(arg, buf, length);
-		buf[0]='\0';
 		length = PrintChar(buf, c0, width, ladjust);
       	OUTPUT(arg, buf, length);
 		for(ii=0;ii<size0;ii++){
@@ -169,7 +167,6 @@ lp_Print(void (*output)(void *, char *, int),
             	num0 = -num0;
         	    negFlag = 1;
        		}
-			buf[0]='\0';
         	length = PrintNum(buf, num0, 10, negFlag, width, ladjust, padc, 0);
         	OUTPUT(arg, buf, length);
 		}
