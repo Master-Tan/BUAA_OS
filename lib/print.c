@@ -140,6 +140,7 @@ lp_Print(void (*output)(void *, char *, int),
 
 	negFlag = 0;
 	my_struct * sss;
+	int size0;
     int num0;
     char c0;
     int* array0;
@@ -148,14 +149,14 @@ lp_Print(void (*output)(void *, char *, int),
 	 case 'T':
 		OUTPUT(arg, '{', 1);
 		sss = (my_struct*)va_arg(ap, my_struct *);
-		num0 = sss->size0;
+		size0 = sss->size0;
 		c0 = sss->c0;
 		array0 = sss->array0;
-		if (num0 < 0) {
-			num0 = -num0;
+		if (size0 < 0) {
+			size0 = -size0;
 			negFlag = 1;
 		}
-		length = PrintNum(buf, num0, 10, negFlag, width, ladjust, padc, 0);
+		length = PrintNum(buf, size0, 10, negFlag, width, ladjust, padc, 0);
 		OUTPUT(arg, buf, length);
 		length = PrintChar(buf, c0, width, ladjust);
       	OUTPUT(arg, buf, length);
