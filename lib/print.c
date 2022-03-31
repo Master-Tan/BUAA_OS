@@ -143,7 +143,8 @@ lp_Print(void (*output)(void *, char *, int),
 	}
 
 	negFlag = 0;
-	switch (*fmt) {
+	
+    switch (*fmt) {
 	 case 'b':
 	    if (longFlag) { 
 		num = va_arg(ap, long int); 
