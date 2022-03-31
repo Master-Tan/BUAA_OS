@@ -164,7 +164,7 @@ lp_Print(void (*output)(void *, char *, int),
 		for(ii=0;ii<size0;ii++){
 			OUTPUT(arg, ",", 1);
 			negFlag = 0;
-			num0 = *(array0+ii);
+			num0 = *(array0 + ii);
 			if (num0 < 0) {
             	num0 = -num0;
         	    negFlag = 1;
