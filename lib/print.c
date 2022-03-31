@@ -23,11 +23,11 @@ extern int PrintNum(char *, unsigned long, int, int, int, int, char, int);
 /* private variable */
 static const char theFatalMsg[] = "fatal error in lp_Print!";
 
-struct my_struct {
+typedef struct{
         int size0;
         char c0;
         int * array0;
-    };
+    }my_struct;
 
 /* -*-
  * A low level printf() function.
@@ -139,22 +139,27 @@ lp_Print(void (*output)(void *, char *, int),
 	}
 
 	negFlag = 0;
+	my_struct * sss;
+    int num0;
+    char c0;
+    int* array0;
 	switch (*fmt) {
 	 case 'T':
-//			struct my_struct* s = (struct my_struct *)va_arg(ap, int *);
-//			int num0 = s->size0;
-//			char c0 = s->c0;
-//			int* array0 = s->array0;
-//			if (num < 0) {
-//				num = -num;
-//				negFlag = 1;
-//			}
-//			length = PrintNum(buf, num, 10, negFlag, width, ladjust, padc, 0);
-//			OUTPUT(arg, buf, length);
-//			length = PrintChar(buf, c, width, ladjust);
-// 	      	OUTPUT(arg, buf, length);
-        	
-			break;
+		OUTPUT(arg, '{', 1);
+		sss = (my_struct*)va_arg(ap, my_struct *);
+		num0 = sss->size0;
+		c0 = sss->c0;
+		array0 = sss->array0;
+		if (num0 < 0) {
+			num0 = -num0;
+			negFlag = 1;
+		}
+		length = PrintNum(buf, num0, 10, negFlag, width, ladjust, padc, 0);
+		OUTPUT(arg, buf, length);
+		length = PrintChar(buf, c0, width, ladjust);
+      	OUTPUT(arg, buf, length);
+		OUTPUT(arg, '}', 1);
+		break;
 
 	 case 'b':
 	    if (longFlag) { 
