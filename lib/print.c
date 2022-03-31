@@ -140,37 +140,41 @@ lp_Print(void (*output)(void *, char *, int),
 
 	negFlag = 0;
 	my_struct * sss;
-	long int size0;
-    long int num0;
+	int size0;
+    int num0;
     char c0;
     int* array0;
-	long int ii;
+	int ii;
 	switch (*fmt) {
 	 case 'T':
-//		OUTPUT(arg, '{', 1);
-//		sss = (my_struct*)va_arg(ap, my_struct *);
-//		size0 = sss->size0;
-//		c0 = sss->c0;
-//		array0 = sss->array0;
-//		if (size0 < 0) {
-//			size0 = -size0;
-//			negFlag = 1;
-//		}
-//		length = PrintNum(buf, size0, 10, negFlag, width, ladjust, padc, 0);
-//		OUTPUT(arg, buf, length);
-//		length = PrintChar(buf, c0, width, ladjust);
-//    	OUTPUT(arg, buf, length);
-//		for(ii=0;ii<size0;ii++){
-//			negFlag = 0;
-//			num0 = *(array0 + ii);
-//			if (num0 < 0) {
-//            	num0 = -num0;
-//	    	    negFlag = 1;
-//     		}
-//        	length = PrintNum(buf, num0, 10, negFlag, width, ladjust, padc, 0);
-//        	OUTPUT(arg, buf, length);
-//		}
-//		OUTPUT(arg, '}', 1);
+		OUTPUT(arg, '{', 1);
+		sss = (my_struct *)va_arg(ap, my_struct *);
+		size0 = sss->size0;
+		c0 = sss->c0;
+		array0 = sss->array0;
+		if (size0 < 0) {
+			size0 = -size0;
+			negFlag = 1;
+		}
+		
+		length = PrintNum(buf, size0, 10, negFlag, width, ladjust, padc, 0);
+		OUTPUT(arg, buf, length);
+		OUTPUT(arg, ',', 1);
+		length = PrintChar(buf, c0, width, ladjust);
+      	OUTPUT(arg, buf, length);
+		OUTPUT(arg, ',', 1);
+		for(ii=0;ii<size0;ii++){
+			negFlag = 0;
+			num0 = array0[ii];
+			if (num0 < 0) {
+            	num0 = -num0;
+        	    negFlag = 1;
+       		}
+        	length = PrintNum(buf, num0, 10, negFlag, width, ladjust, padc, 0);
+        	OUTPUT(arg, buf, length);
+			OUTPUT(arg, ',', 1);
+		}
+		OUTPUT(arg, '}', 1);
 		break;
 
 	 case 'b':
