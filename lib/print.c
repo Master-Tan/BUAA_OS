@@ -140,8 +140,8 @@ lp_Print(void (*output)(void *, char *, int),
 
 	negFlag = 0;
 	my_struct * sss;
-	long int size0;
-    long int num0;
+	int size0;
+    int num0;
     char c0;
     int* array0;
 	int ii;
