@@ -140,11 +140,11 @@ lp_Print(void (*output)(void *, char *, int),
 
 	negFlag = 0;
 	my_struct * sss;
-	int size0;
-    int num0;
+	long int size0;
+    long int num0;
     char c0;
     int* array0;
-	int ii;
+	long int ii;
 	switch (*fmt) {
 	 case 'T':
 		OUTPUT(arg, '{', 1);

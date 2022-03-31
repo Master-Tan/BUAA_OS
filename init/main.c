@@ -9,13 +9,27 @@
  *
  */
 
+#define SIZE_C 2
 #include <printf.h>
 #include <pmap.h>
+
+typedef struct {
+	int size;
+	char c;
+	int array[SIZE_C];
+}my_struct;
 
 int main()
 {
 	printf("main.c:\tmain is start ...\n");
-
+	my_struct t1;
+	t1.size = 2;
+	t1.c = 'Q';
+	t1.array[0]=0;
+	t1.array[1]=1;
+	printf("%T",&t1};
+	printf("%04d\n",30);
+	printf("HHH\n");
 	mips_init();
 	panic("main is over is error!");
 
