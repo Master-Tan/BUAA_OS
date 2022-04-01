@@ -96,17 +96,8 @@ lp_Print(void (*output)(void *, char *, int),
 	/* check for long */
 	padc = ' ';
 	ladjust = 0;
-	if (*fmt == '-' || *fmt == '0'){
+	while (*fmt == '-' || *fmt == '0'){
 		if (*fmt == '-') {
-			ladjust = 1;
-		}
-		if (*fmt == '0') {
-			padc = '0';
-		}
-		fmt ++;
-	}
-	if (*fmt == '-' || *fmt == '0'){
-	    if (*fmt == '-') {
 			ladjust = 1;
 		}
 		if (*fmt == '0') {
