@@ -155,7 +155,7 @@
  */
 #define LIST_INSERT_TAIL(head, elm, field) do {                                     \
 	if (LIST_FIRST((head)) != NULL) {                                               \
-		LIST_NEXT((elm), field) = LIST_FIRST(head);                                 \
+		LIST_NEXT((elm), field) = LIST_FIRST((head));                               \
 		while (LIST_NEXT(LIST_NEXT((elm), field), field) != NULL) {                 \
 			LIST_NEXT((elm), field) = LIST_NEXT(LIST_NEXT((elm), field), field);    \
 		}                                                                           \
