@@ -183,7 +183,7 @@ void page_init(void)
 {
 	/* Step 1: Initialize page_free_list. */
 	/* Hint: Use macro `LIST_INIT` defined in include/queue.h. */
-	LIST_INIT((page_free_list));
+	LIST_INIT((&page_free_list));
 
 	/* Step 2: Align `freemem` up to multiple of BY2PG. */
 	ROUND(freemem, BY2PG);
