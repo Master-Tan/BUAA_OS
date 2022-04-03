@@ -190,6 +190,7 @@ void page_init(void)
 
 	/* Step 3: Mark all memory blow `freemem` as used(set `pp_ref`
 	 * filed to 1) */
+	struct Page* now;
 	for (now = pages; page2kva(now) < freemem; now++) {
 		now->pp_ref = 1;
 	}
