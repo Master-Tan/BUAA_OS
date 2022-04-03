@@ -111,7 +111,7 @@
  */
 #define LIST_INSERT_AFTER(listelm, elm, field) do {                                 \
 	LIST_NEXT((elm), field) = LIST_NEXT((listelm), field);                          \
-	if (LIST_NEXT((listelm)) != NULL) {						                        \
+	if (LIST_NEXT((listelm), field) != NULL) {						                        \
 		(LIST_NEXT((listelm), field))->field.le_prev = &(LIST_NEXT((elm), field));  \
 	}														                        \
 	LIST_NEXT((listelm), field) = (elm);                                            \
