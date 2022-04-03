@@ -160,7 +160,7 @@
 			LIST_NEXT((elm), field) = LIST_NEXT(LIST_NEXT((elm), field), field);    \
 		}                                                                           \
 		LIST_NEXT(LIST_NEXT((elm), field), field) = (elm);                          \
-		(elm)->field.le_prev = &(LIST_NEXT(LIST_NEXT((elm), field)), field);        \
+		(elm)->field.le_prev = &(LIST_NEXT(LIST_NEXT((elm), field), field));        \
 		LIST_NEXT((elm), field) = NULL;                                             \
 	} else {                                                                        \
 		LIST_INSERT_HEAD((head), (elm), field);                                     \
