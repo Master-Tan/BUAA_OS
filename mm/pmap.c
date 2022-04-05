@@ -9,6 +9,7 @@
 u_long maxpa;            /* Maximum physical address */
 u_long npage;            /* Amount of memory(in pages) */
 u_long basemem;          /* Amount of base memory(in bytes) */
+
 u_long extmem;           /* Amount of extended memory(in bytes) */
 
 Pde *boot_pgdir;
@@ -186,7 +187,7 @@ void page_init(void)
 	LIST_INIT((&page_free_list));
 
 	/* Step 2: Align `freemem` up to multiple of BY2PG. */
-	ROUND(freemem, BY2PG);
+	freemem = ROUND(freemem, BY2PG);
 
 	/* Step 3: Mark all memory blow `freemem` as used(set `pp_ref`
 	 * filed to 1) */
