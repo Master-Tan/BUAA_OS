@@ -38,7 +38,7 @@ int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
 	u_long nowpage;
 
 	u_long needmax;
-	needmax = 4 * 1024;
+	needmax = BY2PG;
 	while (needmax < size) {
 		needmax = needmax * 2;
 	}
@@ -49,10 +49,10 @@ int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
 	needpage = needmax / BY2PG;
 	u_long pp;
     for (nowpage = beginpage; nowpage < npage; nowpage += needpage) {
-        now = &pages[nowpage];
+		now = &pages[nowpage];
 		int flag = 0;
 		pp = nowpage;
-		if ((&pages[pp])->alloced != 2) {
+		if ((&pages[pp])->alloced == 1) {
              flag = 1;
 		}
 		for (pp = nowpage + 1; pp < (nowpage + needpage); pp++) {
@@ -89,7 +89,7 @@ int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
 void buddy_free(u_int pa) {
 	struct Page* now;
 	u_long ppp;
-	ppp = (PPN(PADDR(pa)));
+	ppp = (PPN(pa));
 	while (1) {
 		ppp++;
 		now = &pages[ppp];

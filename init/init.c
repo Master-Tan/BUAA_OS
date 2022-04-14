@@ -5,21 +5,31 @@
 #include <trap.h>
 
 static void buddy_test(){
-	u_int pa_1, pa_2;
-	u_char pi_1, pi_2;
-	buddy_alloc(1572864, &pa_1, &pi_1);
-	buddy_alloc(1048576, &pa_2, &pi_2);
-	printf("%x\n%d\n%x\n%d\n", pa_1, (int)pi_1, pa_2, (int)pi_2);
-	buddy_free(pa_1);
-	buddy_free(pa_2);
+	u_int pa[10];
+	u_char pi;
+	int i;
+	for(i = 0;i <= 9;i++){
+		buddy_alloc(4096 * (1 << i), &pa[i], &pi);
+		printf("%x %d\n", pa[i], (int)pi);
+	}
+	for(i = 0;i <= 9;i += 2) buddy_free(pa[i]);
+	for(i = 0;i <= 9;i += 2){
+		buddy_alloc(4096 * (1 << i) + 1, &pa[i], &pi);printf("%x %d\n", pa[i], (int)pi);
+	}
+	for(i = 1;i <= 9;i += 2) buddy_free(pa[i]);
+	for(i = 1;i <= 9;i += 2){
+		buddy_alloc(4096 * (1 << i) + 1, &pa[i], &pi);
+		printf("%x %d\n", pa[i], (int)pi);
+	}
+	for(i = 0;i <= 9;i++) buddy_free(pa[i]);
+	printf("%d\n", buddy_alloc(4096 * 1024, &pa[0], &pi));
+	printf("%d\n", buddy_alloc(4096 * 1024 + 1, &pa[0], &pi));
 }
 void mips_init(){
 	mips_detect_memory();
 	mips_vm_init();
 	page_init();
-	printf("11\n");
 	buddy_init();
-	printf("22\n");
 	buddy_test();
 	*((volatile char*)(0xB0000010)) = 0;
 }
