@@ -19,6 +19,86 @@ static u_long freemem;
 
 static struct Page_list page_free_list;	/* Free list of physical pages */
 
+u_long beginpage;
+u_long endpage;
+
+void buddy_init(void) {
+	beginpage = (PPN(PADDR(0x2000000)));
+	endpage = npage;
+	struct Page* now;
+	int i = 0;
+	for (; i < 8; i++) {
+		now = &pages[(PPN(PADDR(0x2000000 + i * (4<<20))))];
+		now->alloced = 2;
+	}
+}
+
+int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
+	struct Page* now;
+	u_long nowpage;
+
+	u_long needmax;
+	needmax = 1;
+	while (needmax < size) {
+		needmax = needmax * 2;
+	}
+	if (needmax > (4<<20)) {
+		return -1;
+	}
+	u_long needpage;
+	needpage = needmax / BY2PG;
+	u_long pp;
+    for (nowpage = beginpage; nowpage < npage; nowpage += needpage) {
+        now = &pages[nowpage];
+		int flag = 0;
+		pp = nowpage;
+		if ((&pages[pp])->alloced != 2) {
+             flag = 1;
+		}
+		for (pp = nowpage + 1; pp < (nowpage + needpage); pp++) {
+			if ((&pages[pp])->alloced != 0) {
+				flag = 1;
+			}
+		}
+		if (flag == 0) {
+			break;
+		}
+    }
+	if (nowpage >= npage) {
+		return -1;
+	}
+
+	for (pp = nowpage + 1; pp < (nowpage + needpage); pp++) {
+         (&pages[pp])->alloced = 1;
+	}
+	(&pages[pp])->alloced = 2;
+
+	*pa = page2kva(&pages[nowpage]);
+	bzero(*pa, needmax);	
+	int i = 1;
+	int j = needmax / 4;
+	for (; j > 1; j = j / 2) {
+		i++;
+	}
+	*pi = i;
+	return 0;
+
+}
+
+void buddy_free(u_int pa) {
+	struct Page* now;
+	u_long ppp;
+	ppp = (PPN(PADDR(pa)));
+	while (1) {
+		ppp++;
+		now = &pages[ppp];
+		if (now->alloced == 2 | ppp >= endpage) {
+			break;
+		}
+		now->alloced = 0;
+	}
+}
+
 
 /* Exercise 2.1 */
 /* Overview:
@@ -96,24 +176,6 @@ static Pte *boot_pgdir_walk(Pde *pgdir, u_long va, int create)
 
 	Pde *pgdir_entry;
 	Pte *pgtable, *pgtable_entry;
-
-
-	// check whether the page table exists
-    if ((*pgdir_entry & PTE_V) == 0) {
-        if (create) {
-           	*pgdir_entry = PADDR(alloc(BY2PG, BY2PG, 1));
-			*pgdir_entry = *pgdir_entry | PTE_V | PTE_R;
-			/**
-            * use `alloc` to allocate a page for the page table
-            * set permission: `PTE_V | PTE_R`
-            * hint: `PTE_V` <==> valid ; `PTE_R` <==> writable
-            */
-        } else return 0; // exception
-    }
-
-	pgtable = (Pte*)(KADDR(PTE_ADDR(*pgdir_entry)));
-	pgtable_entry = pgtable + PTX(va);
-    // return the address of entry of page table
     return pgtable_entry;
 
 	/* Step 1: Get the corresponding page directory entry and page table. */
@@ -141,27 +203,6 @@ static Pte *boot_pgdir_walk(Pde *pgdir, u_long va, int create)
   Size is a multiple of BY2PG.*/
 void boot_map_segment(Pde *pgdir, u_long va, u_long size, u_long pa, int perm)
 {
-	int i, va_temp;
-	Pte *pgtable_entry;
-
-	/* Step 1: Check if `size` is a multiple of BY2PG. */
-
-	size = ROUND(size, BY2PG);
-
-	/* Step 2: Map virtual address space to physical address. */
-	/* Hint: Use `boot_pgdir_walk` to get the page table entry of virtual address `va`. */
-	int i;
-    Pte *pgtable_entry;
-    for (i = 0; i < size; i += BY2PG) {
-        /* Step 1. use `boot_pgdir_walk` to "walk" the page directory */
-        pgtable_entry = boot_pgdir_walk(
-            pgdir,
-            va + i,
-			1 /* create if entry of page directory not exists yet */
-        );
-        /* Step 2. fill in the page table */
-        *pgtable_entry = (PTE_ADDR(pa)) | perm | PTE_V;
-    }
 
 }
 
@@ -225,11 +266,13 @@ void page_init(void)
 	struct Page* now;
 	for (now = pages; page2kva(now) < freemem; now++) {
 		now->pp_ref = 1;
+		now->alloced = 0;
 	}
 
 	/* Step 4: Mark the other memory as free. */
 	for (now = &pages[PPN(PADDR(freemem))]; page2ppn(now) < npage; now++) {
 		now->pp_ref = 0;
+		now->alloced = 0;
 		LIST_INSERT_HEAD(&page_free_list, now, pp_link);
 	}
 }
@@ -311,29 +354,7 @@ whether this function execute successfully or not.
 This function has something in common with function `boot_pgdir_walk`.*/
 int pgdir_walk(Pde *pgdir, u_long va, int create, Pte **ppte)
 {
-	Pde *pgdir_entry;
-	Pte *pgtable;
-	struct Page *page;
-
-	pgdir_entry = pgdir + PDX(va);
-    int ret;
-    
-    // check whether the page table exists
-    if ((*pgdir_entry & PTE_V) == 0) {
-        if (create) {
-            if ((ret = page_alloc(&page)) < 0) return ret;
-            *pgdir_entry = (page2pa(page)) | PTE_V | PTE_R;
-			ppage->pp_ref++;
-        } else {
-            *ppte = 0;
-            return 0;
-        }
-    }
-	pgtable = (Pte *)(KADDR(PTE_ADDR(*pgdir_entry)));
-    *ppte = pgtable + PTX(va);	
-	/* Step 1: Get the corresponding page directory entry and page table. */
-
-
+	return 0;
 	/* Step 2: If the corresponding page table is not exist(valid) and parameter `create`
 	 * is set, create one. And set the correct permission bits for this new page table.
 	 * When creating new page table, maybe out of memory. */
