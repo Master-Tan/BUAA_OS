@@ -66,8 +66,8 @@ int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
 	}
 	u_long index;
 	for (index = needmax; index <= (4<<20); index *= 2) {
-		if (pa2page(ROUND(page2pa(&pages[nowpage]), index))->alloced != 3 ) {
-			pa2page(ROUND(page2pa(&pages[nowpage]), index))->alloced = 2;
+		if (pa2page(ROUND(page2pa(&pages[nowpage] + 1) , index))->alloced != 3 ) {
+			pa2page(ROUND(page2pa(&pages[nowpage] + 1) , index))->alloced = 2;
 		}
 	}
 	pp = nowpage;
@@ -94,14 +94,39 @@ void buddy_free(u_int pa) {
 	u_long ppp;
 	ppp = (PPN(pa));
 	(&pages[ppp])->alloced = 2;
+
 	while (1) {
 		ppp++;
 		now = &pages[ppp];
-		if (now->alloced == 3 | ppp >= endpage) {
+		if (now->alloced == 2 | now->alloced == 3 | ppp >= endpage) {
 			break;
 		}
 		now->alloced = 0;
 	}
+
+	u_long maxpage = ppp - (PPN(pa));
+	
+	for (maxpage *= 2; maxpage <= (PPN(0x2000000) / 8); maxpage *= 2) {
+		ppp = ROUNDDOWN((PPN(pa)), maxpage);
+		u_long i;
+		int flag = 0;
+		for (i = 0; i < maxpage; i++) {
+			if ((&pages[ppp + i])->alloced == 3 | (&pages[ppp + i])->alloced == 1) {
+				flag = 1;
+			}
+		}
+		if (flag == 0) {
+			for (i = 0; i < maxpage; i++) {
+				if (i == 0) {
+					(&pages[ppp + i])->alloced = 2;
+				} else {
+					(&pages[ppp + i])->alloced = 0;
+				}
+			}
+		}
+	}
+
+	//printf("maxpage %d\n", maxpage);
 }
 
 
