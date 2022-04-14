@@ -94,8 +94,27 @@ static void *alloc(u_int n, u_int align, int clear)
 static Pte *boot_pgdir_walk(Pde *pgdir, u_long va, int create)
 {
 
-	Pde *pgdir_entryp;
+	Pde *pgdir_entry;
 	Pte *pgtable, *pgtable_entry;
+
+
+	// check whether the page table exists
+    if ((*pgdir_entry & PTE_V) == 0) {
+        if (create) {
+           	*pgdir_entry = PADDR(alloc(BY2PG, BY2PG, 1));
+			*pgdir_entry = *pgdir_entry | PTE_V | PTE_R;
+			/**
+            * use `alloc` to allocate a page for the page table
+            * set permission: `PTE_V | PTE_R`
+            * hint: `PTE_V` <==> valid ; `PTE_R` <==> writable
+            */
+        } else return 0; // exception
+    }
+
+	pgtable = (Pte*)(KADDR(PTE_ADDR(*pgdir_entry)));
+	pgtable_entry = pgtable + PTX(va);
+    // return the address of entry of page table
+    return pgtable_entry;
 
 	/* Step 1: Get the corresponding page directory entry and page table. */
 	/* Hint: Use KADDR and PTE_ADDR to get the page table from page directory
@@ -127,10 +146,22 @@ void boot_map_segment(Pde *pgdir, u_long va, u_long size, u_long pa, int perm)
 
 	/* Step 1: Check if `size` is a multiple of BY2PG. */
 
+	size = ROUND(size, BY2PG);
 
 	/* Step 2: Map virtual address space to physical address. */
 	/* Hint: Use `boot_pgdir_walk` to get the page table entry of virtual address `va`. */
-
+	int i;
+    Pte *pgtable_entry;
+    for (i = 0; i < size; i += BY2PG) {
+        /* Step 1. use `boot_pgdir_walk` to "walk" the page directory */
+        pgtable_entry = boot_pgdir_walk(
+            pgdir,
+            va + i,
+			1 /* create if entry of page directory not exists yet */
+        );
+        /* Step 2. fill in the page table */
+        *pgtable_entry = (PTE_ADDR(pa)) | perm | PTE_V;
+    }
 
 }
 
@@ -280,10 +311,26 @@ whether this function execute successfully or not.
 This function has something in common with function `boot_pgdir_walk`.*/
 int pgdir_walk(Pde *pgdir, u_long va, int create, Pte **ppte)
 {
-	Pde *pgdir_entryp;
+	Pde *pgdir_entry;
 	Pte *pgtable;
-	struct Page *ppage;
+	struct Page *page;
 
+	pgdir_entry = pgdir + PDX(va);
+    int ret;
+    
+    // check whether the page table exists
+    if ((*pgdir_entry & PTE_V) == 0) {
+        if (create) {
+            if ((ret = page_alloc(&page)) < 0) return ret;
+            *pgdir_entry = (page2pa(page)) | PTE_V | PTE_R;
+			ppage->pp_ref++;
+        } else {
+            *ppte = 0;
+            return 0;
+        }
+    }
+	pgtable = (Pte *)(KADDR(PTE_ADDR(*pgdir_entry)));
+    *ppte = pgtable + PTX(va);	
 	/* Step 1: Get the corresponding page directory entry and page table. */
 
 
