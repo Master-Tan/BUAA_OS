@@ -47,6 +47,7 @@ int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
 	}
 	u_long needpage;
 	needpage = needmax / BY2PG;
+	//printf("needpage %d\n", needpage);
 	u_long pp;
     for (nowpage = beginpage; nowpage < npage; nowpage += needpage) {
 		now = &pages[nowpage];
@@ -80,7 +81,7 @@ int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
 	bzero(*pa, needmax);
 	*pa = PADDR(*pa);
 	int i = 0;
-	int j = needmax / 4 / 1024;
+	int j = needmax / BY2PG;
 	for (; j > 1; j = j / 2) {
 		i++;
 	}
@@ -105,7 +106,9 @@ void buddy_free(u_int pa) {
 	}
 
 	u_long maxpage = ppp - (PPN(pa));
-	
+	//printf("maxpage %d\n", maxpage);
+
+
 	for (maxpage *= 2; maxpage <= (PPN(0x2000000) / 8); maxpage *= 2) {
 		ppp = ROUNDDOWN((PPN(pa)), maxpage);
 		u_long i;
@@ -123,6 +126,8 @@ void buddy_free(u_int pa) {
 					(&pages[ppp + i])->alloced = 0;
 				}
 			}
+		} else {
+			break;
 		}
 	}
 
