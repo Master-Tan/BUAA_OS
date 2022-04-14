@@ -19,7 +19,35 @@ static u_long freemem;
 
 static struct Page_list page_free_list;	/* Free list of physical pages */
 
+int page_protect(struct Page *pp);
+int page_status_query(struct Page *pp);
 
+int page_protect(struct Page *pp)
+{
+	if(pp->protected == 1)	{
+		return -2;
+	} else {
+		if (pp->pp_ref == 0) {
+			pp->protected = 1;
+			return 0;
+		} else {
+			return -1;
+		}
+	}
+}
+
+int page_status_query(struct Page *pp)
+{
+	if(pp->protected == 1)  {
+        return 3;
+    } else {
+        if (pp->pp_ref == 0) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
+}
 /* Exercise 2.1 */
 /* Overview:
    Initialize basemem and npage.
@@ -225,11 +253,13 @@ void page_init(void)
 	struct Page* now;
 	for (now = pages; page2kva(now) < freemem; now++) {
 		now->pp_ref = 1;
+        now->protected = 0;
 	}
 
 	/* Step 4: Mark the other memory as free. */
 	for (now = &pages[PPN(PADDR(freemem))]; page2ppn(now) < npage; now++) {
 		now->pp_ref = 0;
+		now->protected = 0;
 		LIST_INSERT_HEAD(&page_free_list, now, pp_link);
 	}
 }
@@ -258,6 +288,9 @@ int page_alloc(struct Page **pp)
 		return -E_NO_MEM;
 	}
 	ppage_temp = LIST_FIRST(&page_free_list);
+	while (ppage_temp->protected == 1) {
+		ppage_temp = LIST_NEXT(ppage_temp, pp_link);
+	}
 	LIST_REMOVE(ppage_temp, pp_link);
 
 	/* Step 2: Initialize this page.
