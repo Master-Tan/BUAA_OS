@@ -1,0 +1,243 @@
+[33m[01m[05m[ You are changing the branch: lab2-1-exam ][0m
+Autotest: Begin at Thu Apr 14 14:23:39 CST 2022
+Begin build at Thu Apr 14 14:23:40 CST 2022
+Cleanning the project.................
+
+for d in boot drivers init lib mm;	\
+	do					\
+		make --directory=$d clean; \
+	done; \
+rm -rf *.o *~ gxemul/vmlinux
+make[1]: Entering directory '/usr/src/workdir/boot'
+rm -rf *~ *.o
+make[1]: Leaving directory '/usr/src/workdir/boot'
+make[1]: Entering directory '/usr/src/workdir/drivers'
+for d in gxconsole; \
+	do				\
+		make --directory=$d clean; \
+	done
+make[2]: Entering directory '/usr/src/workdir/drivers/gxconsole'
+rm -rf *.o *~
+make[2]: Leaving directory '/usr/src/workdir/drivers/gxconsole'
+make[1]: Leaving directory '/usr/src/workdir/drivers'
+make[1]: Entering directory '/usr/src/workdir/init'
+rm -rf *~ *.o
+make[1]: Leaving directory '/usr/src/workdir/init'
+make[1]: Entering directory '/usr/src/workdir/lib'
+rm -rf *~ *.o
+make[1]: Leaving directory '/usr/src/workdir/lib'
+make[1]: Entering directory '/usr/src/workdir/mm'
+rm -rf *~ *.o
+make[1]: Leaving directory '/usr/src/workdir/mm'
+
+Building the project..................
+
+make --directory=boot
+make[1]: Entering directory '/usr/src/workdir/boot'
+/OSLAB/compiler/usr/bin/mips_4KC-gcc -O -G 0 -mno-abicalls -fno-builtin -Wa,-xgot -Wall -fPIC -I../include/ -c start.S 
+make[1]: Leaving directory '/usr/src/workdir/boot'
+make --directory=drivers
+make[1]: Entering directory '/usr/src/workdir/drivers'
+make --directory=gxconsole
+make[2]: Entering directory '/usr/src/workdir/drivers/gxconsole'
+/OSLAB/compiler/usr/bin/mips_4KC-gcc -O -G 0 -mno-abicalls -fno-builtin -Wa,-xgot -Wall -fPIC   -c -o console.o console.c
+make[2]: Leaving directory '/usr/src/workdir/drivers/gxconsole'
+make[1]: Leaving directory '/usr/src/workdir/drivers'
+make --directory=init
+make[1]: Entering directory '/usr/src/workdir/init'
+/OSLAB/compiler/usr/bin/mips_4KC-gcc -O -G 0 -mno-abicalls -fno-builtin -Wa,-xgot -Wall -fPIC -I../include -c init.c
+init.c: In function 'Page_protect':
+init.c:38: warning: implicit declaration of function 'page_protect'
+init.c: In function 'Page_status_query':
+init.c:48: warning: implicit declaration of function 'page_status_query'
+/OSLAB/compiler/usr/bin/mips_4KC-gcc -O -G 0 -mno-abicalls -fno-builtin -Wa,-xgot -Wall -fPIC -I../include -c main.c
+make[1]: Leaving directory '/usr/src/workdir/init'
+make --directory=lib
+make[1]: Entering directory '/usr/src/workdir/lib'
+/OSLAB/compiler/usr/bin/mips_4KC-gcc -O -G 0 -mno-abicalls -fno-builtin -Wa,-xgot -Wall -fPIC -I./ -I../ -I../include/ -c print.c
+/OSLAB/compiler/usr/bin/mips_4KC-gcc -O -G 0 -mno-abicalls -fno-builtin -Wa,-xgot -Wall -fPIC -I./ -I../ -I../include/ -c printf.c
+/OSLAB/compiler/usr/bin/mips_4KC-gcc -O -G 0 -mno-abicalls -fno-builtin -Wa,-xgot -Wall -fPIC -I./ -I../ -I../include/ -c env.c
+/OSLAB/compiler/usr/bin/mips_4KC-gcc -O -G 0 -mno-abicalls -fno-builtin -Wa,-xgot -Wall -fPIC -I./ -I../ -I../include/ -c genex.S
+genex.S: Assembler messages:
+genex.S:53: Warning: .ent or .aent not in text section.
+genex.S:69: Warning: .end not in text section
+genex.S:75: Warning: .ent or .aent not in text section.
+genex.S:76: Warning: .end not in text section
+genex.S:80: Warning: .ent or .aent not in text section.
+genex.S:146: Warning: .end not in text section
+genex.S:150: Warning: .ent or .aent not in text section.
+genex.S:150: Warning: .end not in text section
+genex.S:151: Warning: .ent or .aent not in text section.
+genex.S:151: Warning: .end not in text section
+make[1]: Leaving directory '/usr/src/workdir/lib'
+make --directory=mm
+make[1]: Entering directory '/usr/src/workdir/mm'
+/OSLAB/compiler/usr/bin/mips_4KC-gcc -O -G 0 -mno-abicalls -fno-builtin -Wa,-xgot -Wall -fPIC -I./ -I../ -I../include/ -c pmap.c
+pmap.c: In function 'page_protect':
+pmap.c:27: error: dereferencing pointer to incomplete type
+pmap.c:30: error: dereferencing pointer to incomplete type
+pmap.c:31: error: dereferencing pointer to incomplete type
+pmap.c:37: warning: control reaches end of non-void function
+pmap.c: In function 'page_status_query':
+pmap.c:41: error: dereferencing pointer to incomplete type
+pmap.c:44: error: dereferencing pointer to incomplete type
+pmap.c:50: warning: control reaches end of non-void function
+pmap.c: In function 'boot_map_segment':
+pmap.c:181: error: redeclaration of 'i' with no linkage
+pmap.c:172: error: previous declaration of 'i' was here
+pmap.c:182: error: redeclaration of 'pgtable_entry' with no linkage
+pmap.c:173: error: previous declaration of 'pgtable_entry' was here
+pmap.c:173: warning: unused variable 'pgtable_entry'
+pmap.c:172: warning: unused variable 'va_temp'
+pmap.c:172: warning: unused variable 'i'
+pmap.c: In function 'mips_vm_init':
+pmap.c:221: error: invalid application of 'sizeof' to incomplete type 'struct Page' 
+pmap.c:223: error: invalid application of 'sizeof' to incomplete type 'struct Page' 
+pmap.c: In function 'page_init':
+pmap.c:246: error: invalid use of undefined type 'struct Page_list'
+pmap.c:254: warning: implicit declaration of function 'page2kva'
+pmap.c:254: error: increment of pointer to unknown structure
+pmap.c:254: error: arithmetic on pointer to an incomplete type
+pmap.c:255: error: dereferencing pointer to incomplete type
+pmap.c:256: error: dereferencing pointer to incomplete type
+pmap.c:260: error: invalid use of undefined type 'struct Page'
+pmap.c:260: error: dereferencing pointer to incomplete type
+pmap.c:260: warning: implicit declaration of function 'page2ppn'
+pmap.c:260: error: increment of pointer to unknown structure
+pmap.c:260: error: arithmetic on pointer to an incomplete type
+pmap.c:261: error: dereferencing pointer to incomplete type
+pmap.c:262: error: dereferencing pointer to incomplete type
+pmap.c:263: error: dereferencing pointer to incomplete type
+pmap.c:263: error: invalid use of undefined type 'struct Page_list'
+pmap.c:263: error: invalid use of undefined type 'struct Page_list'
+pmap.c:263: error: dereferencing pointer to incomplete type
+pmap.c:263: error: invalid use of undefined type 'struct Page_list'
+pmap.c:263: error: dereferencing pointer to incomplete type
+pmap.c:263: error: invalid use of undefined type 'struct Page_list'
+pmap.c: In function 'page_alloc':
+pmap.c:287: error: invalid use of undefined type 'struct Page_list'
+pmap.c:290: error: invalid use of undefined type 'struct Page_list'
+pmap.c:291: error: dereferencing pointer to incomplete type
+pmap.c:292: error: dereferencing pointer to incomplete type
+pmap.c:294: error: dereferencing pointer to incomplete type
+pmap.c:294: error: dereferencing pointer to incomplete type
+pmap.c:294: error: dereferencing pointer to incomplete type
+pmap.c:294: error: dereferencing pointer to incomplete type
+pmap.c:294: error: dereferencing pointer to incomplete type
+pmap.c:298: warning: passing argument 1 of 'bzero' makes pointer from integer without a cast
+pmap.c: In function 'page_free':
+pmap.c:316: error: dereferencing pointer to incomplete type
+pmap.c:317: error: dereferencing pointer to incomplete type
+pmap.c:317: error: invalid use of undefined type 'struct Page_list'
+pmap.c:317: error: invalid use of undefined type 'struct Page_list'
+pmap.c:317: error: dereferencing pointer to incomplete type
+pmap.c:317: error: invalid use of undefined type 'struct Page_list'
+pmap.c:317: error: dereferencing pointer to incomplete type
+pmap.c:317: error: invalid use of undefined type 'struct Page_list'
+pmap.c:319: error: dereferencing pointer to incomplete type
+pmap.c: In function 'pgdir_walk':
+pmap.c:358: warning: implicit declaration of function 'page2pa'
+pmap.c:359: error: 'ppage' undeclared (first use in this function)
+pmap.c:359: error: (Each undeclared identifier is reported only once
+pmap.c:359: error: for each function it appears in.)
+pmap.c: In function 'page_insert':
+pmap.c:403: warning: implicit declaration of function 'pa2page'
+pmap.c:403: warning: comparison between pointer and integer
+pmap.c:404: warning: implicit declaration of function 'page_remove'
+pmap.c:406: warning: implicit declaration of function 'tlb_invalidate'
+pmap.c: In function 'page_lookup':
+pmap.c:451: warning: assignment makes pointer from integer without a cast
+pmap.c: In function 'page_decref':
+pmap.c:462: error: dereferencing pointer to incomplete type
+pmap.c: At top level:
+pmap.c:470: warning: conflicting types for 'page_remove'
+pmap.c:404: warning: previous implicit declaration of 'page_remove' was here
+pmap.c: In function 'page_remove':
+pmap.c:485: error: dereferencing pointer to incomplete type
+pmap.c:486: error: dereferencing pointer to incomplete type
+pmap.c: At top level:
+pmap.c:499: warning: conflicting types for 'tlb_invalidate'
+pmap.c:406: warning: previous implicit declaration of 'tlb_invalidate' was here
+pmap.c: In function 'physical_memory_manage_check':
+pmap.c:510: error: storage size of 'fl' isn't known
+pmap.c:528: error: invalid use of undefined type 'struct Page_list'
+pmap.c:548: error: 'page_free_list' has an incomplete type
+pmap.c:552: error: storage size of 'test_free' isn't known
+pmap.c:554: error: invalid application of 'sizeof' to incomplete type 'struct Page' 
+pmap.c:561: error: invalid use of undefined type 'struct Page'
+pmap.c:561: error: dereferencing pointer to incomplete type
+pmap.c:564: error: invalid use of undefined type 'struct Page'
+pmap.c:564: error: dereferencing pointer to incomplete type
+pmap.c:564: error: invalid use of undefined type 'struct Page'
+pmap.c:564: error: dereferencing pointer to incomplete type
+pmap.c:564: error: invalid use of undefined type 'struct Page'
+pmap.c:564: error: dereferencing pointer to incomplete type
+pmap.c:564: error: invalid use of undefined type 'struct Page'
+pmap.c:564: error: dereferencing pointer to incomplete type
+pmap.c:564: error: invalid use of undefined type 'struct Page'
+pmap.c:564: error: dereferencing pointer to incomplete type
+pmap.c:564: error: invalid use of undefined type 'struct Page'
+pmap.c:564: error: dereferencing pointer to incomplete type
+pmap.c:564: error: invalid use of undefined type 'struct Page'
+pmap.c:564: error: dereferencing pointer to incomplete type
+pmap.c:564: error: invalid use of undefined type 'struct Page'
+pmap.c:564: error: dereferencing pointer to incomplete type
+pmap.c:564: error: invalid use of undefined type 'struct Page'
+pmap.c:564: error: dereferencing pointer to incomplete type
+pmap.c:564: error: invalid use of undefined type 'struct Page'
+pmap.c:564: error: dereferencing pointer to incomplete type
+pmap.c:564: error: invalid use of undefined type 'struct Page'
+pmap.c:564: error: dereferencing pointer to incomplete type
+pmap.c:564: error: invalid use of undefined type 'struct Page'
+pmap.c:564: error: dereferencing pointer to incomplete type
+pmap.c:564: error: invalid use of undefined type 'struct Page'
+pmap.c:564: error: dereferencing pointer to incomplete type
+pmap.c:574: error: dereferencing pointer to incomplete type
+pmap.c:576: error: dereferencing pointer to incomplete type
+pmap.c:581: error: invalid application of 'sizeof' to incomplete type 'struct Page' 
+pmap.c:582: error: dereferencing pointer to incomplete type
+pmap.c:585: error: dereferencing pointer to incomplete type
+pmap.c:585: error: invalid use of undefined type 'struct Page'
+pmap.c:585: error: dereferencing pointer to incomplete type
+pmap.c:585: error: invalid use of undefined type 'struct Page'
+pmap.c:585: error: dereferencing pointer to incomplete type
+pmap.c:585: error: invalid use of undefined type 'struct Page'
+pmap.c:585: error: dereferencing pointer to incomplete type
+pmap.c:585: error: dereferencing pointer to incomplete type
+pmap.c:585: error: invalid use of undefined type 'struct Page'
+pmap.c:585: error: dereferencing pointer to incomplete type
+pmap.c:585: error: dereferencing pointer to incomplete type
+pmap.c:585: error: invalid use of undefined type 'struct Page'
+pmap.c:585: error: dereferencing pointer to incomplete type
+pmap.c:592: error: dereferencing pointer to incomplete type
+pmap.c:593: error: dereferencing pointer to incomplete type
+pmap.c:552: warning: unused variable 'test_free'
+pmap.c:510: warning: unused variable 'fl'
+pmap.c: In function 'page_check':
+pmap.c:605: error: storage size of 'fl' isn't known
+pmap.c:620: error: invalid use of undefined type 'struct Page_list'
+pmap.c:633: warning: implicit declaration of function 'va2pa'
+pmap.c:637: error: dereferencing pointer to incomplete type
+pmap.c:642: error: dereferencing pointer to incomplete type
+pmap.c:651: error: dereferencing pointer to incomplete type
+pmap.c:667: error: dereferencing pointer to incomplete type
+pmap.c:668: error: dereferencing pointer to incomplete type
+pmap.c:669: error: dereferencing pointer to incomplete type
+pmap.c:679: error: dereferencing pointer to incomplete type
+pmap.c:680: error: dereferencing pointer to incomplete type
+pmap.c:686: error: dereferencing pointer to incomplete type
+pmap.c:687: error: dereferencing pointer to incomplete type
+pmap.c:698: error: dereferencing pointer to incomplete type
+pmap.c:699: error: dereferencing pointer to incomplete type
+pmap.c:702: error: 'page_free_list' has an incomplete type
+pmap.c:605: warning: unused variable 'fl'
+pmap.c: In function 'pageout':
+pmap.c:733: error: dereferencing pointer to incomplete type
+make[1]: Leaving directory '/usr/src/workdir/mm'
+make[1]: *** [Makefile:4: pmap.o] Error 1
+make: *** [Makefile:33: mm] Error 2
+
+End build at Thu Apr 14 14:23:42 CST 2022
+[31m[01m[ Other error! ][0m
+[33m[01m[ You got 0 (of 100) this time. Thu Apr 14 14:23:42 CST 2022 ][0m
+Autotest: End at Thu Apr 14 14:23:42 CST 2022
