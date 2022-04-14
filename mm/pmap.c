@@ -73,7 +73,7 @@ int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
 	}
 	(&pages[pp])->alloced = 2;
 
-	*pa = page2pa(&pages[nowpage]);
+	*pa = (page2pa(&pages[nowpage]));
 	// bzero(*pa, needmax);	
 	// *pa = PADDR(*pa);
 	int i = 0;
