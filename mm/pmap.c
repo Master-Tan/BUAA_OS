@@ -23,12 +23,12 @@ u_long beginpage;
 u_long endpage;
 
 void buddy_init(void) {
-	beginpage = (PPN(PADDR(0x2000000)));
+	beginpage = (PPN(0x2000000));
 	endpage = npage;
 	struct Page* now;
 	int i = 0;
 	for (; i < 8; i++) {
-		now = &pages[(PPN(PADDR(0x2000000 + i * (4<<20))))];
+		now = &pages[(PPN(0x2000000 + i * (4<<20)))];
 		now->alloced = 2;
 	}
 }

@@ -17,7 +17,9 @@ void mips_init(){
 	mips_detect_memory();
 	mips_vm_init();
 	page_init();
+	printf("11\n");
 	buddy_init();
+	printf("22\n");
 	buddy_test();
 	*((volatile char*)(0xB0000010)) = 0;
 }
