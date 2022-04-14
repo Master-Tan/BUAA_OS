@@ -77,7 +77,7 @@ int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
 	bzero(*pa, needmax);	
 	*pa = PADDR(*pa);
 	int i = 1;
-	int j = needmax / 4;
+	int j = needmax / 4 / 1024;
 	for (; j > 1; j = j / 2) {
 		i++;
 	}
