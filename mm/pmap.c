@@ -75,6 +75,7 @@ int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
 
 	*pa = page2kva(&pages[nowpage]);
 	bzero(*pa, needmax);	
+	*pa = PADDR(*pa);
 	int i = 1;
 	int j = needmax / 4;
 	for (; j > 1; j = j / 2) {
