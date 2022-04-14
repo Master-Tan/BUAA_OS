@@ -28,7 +28,7 @@ void buddy_init(void) {
 	struct Page* now;
 	int i = 0;
 	for (; i < 8; i++) {
-		now = &pages[(PPN(0x2000000 + i * (4<<20)))];
+		now = pa2page((0x2000000 + i * (4<<20)));
 		now->alloced = 2;
 	}
 }
@@ -51,12 +51,9 @@ int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
     for (nowpage = beginpage; nowpage < npage; nowpage += needpage) {
 		now = &pages[nowpage];
 		int flag = 0;
-		pp = nowpage;
-		if ((&pages[pp])->alloced == 1) {
-             flag = 1;
-		}
-		for (pp = nowpage + 1; pp < (nowpage + needpage); pp++) {
-			if ((&pages[pp])->alloced != 0) {
+
+		for (pp = nowpage; pp < (nowpage + needpage); pp++) {
+			if ((&pages[pp])->alloced != 0 & (&pages[pp])->alloced != 2) {
 				flag = 1;
 			}
 		}
@@ -67,15 +64,21 @@ int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
 	if (nowpage >= npage) {
 		return -1;
 	}
-
+	u_long index;
+	for (index = needmax; index <= (4<<20); index *= 2) {
+		if (pa2page(ROUND(page2pa(&pages[nowpage]), index))->alloced != 3 ) {
+			pa2page(ROUND(page2pa(&pages[nowpage]), index))->alloced = 2;
+		}
+	}
+	pp = nowpage;
+	(&pages[pp])->alloced = 3;
 	for (pp = nowpage + 1; pp < (nowpage + needpage); pp++) {
          (&pages[pp])->alloced = 1;
 	}
-	(&pages[pp])->alloced = 2;
 
-	*pa = (page2pa(&pages[nowpage]));
-	// bzero(*pa, needmax);	
-	// *pa = PADDR(*pa);
+	*pa = (page2kva(&pages[nowpage]));
+	bzero(*pa, needmax);
+	*pa = PADDR(*pa);
 	int i = 0;
 	int j = needmax / 4 / 1024;
 	for (; j > 1; j = j / 2) {
@@ -90,10 +93,11 @@ void buddy_free(u_int pa) {
 	struct Page* now;
 	u_long ppp;
 	ppp = (PPN(pa));
+	(&pages[ppp])->alloced = 2;
 	while (1) {
 		ppp++;
 		now = &pages[ppp];
-		if (now->alloced == 2 | ppp >= endpage) {
+		if (now->alloced == 3 | ppp >= endpage) {
 			break;
 		}
 		now->alloced = 0;
