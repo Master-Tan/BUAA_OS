@@ -141,9 +141,6 @@ static Pte *boot_pgdir_walk(Pde *pgdir, u_long va, int create)
   Size is a multiple of BY2PG.*/
 void boot_map_segment(Pde *pgdir, u_long va, u_long size, u_long pa, int perm)
 {
-	int i, va_temp;
-	Pte *pgtable_entry;
-
 	/* Step 1: Check if `size` is a multiple of BY2PG. */
 
 	size = ROUND(size, BY2PG);
@@ -323,7 +320,7 @@ int pgdir_walk(Pde *pgdir, u_long va, int create, Pte **ppte)
         if (create) {
             if ((ret = page_alloc(&page)) < 0) return ret;
             *pgdir_entry = (page2pa(page)) | PTE_V | PTE_R;
-			ppage->pp_ref++;
+			page->pp_ref++;
         } else {
             *ppte = 0;
             return 0;
