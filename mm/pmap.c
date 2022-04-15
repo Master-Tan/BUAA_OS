@@ -71,8 +71,10 @@ int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
 		if (pa2page(ROUNDDOWN(page2pa(&pages[nowpage]), index))->alloced != 3) {
 			pa2page(ROUNDDOWN(page2pa(&pages[nowpage]), index))->alloced = 2;
 		}
-		if (pa2page(ROUNDDOWN(page2pa(&pages[nowpage]), index) + index)->alloced != 3) {
-			pa2page(ROUNDDOWN(page2pa(&pages[nowpage]), index) + index)->alloced = 2;
+		if ((ROUNDDOWN(page2pa(&pages[nowpage]), index) + index) < 0x4000000) {
+			if (pa2page(ROUNDDOWN(page2pa(&pages[nowpage]), index) + index)->alloced != 3) {
+				pa2page(ROUNDDOWN(page2pa(&pages[nowpage]), index) + index)->alloced = 2;
+			}
 		}
 	}
 	pp = nowpage;
