@@ -34,6 +34,7 @@ void buddy_init(void) {
 }
 
 int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
+	//printf("beginpage %d\n", beginpage);
 	struct Page* now;
 	u_long nowpage;
 
@@ -67,8 +68,11 @@ int buddy_alloc(u_int size, u_int *pa, u_char *pi) {
 	}
 	u_long index;
 	for (index = needmax; index <= (4<<20); index *= 2) {
-		if (pa2page(ROUND(page2pa(&pages[nowpage] + 1) , index))->alloced != 3 ) {
-			pa2page(ROUND(page2pa(&pages[nowpage] + 1) , index))->alloced = 2;
+		if (pa2page(ROUNDDOWN(page2pa(&pages[nowpage]), index))->alloced != 3) {
+			pa2page(ROUNDDOWN(page2pa(&pages[nowpage]), index))->alloced = 2;
+		}
+		if (pa2page(ROUNDDOWN(page2pa(&pages[nowpage]), index) + index)->alloced != 3) {
+			pa2page(ROUNDDOWN(page2pa(&pages[nowpage]), index))->alloced = 2;
 		}
 	}
 	pp = nowpage;
