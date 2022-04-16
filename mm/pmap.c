@@ -35,7 +35,7 @@ void mips_detect_memory()
 
 	// Step 2: Calculate corresponding npage value.
 	
-	npage = basemem / 0x1000;
+	npage = basemem >> PGSHIFT;
 
 
 	printf("Physical memory: %dK available, ", (int)(maxpa / 1024));
@@ -96,13 +96,14 @@ static Pte *boot_pgdir_walk(Pde *pgdir, u_long va, int create)
 
 	Pde *pgdir_entry;
 	Pte *pgtable, *pgtable_entry;
-
+	
+	pgdir_entry = pgdir + PDX(va);
 
 	// check whether the page table exists
     if ((*pgdir_entry & PTE_V) == 0) {
         if (create) {
            	*pgdir_entry = PADDR(alloc(BY2PG, BY2PG, 1));
-			*pgdir_entry = *pgdir_entry | PTE_V | PTE_R;
+			*pgdir_entry = (*pgdir_entry) | PTE_V | PTE_R;
 			/**
             * use `alloc` to allocate a page for the page table
             * set permission: `PTE_V | PTE_R`
@@ -110,7 +111,6 @@ static Pte *boot_pgdir_walk(Pde *pgdir, u_long va, int create)
             */
         } else return 0; // exception
     }
-
 	pgtable = (Pte*)(KADDR(PTE_ADDR(*pgdir_entry)));
 	pgtable_entry = pgtable + PTX(va);
     // return the address of entry of page table
@@ -149,17 +149,16 @@ void boot_map_segment(Pde *pgdir, u_long va, u_long size, u_long pa, int perm)
 	/* Hint: Use `boot_pgdir_walk` to get the page table entry of virtual address `va`. */
 	int i;
     Pte *pgtable_entry;
-    for (i = 0; i < size; i += BY2PG) {
-        /* Step 1. use `boot_pgdir_walk` to "walk" the page directory */
+	for (i = 0; i < size; i += BY2PG) {
+		/* Step 1. use `boot_pgdir_walk` to "walk" the page directory */
         pgtable_entry = boot_pgdir_walk(
             pgdir,
             va + i,
 			1 /* create if entry of page directory not exists yet */
         );
-        /* Step 2. fill in the page table */
+		/* Step 2. fill in the page table */
         *pgtable_entry = (PTE_ADDR(pa)) | perm | PTE_V;
     }
-
 }
 
 /* Overview:
@@ -191,7 +190,6 @@ void mips_vm_init()
 	printf("to memory %x for struct Pages.\n", freemem);
 	n = ROUND(npage * sizeof(struct Page), BY2PG);
 	boot_map_segment(pgdir, UPAGES, n, PADDR(pages), PTE_R);
-
 	/* Step 3, Allocate proper size of physical memory for global array `envs`,
 	 * for process management. Then map the physical address to `UENVS`. */
 	envs = (struct Env *)alloc(NENV * sizeof(struct Env), BY2PG, 1);
@@ -356,22 +354,34 @@ If there is already a page mapped at `va`, call page_remove() to release this ma
 The `pp_ref` should be incremented if the insertion succeeds.*/
 int page_insert(Pde *pgdir, struct Page *pp, u_long va, u_int perm)
 {
-	u_int PERM;
 	Pte *pgtable_entry;
-	PERM = perm | PTE_V;
+    int ret;
+
+    perm = perm | PTE_V;
+
+    // Step 0. check whether `va` is already mapping to `pa`
+    pgdir_walk(pgdir, va, 0 /* for check */, &pgtable_entry);
+    if (pgtable_entry != 0 && (*pgtable_entry & PTE_V) != 0) {
+        // check whether `va` is mapping to another physical frame
+        if (pa2page(*pgtable_entry) != pp) {
+            page_remove(pgdir, va); // unmap it!
+        } else {
+            tlb_invalidate(pgdir, va);              // <~~
+            *pgtable_entry = page2pa(pp) | perm;    // update the permission
+            return 0;
+        }
+    }
+    tlb_invalidate(pgdir, va);                      // <~~
+    /* Step 1. use `pgdir_walk` to "walk" the page directory */
+    if ((ret = pgdir_walk(pgdir, va, 1, &pgtable_entry)) < 0)
+        return ret; // exception
+    /* Step 2. fill in the page table */
+    *pgtable_entry = (page2pa(pp)) | perm;
+    pp->pp_ref++;
+    return 0;
+
 
 	/* Step 1: Get corresponding page table entry. */
-	pgdir_walk(pgdir, va, 0, &pgtable_entry);
-
-	if (pgtable_entry != 0 && (*pgtable_entry & PTE_V) != 0) {
-		if (pa2page(*pgtable_entry) != pp) {
-			page_remove(pgdir, va);
-		} else	{
-			tlb_invalidate(pgdir, va);
-			*pgtable_entry = (page2pa(pp) | PERM);
-			return 0;
-		}
-	}
 
 	/* Step 2: Update TLB. */
 
