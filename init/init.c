@@ -6,12 +6,16 @@
 
 static void page_migrate_test(){
 struct Page *pp;
+printf("AAA\n");
 page_alloc(&pp);
+printf("BBB\n");
 Pde *pgdir = (Pde*)page2kva(pp);
+printf("ZZZ\n");
 page_alloc(&pp);
 page_insert(pgdir, pp, 0x23300000, 0);
 page_insert(pgdir, pp, 0x23400000, 0);
 page_insert(pgdir, pp, 0x23500000, 0);
+printf("YYY\n");
 pp = page_migrate(pgdir, pp);
 printf("%d\n", page2ppn(pp));
 pp = page_migrate(pgdir, pp);
@@ -20,8 +24,11 @@ printf("%d\n", page2ppn(pp));
 void mips_init(){
 mips_detect_memory();
 mips_vm_init();
+printf("111\n");
 page_init();
+printf("222\n");
 page_migrate_test();
+printf("333\n");
 *((volatile char*)(0xB0000010)) = 0;
 }
 

@@ -104,4 +104,6 @@ extern struct Page *pages;
 
 struct Page* page_migrate(Pde *pgdir, struct Page *pp);
 
+int inverted_page_lookup(Pde *pgdir, struct Page *pp, int vpn_buffer[]);
+
 #endif /* _PMAP_H_ */
