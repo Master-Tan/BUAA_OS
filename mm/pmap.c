@@ -29,8 +29,6 @@ struct Page* page_migrate(Pde *pgdir, struct Page *pp) {
 	    }
 	    tp = LIST_FIRST(&fast_page_free_list);
 		LIST_REMOVE(tp, pp_link);
-
-
 		bcopy(page2kva(pp), page2kva(tp), BY2PG);
 	}
     else if (page2ppn(pp) >= 0 && page2ppn(pp) <= 12287) {
@@ -41,7 +39,6 @@ struct Page* page_migrate(Pde *pgdir, struct Page *pp) {
 	    tp = LIST_FIRST(&page_free_list);
 
 		LIST_REMOVE(tp,pp_link);
-
 	    bcopy(page2kva(pp), page2kva(tp), BY2PG);
 	}
 	int vpn_buffer[1024];
@@ -363,7 +360,7 @@ void page_free(struct Page *pp)
 	/* Step 2: If the `pp_ref` reaches 0, mark this page as free and return. */
 
 	if (pp->pp_ref == 0) {
-		if ((page2pa(pp) / BY2PG) >= 12288 && (page2pa(pp) / BY2PG) <= 16383) {
+		if (page2ppn(pp) >= 12288 && page2ppn(pp) <= 16383) {
 			LIST_INSERT_HEAD(&fast_page_free_list, pp, pp_link);
 		}
 		else if ((page2pa(pp) / BY2PG) >= 0 && (page2pa(pp) / BY2PG) <= 12287) {
