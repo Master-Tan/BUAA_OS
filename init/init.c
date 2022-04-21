@@ -16,6 +16,7 @@ page_insert(pgdir, pp, 0x23300000, 0);
 page_insert(pgdir, pp, 0x23400000, 0);
 page_insert(pgdir, pp, 0x23500000, 0);
 printf("YYY\n");
+printf("pgdir: %x\npage: %x\n",pgdir, pp);
 pp = page_migrate(pgdir, pp);
 printf("PPP\n");
 printf("%d\n", page2ppn(pp));

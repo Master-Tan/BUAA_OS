@@ -24,7 +24,7 @@ struct Page_list fast_page_free_list;
 struct Page* page_migrate(Pde *pgdir, struct Page *pp)
 {
 	struct Page *tp;
-
+	printf("KK!!!!!\n");
 	if (page2ppn(pp) >= 12288 && page2ppn(pp) <= 16383) {
 		if (LIST_EMPTY(&fast_page_free_list)) {
 	        return NULL;
@@ -57,20 +57,21 @@ struct Page* page_migrate(Pde *pgdir, struct Page *pp)
 	Pte *pgtable_entry;	
 	num = inverted_page_lookup(pgdir, pp, vpn_buffer);
 	if (num != 0) {
-//		for (i = 0; i < num; i++) {
-//			pgdir_entry = pgdir + vpn_buffer[i] / 1024;
+		for (i = 0; i < num; i++) {
+			pgdir_entry = pgdir + vpn_buffer[i] / 1024;
     	    // check whether the page table exists
-//	        if ((*pgdir_entry & PTE_V) != 0) {
-//	            pgtable = (Pte *)(KADDR(PTE_ADDR(*pgdir_entry)));
-//	            pgtable_entry = pgtable + vpn_buffer[i] % 1024;
-//	            if (pgtable_entry != 0 && (*pgtable_entry & PTE_V) != 0) {
-//					*pgtable_entry == (PTE_ADDR(page2pa(tp)) | (page2pa(pp) % (2 >> 11)));
-//	            }
-//        	}				
-//		}
-//	} else {
-//		page_free(pp);
+	        if ((*pgdir_entry & PTE_V) != 0) {
+	            pgtable = (Pte *)(KADDR(PTE_ADDR(*pgdir_entry)));
+	            pgtable_entry = pgtable + vpn_buffer[i] % 1024;
+	            if (pgtable_entry != 0 && (*pgtable_entry & PTE_V) != 0) {
+					*pgtable_entry == (PTE_ADDR(page2pa(tp)) | (page2pa(pp) % (2 >> 11)));
+	            }
+        	}				
+		}
+	} else {
+		page_free(pp);
 	}
+	return tp;
 }
 
 
