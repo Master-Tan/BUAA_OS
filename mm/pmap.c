@@ -21,16 +21,13 @@ struct Page_list page_free_list;	/* Free list of physical pages */
 struct Page_list fast_page_free_list;
 
 
-struct Page* page_migrate(Pde *pgdir, struct Page *pp)
-{
+struct Page* page_migrate(Pde *pgdir, struct Page *pp) {
 	struct Page *tp;
-	printf("KK!!!!!\n");
 	if (page2ppn(pp) >= 12288 && page2ppn(pp) <= 16383) {
 		if (LIST_EMPTY(&fast_page_free_list)) {
 	        return NULL;
 	    }
 	    tp = LIST_FIRST(&fast_page_free_list);
-	    printf("Fast: %d\n", tp - pages);
 		LIST_REMOVE(tp, pp_link);
 
 
@@ -43,12 +40,11 @@ struct Page* page_migrate(Pde *pgdir, struct Page *pp)
 	
 	    tp = LIST_FIRST(&page_free_list);
 
-		printf("Low: %d\n", tp - pages);
-		LIST_REMOVE(tp, pp_link);
+		LIST_REMOVE(tp,pp_link);
 
 	    bcopy(page2kva(pp), page2kva(tp), BY2PG);
 	}
-	int vpn_buffer[1024*1024];
+	int vpn_buffer[1024];
 	int num;
 	int i;
 	Pde *pgdir_entry;
