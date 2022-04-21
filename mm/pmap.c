@@ -17,8 +17,19 @@ Pde *boot_pgdir;
 struct Page *pages;
 static u_long freemem;
 
-static struct Page_list page_free_list;	/* Free list of physical pages */
+struct Page_list page_free_list;	/* Free list of physical pages */
+struct Page_list fast_page_free_list;
 
+
+struct Page* page_migrate(Pde *pgdir, struct Page *pp)
+{
+	if ((page2pa(pp) >> BY2PG) >= 12288 && (page2pa(pp) >> BY2PG) <= 16383) {
+        LIST_INSERT_HEAD(&fast_page_free_list, pp, pp_link);        
+	}
+    else if ((page2pa(pp) >> BY2PG) >= 0 && (page2pa(pp) >> BY2PG) <= 12287) {
+        LIST_INSERT_HEAD(&page_free_list, pp, pp_link);
+	}	
+}
 
 /* Exercise 2.1 */
 /* Overview:
@@ -225,7 +236,13 @@ void page_init(void)
 	/* Step 4: Mark the other memory as free. */
 	for (now = &pages[PPN(PADDR(freemem))]; page2ppn(now) < npage; now++) {
 		now->pp_ref = 0;
-		LIST_INSERT_HEAD(&page_free_list, now, pp_link);
+		if ((page2pa(now) >> BY2PG) >= 12288 && (page2pa(now) >> BY2PG) <= 16383) {
+		    LIST_INSERT_HEAD(&fast_page_free_list, now, pp_link);
+		}
+		else if ((page2pa(now) >> BY2PG) >= 0 && (page2pa(now) >> BY2PG) <= 12287) {
+		    LIST_INSERT_HEAD(&page_free_list, now, pp_link);
+		}
+
 	}
 }
 
@@ -276,7 +293,12 @@ void page_free(struct Page *pp)
 	/* Step 2: If the `pp_ref` reaches 0, mark this page as free and return. */
 
 	if (pp->pp_ref == 0) {
-		LIST_INSERT_HEAD(&page_free_list, pp, pp_link);
+		if ((page2pa(pp) >> BY2PG) >= 12288 && (page2pa(pp) >> BY2PG) <= 16383) {
+			LIST_INSERT_HEAD(&fast_page_free_list, pp, pp_link);
+		}
+		else if ((page2pa(pp) >> BY2PG) >= 0 && (page2pa(pp) >> BY2PG) <= 12287) {
+			LIST_INSERT_HEAD(&page_free_list, pp, pp_link);
+		}
 		return;
 	} else if (pp->pp_ref > 0) {
 		return;
