@@ -133,8 +133,13 @@ int envid2env(u_int envid, struct Env **penv, int checkperm)
  *      LIST_INIT, LIST_INSERT_HEAD
  */
 /*** exercise 3.2 ***/
-void
-env_init(void)
+
+/*
+ * 空闲链表 env_free_list 中存储目前不表征存活进程的进程控制块.
+ * 调度双链表 env_sched_list 用于进行进程调度.
+ */
+
+void env_init(void)
 {
     int i;
     /* Step 1: Initialize env_free_list. */
@@ -234,8 +239,27 @@ env_setup_vm(struct Env *e)
  *      (the value of PC should NOT be set in env_alloc)
  */
 /*** exercise 3.5 ***/
-int
-env_alloc(struct Env **new, u_int parent_id)
+
+/*
+ * env_alloc
+ * env_alloc 的主要任务是申请一个进程控制块, 并给它的一些字段设置合理的初始值. 大致框架为:
+ *
+ * 这里设置的初始值将在进程开始运行时的 env_pop_tf 汇编函数中加载到 CPU 的状态:
+ *
+ * 这里初始化的 CPU 状态有栈指针寄存器, CP0 中的 SR 寄存器.
+ * 还有一些初始值表示进程的一些属性, 如进程号, 进程状态, 父进程号
+ * 这里给进程控制块的字段进行了初始化, 这里做一些说明:
+ *
+ * env_id: 使用 mkenvid 创建一个进程号. 官方代码中的 mkenvid 实现有一些小问题, 我们将在后续的文章中修复它.
+ * env_tf.cp0_status: 这一字段将在运行时被放入CP0的SR寄存器中, 对照SR寄存器的位含义, 可知道 0x10001004 的意思为将SR寄存器中的 CU0, IM[8 + 4], IEp 置高.
+ * CU0 被置高, 意味着 CP0 被启用.
+ * IM[8 + 4] 被置高, 意味着接受 4 号中断(MOS 中 4 号中断是时钟中断)
+ * IEp 被置高, 返回用户态时, IEc 将获得 IEp 的值(二重栈), 这意味着返回用户态后启用全局中断使能.
+ * env_tf.regs[29]: $29 寄存器为 sp 栈指针寄存器, 这里初始化 sp 为用户栈栈顶.
+ */
+
+
+int env_alloc(struct Env **new, u_int parent_id)
 {
     int r;
     struct Env *e;
@@ -461,8 +485,14 @@ env_create(u_char *binary, int size)
 /* Overview:
  *  Free env e and all memory it uses.
  */
-void
-env_free(struct Env *e)
+
+/*
+ * 将进程页目录中的所有页面移除(取消映射).
+ * 将页目录占用的物理页面回收.
+ * 将进程控制块放回到 env_free_list 中.
+ */
+
+void env_free(struct Env *e)
 {
     Pte *pt;
     u_int pdeno, pteno, pa;
@@ -504,6 +534,16 @@ env_free(struct Env *e)
 /* Overview:
  *  Free env e, and schedule to run a new env if e is the current env.
  */
+
+/*
+ * 前文通过 env_create 创建进程, 此处使用 env_destory 销毁进程.
+ *
+ * 销毁进程的大致步骤是:
+ *
+ * 1.调用 env_free 将该进程对应的进程控制块释放.
+ * 2.若被销毁的进程是当前进程, 则需要调用 sched_yield 让其他进程运行.
+ */
+
 void
 env_destroy(struct Env *e)
 {
@@ -537,8 +577,18 @@ extern void lcontext(u_int contxt);
  *      env_pop_tf , lcontext.
  */
 /*** exercise 3.10 ***/
-void
-env_run(struct Env *e)
+
+/*
+ * 在 env_run 中, 大致具有如下步骤:
+ *
+ * 1.若当前有进程在运行, 则应当将该进程的现场保存到其进程控制块的 env_tf 中.
+ * 2.将 mCONTEXT 设置为待运行进程的页目录基地址.
+ * 3.切换页目录, 可以使得 TLB 缺失, 引发 do_refill 时填写正确的映射关系.
+ *
+ * 将待运行进程的现场恢复到CPU的状态中.
+ */
+
+void env_run(struct Env *e)
 {
     /* Step 1: save register state of curenv. */
     /* Hint: if there is an environment running, 
