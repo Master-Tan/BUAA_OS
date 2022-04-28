@@ -343,7 +343,7 @@ static int load_icode_mapper(u_long va, u_int32_t sgsize,
 	}
 
     /* Step 1: load all content of bin into memory. */
-    for (; i < bin_size; i += BY2PG) {
+    for (; i < bin_size; i += size) {
         /* Hint: You should alloc a new page. */
 		size = MIN(BY2PG, bin_size - i);
 		r = page_alloc(&p);
