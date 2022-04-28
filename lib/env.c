@@ -53,7 +53,7 @@ int V(struct Env* e, int s) {
 			e->s[s] = 0;
 			e->isWait[s] = 0;
 			ss[s]++;
-		} else {
+		} else if (e->s[s] == 1) {
 			e->s[s] = 0;
 			e->isWait[s] = 0;
 			struct Env* e1;
@@ -61,6 +61,9 @@ int V(struct Env* e, int s) {
 			e1->s[s] = 1;
 			e1->isWait[s] = 1;
 			LIST_REMOVE(e1, env_link);
+		} else {
+			e->s[s] = 0;
+			e->isWait[s] = 0;
 			ss[s]++;
 		}
         return 0;
