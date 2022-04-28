@@ -14,9 +14,9 @@ struct Env *curenv = NULL;            // the current env
 
 static struct Env_list env_free_list;    // Free list
 struct Env_list env_sched_list[2];      // Runnable list
- 
-u_int s1;
-u_int s2;
+struct Env_list env_s_list[5]; 
+
+u_int ss[5];
 
 
 extern Pde *boot_pgdir;
@@ -25,24 +25,69 @@ extern char *KERNEL_SP;
 static u_int asid_bitmap[2] = {0}; // 64
 
 void S_init(int s, int num) {
-	if (s == 1) {
-
-	}
+	ss[s] = num;
 }
 
 int P(struct Env* e, int s) {
-
+	if (get_status == 1) {
+		return -1;
+	} else {
+		if (ss[s] == 0) {
+			e->s[s] = 1;
+			e->isWait[s] = 1;
+			LIST_INSERT_TAIL(&env_s_list[s], e, env_link);			
+		} else {
+			ss[s]--;
+			e->s[s] = 1;
+			e->isWait[s] = 0;
+		}
+		return 0;
+	}
 }
 
 int V(struct Env* e, int s) {
-
+	if (get_status == 1) {
+        return -1; 
+    } else {
+		if (LIST_EMPTY(&env_s_list[s])) {
+			e->s[s] = 0;
+			e->isWait[s] = 0;
+			ss[s]++;
+		} else {
+			e->s[s] = 0;
+			e->isWait[s] = 0;
+			struct Env* e1;
+			e1 = LIST_FIRST(&env_s_list[s]);
+			e1->s[s] = 1;
+			e1->isWait[s] = 1;
+		}
+        return 0;
+    }
 }
 
 int get_status(struct Env* e) {
-
+	if (e->isWait[2] == 0 & e->isWait[1] == 0) {
+		if (e->s[2] == 0 & e->s[1] == 0) {
+			return 3;
+		} else {
+			return 2;
+		}
+	} else {
+		return 1;
+	}
 }
 
 int my_env_create() {
+	struct Env *e;
+    int r;
+
+    /* Step 1: Use env_alloc to alloc a new env. */
+
+    r = env_alloc(&e, 0);
+    if (r != 0) {
+        return -1;
+    }
+	return e->env_id;
 
 }
 
@@ -178,6 +223,8 @@ void env_init(void)
 	LIST_INIT(&env_sched_list[0]);
 	LIST_INIT(&env_sched_list[1]);
 
+	LIST_INIT(&env_s_list[1]);
+	LIST_INIT(&env_s_list[2]);
     /* Step 2: Traverse the elements of 'envs' array,
      *   set their status as free and insert them into the env_free_list.
      * Choose the correct loop order to finish the insertion.
@@ -326,7 +373,10 @@ int env_alloc(struct Env **new, u_int parent_id)
 	env_setup_vm(e);
 
     /* Step 3: Initialize every field of new Env with appropriate values.*/
-
+	e->s[1] = 0;
+	e->s[2] = 0;
+	e->isWait[2] = 0;
+	e->isWait[1] = 0;
 	e->env_id = mkenvid(e);
 	e->env_status = ENV_RUNNABLE;
 	e->env_parent_id = parent_id;
