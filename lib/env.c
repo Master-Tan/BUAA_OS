@@ -38,7 +38,7 @@ int P(struct Env* e, int s) {
 			LIST_INSERT_TAIL(&env_s_list[s], e, env_link);			
 		} else {
 			ss[s]--;
-			e->s[s] = 1;
+			e->s[s] += 1;
 			e->isWait[s] = 0;
 		}
 		return 0;
@@ -50,19 +50,19 @@ int V(struct Env* e, int s) {
         return -1; 
     } else {
 		if (LIST_EMPTY(&env_s_list[s])) {
-			e->s[s] = 0;
+			e->s[s] -= 1;
 			e->isWait[s] = 0;
 			ss[s]++;
 		} else if (e->s[s] == 1) {
-			e->s[s] = 0;
+			e->s[s] -= 1;
 			e->isWait[s] = 0;
 			struct Env* e1;
 			e1 = LIST_FIRST(&env_s_list[s]);
-			e1->s[s] = 1;
-			e1->isWait[s] = 1;
+			e1->s[s] += 1;
+			e1->isWait[s] = 0;
 			LIST_REMOVE(e1, env_link);
 		} else {
-			e->s[s] = 0;
+			e->s[s] -= 1;
 			e->isWait[s] = 0;
 			ss[s]++;
 		}
