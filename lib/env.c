@@ -15,11 +15,36 @@ struct Env *curenv = NULL;            // the current env
 static struct Env_list env_free_list;    // Free list
 struct Env_list env_sched_list[2];      // Runnable list
  
+u_int s1;
+u_int s2;
+
+
 extern Pde *boot_pgdir;
 extern char *KERNEL_SP;
 
 static u_int asid_bitmap[2] = {0}; // 64
 
+void S_init(int s, int num) {
+	if (s == 1) {
+
+	}
+}
+
+int P(struct Env* e, int s) {
+
+}
+
+int V(struct Env* e, int s) {
+
+}
+
+int get_status(struct Env* e) {
+
+}
+
+int my_env_create() {
+
+}
 
 /* Overview:
  *  This function is to allocate an unused ASID
