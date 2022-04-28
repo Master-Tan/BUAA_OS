@@ -60,6 +60,7 @@ int V(struct Env* e, int s) {
 			e1 = LIST_FIRST(&env_s_list[s]);
 			e1->s[s] = 1;
 			e1->isWait[s] = 1;
+			LIST_REMOVE(e, env_link);
 		}
         return 0;
     }
