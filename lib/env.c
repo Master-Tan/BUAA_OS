@@ -33,7 +33,7 @@ int P(struct Env* e, int s) {
 		return -1;
 	} else {
 		if (ss[s] == 0) {
-			e->s[s] = 1;
+			e->s[s] += 1;
 			e->isWait[s] = 1;
 			LIST_INSERT_TAIL(&env_s_list[s], e, env_link);			
 		} else {
