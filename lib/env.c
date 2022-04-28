@@ -29,7 +29,7 @@ void S_init(int s, int num) {
 }
 
 int P(struct Env* e, int s) {
-	if (get_status == 1) {
+	if (get_status(e) == 1) {
 		return -1;
 	} else {
 		if (ss[s] == 0) {
@@ -46,7 +46,7 @@ int P(struct Env* e, int s) {
 }
 
 int V(struct Env* e, int s) {
-	if (get_status == 1) {
+	if (get_status(e) == 1) {
         return -1; 
     } else {
 		if (LIST_EMPTY(&env_s_list[s])) {
