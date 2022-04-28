@@ -87,6 +87,11 @@ u_int mkenvid(struct Env *e) {
  *  return -E_BAD_ENV on error,and set *penv to NULL.
  */
 /*** exercise 3.3 ***/
+
+/*
+ * 实现通过一个env的id获取该id对应的进程控制块的功能
+ */
+
 int envid2env(u_int envid, struct Env **penv, int checkperm)
 {
     struct Env *e;
@@ -119,9 +124,9 @@ int envid2env(u_int envid, struct Env **penv, int checkperm)
 		}
 	}
 
-
     *penv = e;
-    return 0;
+
+	return 0;
 }
 
 /* Overview:
@@ -169,8 +174,22 @@ void env_init(void)
  *  DO NOT map anything into the user portion of the env's virtual address space.
  */
 /*** exercise 3.4 ***/
-static int
-env_setup_vm(struct Env *e)
+
+/*
+ * 图中, 所有进程的蓝色区域都是一样的(共享内核空间). 另外, 紫色区域:
+ *
+ * UVPT 用于映射进程页表, 每个进程的这部分都不一样.
+ * UPAGES 用于映射内存管理中的 pages 数组, 每个进程的这部分都一样.
+ * UENVS 用于映射进程管理中的 envs 数组, 每个进程的这部分都一样.
+ *
+ * 回忆一下启动的过程, 我们在 mips_vm_init 中申请了 pages 和 envs 这两个数组的空间, 并将它们与虚地址 UPAGES 和 UENVS 建立了映射.
+ * 
+ * 而这里的 UPAGES 和 UENVS 恰好就位于紫色区域内. 也就意味着我们可以将这部分映射关系直接复用. 这里就可以解释启动中 boot_map_segment(boot_pgdir, ...) 的重要作用, 即制作了一个页目录映射模板 boot_pgdir , 只要复制其中的 UENVS 和 UPAGES 对应的表项就可以完成映射!
+ *
+ * MOS中使用 env_setup_vm 为一个进程控制块表征的进程设置初始虚空间.
+ */
+
+static int env_setup_vm(struct Env *e)
 {
 
     int i, r;
@@ -215,8 +234,10 @@ env_setup_vm(struct Env *e)
 	e->env_cr3 = PADDR(pgdir);
 
     /* UVPT maps the env's own page table, with read-only permission.*/
+	/* 页表自映射 */
     e->env_pgdir[PDX(UVPT)]  = e->env_cr3 | PTE_V;
-    return 0;
+    
+	return 0;
 }
 
 /* Overview:
@@ -283,7 +304,7 @@ int env_alloc(struct Env **new, u_int parent_id)
 	e->env_status = ENV_RUNNABLE;
 	e->env_parent_id = parent_id;
 	
-	// e->env_runs = 0;
+	e->env_runs = 0;
 
     /* Step 4: Focus on initializing the sp register and cp0_status of env_tf field, located at this new Env. */
     e->env_tf.cp0_status = 0x10001004;
