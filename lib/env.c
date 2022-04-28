@@ -49,6 +49,19 @@ int V(struct Env* e, int s) {
 	if (get_status(e) == 1) {
         return -1; 
     } else {
+		if (e->s[s] == 0) {
+			if (LIST_EMPTY(&env_s_list[s])) {
+            e->isWait[s] = 0;
+            ss[s]++;
+        } else {
+            e->isWait[s] = 0;
+            struct Env* e1; 
+            e1 = LIST_FIRST(&env_s_list[s]);
+            e1->s[s] += 1;
+            e1->isWait[s] = 1;
+            LIST_REMOVE(e1, env_link);
+        }
+		}
 		if (LIST_EMPTY(&env_s_list[s])) {
 			e->s[s] -= 1;
 			e->isWait[s] = 0;
