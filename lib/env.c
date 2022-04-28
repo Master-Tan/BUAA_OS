@@ -61,6 +61,7 @@ int V(struct Env* e, int s) {
 			e1->s[s] = 1;
 			e1->isWait[s] = 1;
 			LIST_REMOVE(e1, env_link);
+			ss[s]++;
 		}
         return 0;
     }
