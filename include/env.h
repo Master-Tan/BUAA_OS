@@ -28,7 +28,10 @@ struct Env {
 	u_int env_cr3;
 	LIST_ENTRY(Env) env_sched_link;
         u_int env_pri;
-	// Lab 4 IPC
+	u_int env_asid;
+
+
+		// Lab 4 IPC
 	u_int env_ipc_value;            // data value sent to us 
 	u_int env_ipc_from;             // envid of the sender  
 	u_int env_ipc_recving;          // env is blocked receiving

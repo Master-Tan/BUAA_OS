@@ -66,10 +66,15 @@ static void asid_free(u_int i) {
  * Post-Condition:
  *  return e's envid on success
  */
-u_int mkenvid(struct Env *e) {
-    u_int idx = e - envs;
-    u_int asid = asid_alloc();
-    return (asid << (1 + LOG2NENV)) | (1 << LOG2NENV) | idx;
+
+u_int mkenvid(struct Env *e)
+{
+    /*Hint: lower bits of envid hold e's position in the envs array. */
+    u_int idx = (u_int)e - (u_int)envs;
+    idx /= sizeof(struct Env);
+
+    /*Hint: avoid envid being zero. */
+    return (1 << (LOG2NENV)) | idx;  //LOG2NENV=10
 }
 
 /* Overview:
