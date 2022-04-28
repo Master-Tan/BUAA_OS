@@ -12,6 +12,8 @@
 struct Env *envs = NULL;        // All environments
 struct Env *curenv = NULL;            // the current env
 
+u_int curasid = 0x4;
+
 static struct Env_list env_free_list;    // Free list
 struct Env_list env_sched_list[2];      // Runnable list
  
@@ -20,6 +22,49 @@ extern char *KERNEL_SP;
 
 static u_int asid_bitmap[2] = {0}; // 64
 
+u_int exam_env_run(struct Env *e) {
+	
+	if (e->env_asid >> 6 == curasid) {
+		return 0;
+	} else {
+		int i, index, inner;
+		i = e->env_asid & 0x3f;	
+        index = i >> 5;
+        inner = i & 31;
+		if ((asid_bitmap[index] & (1 << inner)) == 0) {
+			e->env_asid = (curasid << 6) + (e->env_asid & 0x3f);
+			asid_bitmap[index] |= 1 << inner;
+			return 0;
+		} else {
+			for (i = 0; i < 64; ++i) {
+	            index = i >> 5;
+	            inner = i & 31;
+	            if ((asid_bitmap[index] & (1 << inner)) == 0) {
+	                asid_bitmap[index] |= 1 << inner;
+	                e->env_asid = (curasid << 6) + i;
+	                return 0;
+				}
+			}
+			curasid++;
+            asid_bitmap[0] = 0;
+			asid_bitmap[1] = 0;
+			asid_bitmap[0] |= 1 << 0;
+            e->env_asid = (curasid << 6) + 0;
+			return 1;
+		}
+	}
+}
+
+ void exam_env_free(struct Env *e) {
+	u_int i = (e->env_asid & 0x3f);
+	u_int index0 = (e->env_asid >> 6);
+	if (index0 == curasid) {
+		int index, inner;
+		index = i >> 5;
+		inner = i & 31;
+	    asid_bitmap[index] &= ~(1 << inner);
+	}
+ }
 
 /* Overview:
  *  This function is to allocate an unused ASID
@@ -168,7 +213,7 @@ void env_init(void)
 		envs[i].env_status = ENV_FREE;
 		LIST_INSERT_HEAD(&env_free_list, &envs[i], env_link);
 	}
-
+	curasid = 0x4;	
 }
 
 
@@ -312,7 +357,7 @@ int env_alloc(struct Env **new, u_int parent_id)
 	e->env_parent_id = parent_id;
 	
 	e->env_runs = 0;
-
+	e->env_asid = 0;
     /* Step 4: Focus on initializing the sp register and cp0_status of env_tf field, located at this new Env. */
     e->env_tf.cp0_status = 0x10001004;
 	e->env_tf.regs[29] = USTACKTOP;
