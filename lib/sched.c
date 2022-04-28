@@ -44,7 +44,7 @@ void sched_yield(void)
             next_env = LIST_FIRST(&env_sched_list[cur_head_index]);
             if (next_env->env_status == ENV_RUNNABLE) {
                 now_have = 1;
-                break;
+				break;
             }
             LIST_REMOVE(next_env, env_sched_link);
             LIST_INSERT_HEAD(&env_sched_list[!cur_head_index], next_env, env_sched_link);
