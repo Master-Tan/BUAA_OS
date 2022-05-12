@@ -152,12 +152,11 @@ nop
 			nop
 END(do_refill)
 
-NESTED(mine,0 , sp)
-1:
+NESTED(mine,TF_SIZE, sp)
 	move t1, a0
 	lw  k0,TF_EPC(t1)
 	lw  t6, 0(k0)
-	add t2, k0, 0
+	add t2, t6, 0
 	li t2, 0x20
 	sll t2, t2, 26
 	addi t2, t2, 1
