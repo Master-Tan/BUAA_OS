@@ -158,9 +158,6 @@ NESTED(mine,0 , sp)
  nop
 lw  t6, 0(k0)
 	add t2, t6, 0
-	li t2, 0x20
-	sll t2, t2, 26
-	addi t2, t2, 1
 	add t3, t2, 0
 	sll t3, t3, 6
 	srl t3, t3, 6
