@@ -74,6 +74,30 @@ void sched_yield(void)
     panic("^^^^^^sched yield reached end^^^^^^");
 
 
-
+/*
+ * static int count = 0;
+    static int point = 0;
+    static struct Env *e = NULL;
+    if (count == 0 || e == NULL || e->env_status != ENV_RUNNABLE) {
+        if (e != NULL) {
+            // move `e` to the tail of `env_sched_list[1 - point]` 
+        }
+        while (1) {
+            while (LIST_EMPTY(&env_sched_list[point])) point = 1 - point;
+            e = LIST_FIRST(&env_sched_list[point]);
+            if (e->env_status == ENV_RUNNABLE) {
+                count = e->env_pri; // PRIORITY
+                break;
+            } else {
+                
+                //  if the status of `e` is `ENV_NOT_RUNNABLE`,
+                //      move it to the tail of `env_sched_list[1 - point]`
+                 
+            }
+        }
+    }
+    count--;
+    env_run(e);
+*/
 
 }

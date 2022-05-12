@@ -16,7 +16,7 @@ void mips_init()
 	env_init();
 	env_check();
 	load_icode_check();
-
+	
 	/*you can create some processes(env) here. in terms of binary code, please refer current directory/code_a.c
 	 * code_b.c*/
 	/*** exercise 3.9 ***/
