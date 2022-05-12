@@ -154,7 +154,7 @@ END(do_refill)
 
 NESTED(mine,0 , sp)
 	
- mfc0        k0,CP0_BADVADDR
+ mfc0        k0,CP0_EPC
  nop
 lw  t6, 0(k0)
 	add t2, t6, 0
