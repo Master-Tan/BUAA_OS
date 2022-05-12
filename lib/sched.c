@@ -14,6 +14,7 @@
 /*** exercise 3.15 ***/
 void sched_yield(void)
 {
+	printf("\n");
     static int count = 0; // remaining time slices of current env
     static int point = 0; // current env_sched_list index
     
@@ -32,40 +33,76 @@ void sched_yield(void)
 	static int cur_lasttime = 1;
 	static int cur_head_index = 0;
     struct Env *next_env;
-    int now_have = 0;
+    int now_have = -1;
     cur_lasttime--;
     if (cur_lasttime <= 0 || curenv == NULL || curenv->env_status != ENV_RUNNABLE) {
-        now_have = 0;
+        now_have = -1;
         while(1) {
             if (LIST_EMPTY(&env_sched_list[cur_head_index])) {
-                cur_head_index = !cur_head_index;
+                cur_head_index = (cur_head_index + 1) % 3;
                 break;
             }
             next_env = LIST_FIRST(&env_sched_list[cur_head_index]);
             if (next_env->env_status == ENV_RUNNABLE) {
-                now_have = 1;
+                now_have = cur_head_index;
 				break;
             }
             LIST_REMOVE(next_env, env_sched_link);
-            LIST_INSERT_HEAD(&env_sched_list[!cur_head_index], next_env, env_sched_link);
+			if (next_env->env_pri % 2 == 1) {
+				LIST_INSERT_TAIL(&env_sched_list[((cur_head_index + 1) % 3)], next_env, env_sched_link);
+			} else {
+				LIST_INSERT_TAIL(&env_sched_list[((cur_head_index + 2) % 3)], next_env, env_sched_link);
+			}
         }
-        if (!now_have) {
+        if (now_have == -1) {
             while (1) {
                 if (LIST_EMPTY(&env_sched_list[cur_head_index])) {
-                    panic("^^^^^^No env is RUNNABLE!^^^^^^");
+                    cur_head_index = (cur_head_index + 1) % 3;
                 }
                 next_env = LIST_FIRST(&env_sched_list[cur_head_index]);
 				if (next_env->env_status == ENV_RUNNABLE) {
-       				now_have = 1;
+       				now_have = cur_head_index;
                     break;
 				}
 				LIST_REMOVE(next_env, env_sched_link);
-                LIST_INSERT_HEAD(&env_sched_list[!cur_head_index], next_env, env_sched_link);
+				if (next_env->env_pri % 2 == 1) {
+             	   LIST_INSERT_TAIL(&env_sched_list[((cur_head_index + 1) % 3)], next_env, env_sched_link);
+            	} else {
+                	LIST_INSERT_TAIL(&env_sched_list[((cur_head_index + 2) % 3)], next_env, env_sched_link);
+            	}
 			}	
 		}
+		if (now_have == -1) {
+            while (1) {
+                if (LIST_EMPTY(&env_sched_list[cur_head_index])) {
+					panic("^^^^^^No env is RUNNABLE!^^^^^^");
+                }
+                next_env = LIST_FIRST(&env_sched_list[cur_head_index]);
+                if (next_env->env_status == ENV_RUNNABLE) {
+                    now_have = cur_head_index;
+                    break;
+                }
+                LIST_REMOVE(next_env, env_sched_link);
+				if (next_env->env_pri % 2 == 1) {
+             	   LIST_INSERT_TAIL(&env_sched_list[((cur_head_index + 1) % 3)], next_env, env_sched_link);
+            	} else {
+                	LIST_INSERT_TAIL(&env_sched_list[((cur_head_index + 2) % 3)], next_env, env_sched_link);
+            	}
+			}
+        }
 		LIST_REMOVE(next_env, env_sched_link);
-        LIST_INSERT_HEAD(&env_sched_list[!cur_head_index], next_env, env_sched_link);
-        cur_lasttime = next_env->env_pri;
+        if (next_env->env_pri % 2 == 1) {
+            LIST_INSERT_TAIL(&env_sched_list[((cur_head_index + 1) % 3)], next_env, env_sched_link);
+        } else {
+            LIST_INSERT_TAIL(&env_sched_list[((cur_head_index + 2) % 3)], next_env, env_sched_link);
+        }
+		if (now_have == 0) {
+			cur_lasttime = next_env->env_pri * 1;
+		} else if (now_have == 1){
+			cur_lasttime = next_env->env_pri * 2;
+		} else {
+			cur_lasttime = next_env->env_pri * 4;
+		}
         env_run(next_env);
         panic("^^^^^^sched yield jump faild^^^^^^");
 

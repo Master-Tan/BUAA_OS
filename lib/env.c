@@ -13,7 +13,7 @@ struct Env *envs = NULL;        // All environments
 struct Env *curenv = NULL;            // the current env
 
 static struct Env_list env_free_list;    // Free list
-struct Env_list env_sched_list[2];      // Runnable list
+struct Env_list env_sched_list[3];      // Runnable list
  
 extern Pde *boot_pgdir;
 extern char *KERNEL_SP;
@@ -152,7 +152,7 @@ void env_init(void)
 	
 	LIST_INIT(&env_sched_list[0]);
 	LIST_INIT(&env_sched_list[1]);
-
+	LIST_INIT(&env_sched_list[2]);
     /* Step 2: Traverse the elements of 'envs' array,
      *   set their status as free and insert them into the env_free_list.
      * Choose the correct loop order to finish the insertion.
