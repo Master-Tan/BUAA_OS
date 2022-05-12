@@ -152,8 +152,36 @@ nop
 			nop
 END(do_refill)
 
-
+NESTED(mine,0 , sp)
+	move t1, a0
+	lw  k0,TF_EPC(t1)
+	add t2, k0, 0
+	li t2, 0x20
+	sll t2, t2, 26
+	addi t2, t2, 1
+	add t3, t2, 0
+	sll t3, t3, 6
+	srl t3, t3, 6
+	srl t4, t2, 26
+	beq t4, 0x20, my1
+	beq t4, 0x21, my2
+	j out
+	my1:
+	li t4, 0x21
+	sll t4, t4, 26
+	add t2, t4, t3
+	j out
+	my2:
+	li t4, 0x23
+	sll t4, t4, 26
+	add t2, t4, t3
+	j out
+	out:
+	add k0, t2, 0
+	sw  k0, TF_EPC(t1)
+END(mine)
 
 BUILD_HANDLER reserved do_reserved cli
 BUILD_HANDLER tlb	do_refill	cli
 BUILD_HANDLER mod	page_fault_handler cli
+BUILD_HANDLER myself	mine cli

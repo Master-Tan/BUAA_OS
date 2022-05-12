@@ -20,7 +20,6 @@ LEAF(set_timer)
 	li t0, 0xc8
 	sb t0, 0xb5000100
 	sw	sp, KERNEL_SP
-setup_c0_status STATUS_CU0|0x1001 0
 	jr ra
 
 	nop
