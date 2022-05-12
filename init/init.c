@@ -34,7 +34,8 @@ void mips_init()
 
         trap_init();
         kclock_init();
-        test();
+		printf("YY\n");
+		test();
         *((volatile char *) 0xB0000010);
 }
 

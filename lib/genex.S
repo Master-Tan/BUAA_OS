@@ -153,8 +153,10 @@ nop
 END(do_refill)
 
 NESTED(mine,0 , sp)
+1:
 	move t1, a0
 	lw  k0,TF_EPC(t1)
+	lw  t6, 0(k0)
 	add t2, k0, 0
 	li t2, 0x20
 	sll t2, t2, 26
@@ -166,18 +168,19 @@ NESTED(mine,0 , sp)
 	beq t4, 0x20, my1
 	beq t4, 0x21, my2
 	j out
-	my1:
+my1:
 	li t4, 0x21
 	sll t4, t4, 26
 	add t2, t4, t3
 	j out
-	my2:
+my2:
 	li t4, 0x23
 	sll t4, t4, 26
 	add t2, t4, t3
 	j out
-	out:
-	add k0, t2, 0
+out:
+	add t6, t2, 0
+	sw  t6, 0(k0)
 	sw  k0, TF_EPC(t1)
 END(mine)
 
