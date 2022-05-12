@@ -152,12 +152,11 @@ nop
 			nop
 END(do_refill)
 
-LEAF(mine)
-	move t1, a0
-	.extern mCONTEXT
-	lw      t6,mCONTEXT
-	//lw  k0,TF_EPC(t1)
-	//lw  t6, 0(k0)
+NESTED(mine,0 , sp)
+	
+ mfc0        k0,CP0_BADVADDR
+ nop
+lw  t6, 0(k0)
 	add t2, t6, 0
 	li t2, 0x20
 	sll t2, t2, 26
@@ -186,9 +185,9 @@ my2:
 	nop
 myout:
 	add t6, t2, 0
-	//sw  t6, 0(k0)
+	sw  t6, 0(k0)
 	//sw  k0, TF_EPC(t1)
-	sw      t6,mCONTEXT
+	//sw      t6,mCONTEXT
 	jr ra
 	nop
 END(mine)
