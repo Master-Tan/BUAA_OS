@@ -152,7 +152,7 @@ nop
 			nop
 END(do_refill)
 
-NESTED(mine,TF_SIZE, sp)
+LEAF(mine)
 	move t1, a0
 	lw  k0,TF_EPC(t1)
 	lw  t6, 0(k0)
