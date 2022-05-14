@@ -155,7 +155,7 @@ int sys_mem_alloc(int sysno, u_int envid, u_int va, u_int perm)
 	if (perm & PTE_COW) {
 		return -E_INVAL;
 	}
-	ret = envid2env(envid, &env, 1);
+	ret = envid2env(envid, &env, 0);
 	if (ret < 0) {
 		return ret;
 	}
@@ -187,7 +187,7 @@ int sys_mem_alloc(int sysno, u_int envid, u_int va, u_int perm)
 /*** exercise 4.4 ***/
 int sys_mem_map(int sysno, u_int srcid, u_int srcva, u_int dstid, u_int dstva, u_int perm)
 {
-/*
+
 	int ret;
 	u_int round_srcva, round_dstva;
 	struct Env *srcenv;
@@ -228,7 +228,7 @@ int sys_mem_map(int sysno, u_int srcid, u_int srcva, u_int dstid, u_int dstva, u
 
 	ret = 0;
 	return ret;
-*/
+
 }
 
 /* Overview:
