@@ -183,9 +183,9 @@ int sys_mem_alloc(int sysno, u_int envid, u_int va, u_int perm)
  * 	Cannot access pages above UTOP.
  */
 /*** exercise 4.4 ***/
-int sys_mem_map(int sysno, u_int srcid, u_int srcva, u_int dstid, u_int dstva,
-				u_int perm)
+int sys_mem_map(int sysno, u_int srcid, u_int srcva, u_int dstid, u_int dstva, u_int perm)
 {
+/*
 	int ret;
 	u_int round_srcva, round_dstva;
 	struct Env *srcenv;
@@ -203,11 +203,11 @@ int sys_mem_map(int sysno, u_int srcid, u_int srcva, u_int dstid, u_int dstva,
 		return -E_INVAL;
 	}
 
-	ret = envid2env(srcid, &srcenv, 0); // 1 -> 0
+	ret = envid2env(srcid, &srcenv, 1); // 1 -> 0
 	if (ret < 0) {
 		return ret;
 	}
-	ret = envid2env(dstid, &dstenv, 0); // 1 -> 0
+	ret = envid2env(dstid, &dstenv, 1); // 1 -> 0
 	if (ret < 0) {
 		return ret;
 	}
@@ -226,6 +226,7 @@ int sys_mem_map(int sysno, u_int srcid, u_int srcva, u_int dstid, u_int dstva,
 
 	ret = 0;
 	return ret;
+*/
 }
 
 /* Overview:
@@ -240,6 +241,7 @@ int sys_mem_map(int sysno, u_int srcid, u_int srcva, u_int dstid, u_int dstva,
 /*** exercise 4.5 ***/
 int sys_mem_unmap(int sysno, u_int envid, u_int va)
 {
+/*
 	// Your code here.
 	int ret;
 	struct Env *env;
@@ -248,7 +250,7 @@ int sys_mem_unmap(int sysno, u_int envid, u_int va)
 		return -E_INVAL;
 	}
 
-	ret = envid2env(envid, &env, 0);
+	ret = envid2env(envid, &env, 1); // 1 -> 0
 	if (ret < 0) {
 		return ret;
 	}
@@ -257,6 +259,7 @@ int sys_mem_unmap(int sysno, u_int envid, u_int va)
 
 	return ret;
 	//	panic("sys_mem_unmap not implemented");
+*/
 }
 
 /* Overview:
