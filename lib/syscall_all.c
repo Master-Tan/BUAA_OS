@@ -152,7 +152,7 @@ int sys_mem_alloc(int sysno, u_int envid, u_int va, u_int perm)
 	if (va >= UTOP) {
 		return -E_INVAL;
 	}
-	if (perm & PTE_COW) {
+	if (!(perm & PTE_V) || (perm & PTE_COW)) {
 		return -E_INVAL;
 	}
 	ret = envid2env(envid, &env, 1);
@@ -220,7 +220,7 @@ int sys_mem_map(int sysno, u_int srcid, u_int srcva, u_int dstid, u_int dstva, u
 	ppage = page_lookup(srcenv->env_pgdir, round_srcva, &ppte);
 	if (ppage == NULL) {
 		return -E_INVAL;
-	}
+	}  
 	if (((*ppte & PTE_R) == 0) && ((perm & PTE_R) == 1)) {
 		return -E_INVAL;
 	}
