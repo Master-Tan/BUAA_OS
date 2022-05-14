@@ -355,7 +355,7 @@ void sys_panic(int sysno, char *msg)
 /*** exercise 4.7 ***/
 void sys_ipc_recv(int sysno, u_int dstva)
 {
-/*
+
 	if (dstva >= UTOP) {
         return;
     }
@@ -364,7 +364,7 @@ void sys_ipc_recv(int sysno, u_int dstva)
     curenv->env_ipc_dstva = dstva;
     curenv->env_status = ENV_NOT_RUNNABLE;
     sys_yield();
-*/
+
 }
 
 /* Overview:
@@ -393,7 +393,7 @@ int sys_ipc_can_send(int sysno, u_int envid, u_int value, u_int srcva,
 	struct Env *e;
 	struct Page *p;
 	Pte *pte;
-/*
+
 	// your code here
 	if (srcva >= UTOP) {
             return -E_INVAL;
@@ -421,6 +421,6 @@ int sys_ipc_can_send(int sysno, u_int envid, u_int value, u_int srcva,
         }
         page_insert(e->env_pgdir, p, e->env_ipc_dstva, perm);
     }
-*/
+
 	return 0;
 }
