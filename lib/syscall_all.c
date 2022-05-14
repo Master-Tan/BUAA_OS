@@ -142,6 +142,7 @@ int sys_set_pgfault_handler(int sysno, u_int envid, u_int func, u_int xstacktop)
 /*** exercise 4.3 ***/
 int sys_mem_alloc(int sysno, u_int envid, u_int va, u_int perm)
 {
+/*
 	// Your code here.
 	struct Env *env;
 	struct Page *ppage;
@@ -167,6 +168,7 @@ int sys_mem_alloc(int sysno, u_int envid, u_int va, u_int perm)
 		return ret;
 	}
 	return 0;
+*/
 }
 
 /* Overview:
