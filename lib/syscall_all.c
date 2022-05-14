@@ -155,7 +155,7 @@ int sys_mem_alloc(int sysno, u_int envid, u_int va, u_int perm)
 	if (perm & PTE_COW) {
 		return -E_INVAL;
 	}
-	ret = envid2env(envid, &env, 0);
+	ret = envid2env(envid, &env, 1);
 	if (ret < 0) {
 		return ret;
 	}
@@ -204,6 +204,10 @@ int sys_mem_map(int sysno, u_int srcid, u_int srcva, u_int dstid, u_int dstva, u
 	if (srcva >= UTOP || dstva >= UTOP) {
 		return -E_INVAL;
 	}
+	
+	if ((perm & PTE_V) == 0) {
+		return -E_INVAL;
+	}
 
 	ret = envid2env(srcid, &srcenv, 0); // 1 -> 0
 	if (ret < 0) {
@@ -220,7 +224,7 @@ int sys_mem_map(int sysno, u_int srcid, u_int srcva, u_int dstid, u_int dstva, u
 	if (((*ppte & PTE_R) == 0) && ((perm & PTE_R) == 1)) {
 		return -E_INVAL;
 	}
-	ppage = pa2page(PTE_ADDR(*ppte));
+	// ppage = pa2page(PTE_ADDR(*ppte));
 	ret = page_insert(dstenv->env_pgdir, ppage, round_dstva, perm);
 	if (ret < 0) {
 		return ret;
@@ -243,7 +247,7 @@ int sys_mem_map(int sysno, u_int srcid, u_int srcva, u_int dstid, u_int dstva, u
 /*** exercise 4.5 ***/
 int sys_mem_unmap(int sysno, u_int envid, u_int va)
 {
-/*
+
 	// Your code here.
 	int ret;
 	struct Env *env;
@@ -261,7 +265,7 @@ int sys_mem_unmap(int sysno, u_int envid, u_int va)
 
 	return ret;
 	//	panic("sys_mem_unmap not implemented");
-*/
+
 }
 
 /* Overview:
