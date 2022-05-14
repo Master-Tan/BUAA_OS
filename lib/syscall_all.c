@@ -205,11 +205,11 @@ int sys_mem_map(int sysno, u_int srcid, u_int srcva, u_int dstid, u_int dstva, u
 		return -E_INVAL;
 	}
 
-	ret = envid2env(srcid, &srcenv, 1); // 1 -> 0
+	ret = envid2env(srcid, &srcenv, 0); // 1 -> 0
 	if (ret < 0) {
 		return ret;
 	}
-	ret = envid2env(dstid, &dstenv, 1); // 1 -> 0
+	ret = envid2env(dstid, &dstenv, 0); // 1 -> 0
 	if (ret < 0) {
 		return ret;
 	}
