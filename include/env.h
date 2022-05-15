@@ -29,11 +29,11 @@ struct Env {
 	LIST_ENTRY(Env) env_sched_link;
         u_int env_pri;
 	// Lab 4 IPC
-	u_int env_ipc_value;            // data value sent to us 
-	u_int env_ipc_from;             // envid of the sender  
-	u_int env_ipc_recving;          // env is blocked receiving
-	u_int env_ipc_dstva;		// va at which to map received page
-	u_int env_ipc_perm;		// perm of page mapping received
+	u_int env_ipc_value;            // 进程传递的具体数值 data value sent to us 
+	u_int env_ipc_from;             // 发送方的进程ID envid of the sender  
+	u_int env_ipc_recving;          // 1：等待接受数据中；0：不可接受数据 env is blocked receiving
+	u_int env_ipc_dstva;		// 接收到的页面需要与自身的哪个虚拟页面完成映射 va at which to map received page
+	u_int env_ipc_perm;		// 传递的页面的权限位设置 perm of page mapping received
 
 	// Lab 4 fault handling
 	u_int env_pgfault_handler;      // page fault state
