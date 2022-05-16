@@ -32,7 +32,7 @@ void sched_yield(void)
      *  LIST_INSERT_TAIL, LIST_REMOVE, LIST_FIRST, LIST_EMPTY
      */
 
-/*
+
 	if (count == 0 || e == NULL || e->env_status != ENV_RUNNABLE)
 	{
 		if (e != NULL)
@@ -65,8 +65,9 @@ void sched_yield(void)
 	count--;
 	e->env_runs++;
 	env_run(e);
-*/
 
+
+/*
 static int cur_lasttime = 1;
         static int cur_head_index = 0;
         struct Env *next_env;
@@ -117,5 +118,5 @@ static int cur_lasttime = 1;
         }
         env_run(curenv);
         panic("^^^^^^sched yield reached end^^^^^^");
-
+*/
 }
