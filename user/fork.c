@@ -193,9 +193,9 @@ fork(void)
 
 	//alloc a new alloc
 	newenvid = syscall_env_alloc();
-	env = envs + ENVX(syscall_getenvid()); // roife
+	// env = envs + ENVX(syscall_getenvid()); // roife
 	if (newenvid == 0) {
-		// env = envs + ENVX(syscall_getenvid());
+		env = envs + ENVX(syscall_getenvid());
 		return 0;
 	}
 
