@@ -298,11 +298,13 @@ int sys_env_alloc(void)
         return r;
     }
 
+	e->env_status = ENV_NOT_RUNNABLE;
+	e->env_pri = curenv->env_pri;
     bcopy((void *)KERNEL_SP - sizeof(struct Trapframe), (void *)&(e->env_tf), sizeof(struct Trapframe));
 	e->env_tf.pc = e->env_tf.cp0_epc;
 	e->env_tf.regs[2] = 0; // return value of func
-	e->env_status = ENV_NOT_RUNNABLE;
-	e->env_pri = curenv->env_pri;
+	// e->env_status = ENV_NOT_RUNNABLE;
+	// e->env_pri = curenv->env_pri;
 
 	return e->env_id;
 	//	panic("sys_env_alloc not implemented");
@@ -340,7 +342,7 @@ int sys_set_env_status(int sysno, u_int envid, u_int status)
 
 	// roife
 	if (status == ENV_RUNNABLE && env->env_status != ENV_RUNNABLE) {
-		LIST_INSERT_HEAD(&env_sched_list[0], env, env_sched_link);
+		LIST_INSERT_TAIL(&env_sched_list[0], env, env_sched_link);
 	}
 	else if ((status != ENV_RUNNABLE && env->env_status == ENV_RUNNABLE)) {
 		LIST_REMOVE(env, env_sched_link);
@@ -449,7 +451,6 @@ int sys_ipc_can_send(int sysno, u_int envid, u_int value, u_int srcva,
 	int r;
 	struct Env *e;
 	struct Page *p;
-	Pte *pte;
 
 	// your code here
 	if (srcva >= UTOP) {
@@ -472,11 +473,14 @@ int sys_ipc_can_send(int sysno, u_int envid, u_int value, u_int srcva,
     e->env_status = ENV_RUNNABLE;
 
     if (srcva != 0) {
-        p = page_lookup(curenv->env_pgdir, srcva, &pte);
+        p = page_lookup(curenv->env_pgdir, srcva, NULL);
         if (p == NULL || e->env_ipc_dstva >= UTOP) { // refkxh
         	return -E_INVAL;
         }
-        page_insert(e->env_pgdir, p, e->env_ipc_dstva, perm);
+        r = page_insert(e->env_pgdir, p, e->env_ipc_dstva, perm);
+		if (r < 0) {
+			return r;
+		}
     }
 
 	return 0;
