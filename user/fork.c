@@ -201,7 +201,7 @@ fork(void)
 
 	
 	for (i = 0; i < UTOP - 2 * BY2PG; i += BY2PG) {
-		if ((((Pde *)(*vpd))[PDX(i)] & PTE_V) && (((Pte *)(*vpt))[VPN(i)] & PTE_V)) {
+		if ((((Pde *)(*vpd))[PDX(i)]) && (((Pte *)(*vpt))[VPN(i)])) {
 			duppage(newenvid, VPN(i));
 		}
 	}
