@@ -14,7 +14,7 @@
 /*** exercise 3.15 ***/
 void sched_yield(void)
 {
-	printf("sched_yield\n");
+	//printf("sched_yield\n");
 
     static int count = 0; // remaining time slices of current env
     static int point = 0; // current env_sched_list index
