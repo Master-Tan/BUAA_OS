@@ -14,14 +14,10 @@ void mips_init() {
 
 	env_init();
 
-	printf("Begin test\n");
-
-	// ENV_CREATE(user_tltest);
-	ENV_CREATE(user_fktest);
-	// ENV_CREATE(user_pingpong);
-
-	printf("End test\n");
-
+	// ENV_CREATE(user_devtst);
+	// ENV_CREATE(user_fstest);
+	// ENV_CREATE(fs_serv);
+ 
 	trap_init();
 	kclock_init();
 
