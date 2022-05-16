@@ -302,7 +302,7 @@ int sys_env_alloc(void)
     e->env_pri = curenv->env_pri;
     bcopy((void *)KERNEL_SP - sizeof(struct Trapframe), (void *)&(e->env_tf), sizeof(struct Trapframe));
     e->env_tf.pc = e->env_tf.cp0_epc;
-	e->env_tf.regs[2] = 0; // return value of func
+	// e->env_tf.regs[2] = 0; // return value of func
 
 	return e->env_id;
 	//	panic("sys_env_alloc not implemented");
