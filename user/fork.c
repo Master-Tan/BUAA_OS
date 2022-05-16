@@ -199,14 +199,16 @@ fork(void)
 		return 0;
 	}
 
-	
+	for (i = 0; i < VPN(USTACKTOP); i++) {
+		if (((*vpd)[i >> 10] & PTE_V) && ((*vpt)[i] & PTE_V)) duppage(newenvid, i);
+	}
+/*	
 	for (i = 0; i < UTOP -  2 * BY2PG; i += BY2PG) {
 		if ((((Pde *)(*vpd))[i >> PDSHIFT] & PTE_V) && (((Pte *)(*vpt))[i >> PGSHIFT] & PTE_V)) {
 			duppage(newenvid, VPN(i));
 		}
     }
-
-
+*/
 	
 /*
 	for (i = 0; i < USTACKTOP; i += PDMAP) {
