@@ -210,9 +210,9 @@ fork(void)
 	
 
 	for (i = 0; i < USTACKTOP; i += PDMAP) {
-        if (((Pde *)(*vpd))[PDX(i)]) {
+        if (((Pde *)(*vpd))[PDX(i)] & PTE_V) {
             for (j = 0; j < PDMAP && i + j < USTACKTOP; j += BY2PG) {
-                if (((Pte *)(*vpt))[VPN(i + j)])
+                if (((Pte *)(*vpt))[VPN(i + j)] & PTE_V)
                     duppage(newenvid, VPN(i + j));
             }
         }
