@@ -354,6 +354,7 @@ static int load_icode_mapper(u_long va, u_int32_t sgsize,
 	
 	i = 0;
 
+/*
 	if (offset != 0) {
 		p = page_lookup(env->env_pgdir, va + i, NULL);
 		if (p == 0) {
@@ -367,11 +368,13 @@ static int load_icode_mapper(u_long va, u_int32_t sgsize,
 		bcopy((void*)bin, (void*)(page2kva(p) + offset), size);
 		i = i + size;
 	}
-
+*/
     /* Step 1: load all content of bin into memory. */
-    for (; i < bin_size; i += size) {
-        /* Hint: You should alloc a new page. */
-		size = MIN(BY2PG, bin_size - i);
+/*
+	for (; i < bin_size; i += size) {
+*/
+	/* Hint: You should alloc a new page. */
+/*		size = MIN(BY2PG, bin_size - i);
 		r = page_alloc(&p);
 		if (r != 0) {
 			return r;
@@ -379,9 +382,10 @@ static int load_icode_mapper(u_long va, u_int32_t sgsize,
 		page_insert(env->env_pgdir, p, va + i, PTE_R);
 		bcopy((void*)bin + i, (void*)(page2kva(p)), size);
     }
-    /* Step 2: alloc pages to reach `sgsize` when `bin_size` < `sgsize`.
+*/
+	/* Step 2: alloc pages to reach `sgsize` when `bin_size` < `sgsize`.
      * hint: variable `i` has the value of `bin_size` now! */
-    offset = va + i - ROUNDDOWN(va + i, BY2PG);
+/*    offset = va + i - ROUNDDOWN(va + i, BY2PG);
 	if (offset != 0) {
 		p = page_lookup(env->env_pgdir, va + i, NULL);
         if (p == 0) {
@@ -406,6 +410,40 @@ static int load_icode_mapper(u_long va, u_int32_t sgsize,
 		bzero((void*)page2kva(p), size);
 		i = i + size;
 	}
+*/
+
+	if (offset != 0)
+    {
+        if ((r = page_alloc(&p)) != 0)
+            return r;
+        bcopy(bin, page2kva(p) + offset, MIN(bin_size, BY2PG - offset));
+        page_insert(env->env_pgdir, p, va, PTE_R);
+    }
+    /*Step 1: load all content of bin into memory. */
+    for (i = offset ? MIN(bin_size, BY2PG - offset) : 0; i < bin_size; i += BY2PG)
+    {
+        /* Hint: You should alloc a new page. */
+        if ((r = page_alloc(&p)) != 0)
+            return r;
+        bcopy(bin + i, page2kva(p), MIN(bin_size - i, BY2PG));
+        page_insert(env->env_pgdir, p, va + i, PTE_R);
+    }
+    /*Step 2: alloc pages to reach `sgsize` when `bin_size` < `sgsize`.
+    * hint: variable `i` has the value of `bin_size` now! */
+    //    offset = va + i - ROUNDDOWN(va + i, BY2PG);
+    //    if (offset != 0) {
+    //    	if ((r = page_alloc(&p)) != 0) return r;
+    //	page_insert(env->env_pgdir, p, va + i, PTE_R);
+    //	i += MIN(sgsize - i, BY2PG - offset);
+    //    }
+    while (i < sgsize)
+    {
+        if ((r = page_alloc(&p)) != 0)
+            return r;
+        page_insert(env->env_pgdir, p, va + i, PTE_R);
+        i += BY2PG;
+    }
+
 
     return 0;
 }
@@ -460,7 +498,7 @@ load_icode(struct Env *e, u_char *binary, u_int size)
     /* Step 4: Set CPU's PC register as appropriate value. */
     e->env_tf.pc = entry_point;
 
-	// printf("entry_point: %x\n", entry_point);
+	printf("entry_point: %x\n", entry_point);
 
 }
 
@@ -481,7 +519,6 @@ env_create_priority(u_char *binary, int size, int priority)
 	int r;
 
 	/* Step 1: Use env_alloc to alloc a new env. */
-
 	r = env_alloc(&e, 0);
 	if (r != 0) {
 		return;
@@ -493,7 +530,6 @@ env_create_priority(u_char *binary, int size, int priority)
 
     /* Step 3: Use load_icode() to load the named elf binary,
        and insert it into env_sched_list using LIST_INSERT_HEAD. */
-	
 	load_icode(e, binary, size);
 	LIST_INSERT_HEAD(&env_sched_list[0], e, env_sched_link);
 }
@@ -508,7 +544,6 @@ void
 env_create(u_char *binary, int size)
 {
      /* Step 1: Use env_create_priority to alloc a new env with priority 1 */
-	
 	env_create_priority(binary, size, 1);
 
 }
