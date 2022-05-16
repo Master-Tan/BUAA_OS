@@ -262,7 +262,7 @@ int sys_mem_unmap(int sysno, u_int envid, u_int va)
 		return -E_INVAL;
 	}
 
-	ret = envid2env(envid, &env, 1); // 1 -> 0
+	ret = envid2env(envid, &env, 0); // 1 -> 0
 	if (ret < 0) {
 		return ret;
 	}
