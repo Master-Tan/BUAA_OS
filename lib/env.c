@@ -225,7 +225,7 @@ static int env_setup_vm(struct Env *e)
      *  Can you use boot_pgdir as a template?
      */
 	for (i = PDX(UTOP); i < PTE2PT; i++) {
-		if (i != PDX(UVPT)) {
+		if (i != PDX(UVPT) && i != PDX(VPT)) {
 			pgdir[i] = boot_pgdir[i];
 		}
 	}
@@ -235,7 +235,8 @@ static int env_setup_vm(struct Env *e)
 
     /* UVPT maps the env's own page table, with read-only permission.*/
 	/* 页表自映射 */
-    e->env_pgdir[PDX(UVPT)]  = e->env_cr3 | PTE_V;
+	// e->env_pgdir[PDX(UVPT)]  = e->env_cr3 | PTE_V;
+    e->env_pgdir[PDX(UVPT)]  = e->env_cr3 | PTE_V | PTE_R;
     
 	return 0;
 }
@@ -309,7 +310,7 @@ int env_alloc(struct Env **new, u_int parent_id)
 	e->env_runs = 0;
 
     /* Step 4: Focus on initializing the sp register and cp0_status of env_tf field, located at this new Env. */
-    e->env_tf.cp0_status = 0x1000100c;
+    e->env_tf.cp0_status = 0x1000100c; // 0x1000100c ??
 	e->env_tf.regs[29] = USTACKTOP;
 
     /* Step 5: Remove the new Env from env_free_list. */
@@ -452,8 +453,10 @@ load_icode(struct Env *e, u_char *binary, u_int size)
 		return;
 	}
     /* Step 3: load the binary using elf loader. */
-	load_elf(binary, size, &entry_point, (void*)e, load_icode_mapper);
-
+	r =	load_elf(binary, size, &entry_point, (void*)e, load_icode_mapper);
+	if (r != 0) {
+		return;
+	}
     /* Step 4: Set CPU's PC register as appropriate value. */
     e->env_tf.pc = entry_point;
 
@@ -492,7 +495,7 @@ env_create_priority(u_char *binary, int size, int priority)
        and insert it into env_sched_list using LIST_INSERT_HEAD. */
 	
 	load_icode(e, binary, size);
-
+	LIST_INSERT_HEAD(&env_sched_list[0], e, env_sched_link);
 }
 /* Overview:
  * Allocate a new env with default priority value.
