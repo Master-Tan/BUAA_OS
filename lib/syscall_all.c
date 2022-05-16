@@ -298,9 +298,9 @@ int sys_env_alloc(void)
         return r;
     }
 
-    e->env_status = ENV_NOT_RUNNABLE;
-	e->env_pri = curenv->env_pri;
     bcopy((void *)KERNEL_SP - sizeof(struct Trapframe), (void *)&(e->env_tf), sizeof(struct Trapframe));
+	e->env_pri = curenv->env_pri;
+	e->env_status = ENV_NOT_RUNNABLE;
 	e->env_tf.pc = e->env_tf.cp0_epc;
 	e->env_tf.regs[2] = 0; // return value of func
 
