@@ -1,0 +1,11 @@
+ap 1 jack 100
+ap 2 mark 100
+ap 3 grace 200
+ar 1 3 100
+ar 2 3 1
+qci 1 2
+ap 4 mark 100
+ap 5 grace 200
+ar 2 5 100
+ar 5 4 1
+qci 4 4
