@@ -411,6 +411,16 @@ void sys_panic(int sysno, char *msg)
  * 	This syscall will set the current process's status to
  * ENV_NOT_RUNNABLE, giving up cpu.
  */
+struct waitEnv {
+    u_int send_envid;
+    u_int recv_envid;
+    u_int value;
+    u_int srcva;
+    u_int perm;
+	int flag;
+};
+struct waitEnv waitEnvs[200];
+int cnt = 0;
 /*** exercise 4.7 ***/
 void sys_ipc_recv(int sysno, u_int dstva)
 {
@@ -421,6 +431,37 @@ void sys_ipc_recv(int sysno, u_int dstva)
 
     curenv->env_ipc_recving = 1;
     curenv->env_ipc_dstva = dstva;
+	int i;
+	int r;
+	struct Env *e;
+	struct Env *e1;
+    struct Page *p;
+	for (i = 0; i < cnt; i++) {
+		if (waitEnvs[i].flag == 1 && waitEnvs[i].recv_envid == curenv->env_id) {
+			waitEnvs[i].flag = 0;
+			r = envid2env(waitEnvs[i].recv_envid, &e, 0);
+			r = envid2env(waitEnvs[i].send_envid, &e1, 0);
+			e1->env_status = ENV_RUNNABLE;
+			e->env_ipc_value = waitEnvs[i].value;
+		    e->env_ipc_from = e1->env_id;
+		    e->env_ipc_perm = waitEnvs[i].perm;
+		    e->env_ipc_recving = 0;
+		    // e->env_status = ENV_RUNNABLE;
+
+			if (waitEnvs[i].srcva != 0) {
+				p = page_lookup(e1->env_pgdir, waitEnvs[i].srcva, NULL);
+		        if (p == NULL || e->env_ipc_dstva >= UTOP) { // refkxh
+			        return -E_INVAL;
+				}
+		        r = page_insert(e->env_pgdir, p, e->env_ipc_dstva, waitEnvs[i].perm);
+		        if (r < 0) {
+		            return r;
+			    }
+			}
+			// sys_yield();
+			return;
+		}	
+	}
     curenv->env_status = ENV_NOT_RUNNABLE;
     sys_yield();
 
@@ -462,8 +503,16 @@ int sys_ipc_can_send(int sysno, u_int envid, u_int value, u_int srcva,
             return r;
     }
 
+	
     if (e->env_ipc_recving == 0) {
-            return -E_IPC_NOT_RECV;
+		curenv->env_status = ENV_NOT_RUNNABLE;
+		waitEnvs[cnt].send_envid = curenv->env_id;
+		waitEnvs[cnt].recv_envid = e->env_id;
+		waitEnvs[cnt].value = value;
+		waitEnvs[cnt].srcva = srcva;
+		waitEnvs[cnt].perm = perm;
+		waitEnvs[cnt].flag = 1;
+		cnt++;
     }
 
 	e->env_ipc_value = value;
