@@ -80,5 +80,7 @@ sys_call_table:                         // 系统调用函数的入口表 Syscal
     .word sys_ipc_can_send
     .word sys_ipc_recv
     .word sys_cgetc
+	.word sys_my1
+	.word sys_my2
 	/* 每一个整字都将初值设定为对应sys_*函数的地址 */
     /* 在此处增加内核系统调用的入口地址 */

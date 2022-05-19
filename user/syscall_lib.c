@@ -4,6 +4,18 @@
 #include <env.h>
 #include <trap.h>
 
+int lock = 0;
+int onWork = 0;
+int onWorkEnvid = 0;
+
+int syscall_try_acquire_console(void) {
+	return msyscall(((__SYSCALL_BASE ) + (15 ) ), 0, 0, 0, 0, 0);
+}
+
+int syscall_release_console(void) {
+	return msyscall(((__SYSCALL_BASE ) + (16 ) ), 0, 0, 0, 0, 0);
+}
+
 void syscall_putchar(char ch)
 {
 	msyscall(SYS_putchar, (int)ch, 0, 0, 0, 0);

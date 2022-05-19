@@ -14,10 +14,34 @@ extern struct Env *curenv;
  * Pre-Condition:
  * 	`c` is the character you want to print.
  */
+
+int lockEnvid;
+int lock = 0;
+
+u_int sys_my1(void) {
+	printf("try\n");
+	if (lock == 0) {
+		lock = 1;
+		lockEnvid = curenv->env_id;
+		return 0;
+	}
+	return -1;
+}
+
+u_int sys_my2(void) {
+	if (lock == 1 && lockEnvid == curenv->env_id) {
+		lock = 0;
+		return 0;
+	}
+	return -1;
+}
+
 void sys_putchar(int sysno, int c, int a2, int a3, int a4, int a5)
 {
-	printcharc((char) c);
-	return ;
+	if (curenv->env_id == lockEnvid) {
+		printcharc((char) c);
+	}
+	return;
 }
 
 /* Overview:
