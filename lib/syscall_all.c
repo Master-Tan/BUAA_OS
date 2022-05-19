@@ -342,8 +342,8 @@ int sys_set_env_status(int sysno, u_int envid, u_int status)
 
 	// roife
 	if (status == ENV_RUNNABLE && env->env_status != ENV_RUNNABLE) {
-		LIST_INSERT_TAIL(&env_sched_list[0], env, env_sched_link);
-	}
+		LIST_INSERT_HEAD(&env_sched_list[0], env, env_sched_link);
+	} // HEAD!!
 	else if ((status != ENV_RUNNABLE && env->env_status == ENV_RUNNABLE)) {
 		LIST_REMOVE(env, env_sched_link);
 	}
