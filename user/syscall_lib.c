@@ -9,11 +9,11 @@ int onWork = 0;
 int onWorkEnvid = 0;
 
 int syscall_try_acquire_console(void) {
-	return msyscall(((__SYSCALL_BASE ) + (15 ) ), 0, 0, 0, 0, 0);
+	return msyscall(SYS_my1, 0, 0, 0, 0, 0);
 }
 
 int syscall_release_console(void) {
-	return msyscall(((__SYSCALL_BASE ) + (16 ) ), 0, 0, 0, 0, 0);
+	return msyscall(SYS_my2, 0, 0, 0, 0, 0);
 }
 
 void syscall_putchar(char ch)

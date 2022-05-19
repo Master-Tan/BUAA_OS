@@ -19,7 +19,6 @@ int lockEnvid;
 int lock = 0;
 
 u_int sys_my1(void) {
-	printf("try\n");
 	if (lock == 0) {
 		lock = 1;
 		lockEnvid = curenv->env_id;
@@ -38,7 +37,7 @@ u_int sys_my2(void) {
 
 void sys_putchar(int sysno, int c, int a2, int a3, int a4, int a5)
 {
-	if (curenv->env_id == lockEnvid) {
+	if (lock == 1 && lockEnvid == curenv->env_id) {
 		printcharc((char) c);
 	}
 	return;
