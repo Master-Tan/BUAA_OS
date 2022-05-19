@@ -419,7 +419,7 @@ struct waitEnv {
     u_int perm;
 	int flag;
 };
-struct waitEnv waitEnvs[200];
+struct waitEnv waitEnvs[101];
 int cnt = 0;
 /*** exercise 4.7 ***/
 void sys_ipc_recv(int sysno, u_int dstva)
@@ -443,7 +443,7 @@ void sys_ipc_recv(int sysno, u_int dstva)
 			r = envid2env(waitEnvs[i].send_envid, &e1, 0);
 			e1->env_status = ENV_RUNNABLE;
 			e->env_ipc_value = waitEnvs[i].value;
-		    e->env_ipc_from = e1->env_id;
+		    e->env_ipc_from = waitEnvs[i].send_envid;
 		    e->env_ipc_perm = waitEnvs[i].perm;
 		    e->env_ipc_recving = 0;
 		    // e->env_status = ENV_RUNNABLE;
@@ -458,7 +458,7 @@ void sys_ipc_recv(int sysno, u_int dstva)
 		            return r;
 			    }
 			}
-			// sys_yield();
+			sys_yield();
 			return;
 		}	
 	}
@@ -513,6 +513,7 @@ int sys_ipc_can_send(int sysno, u_int envid, u_int value, u_int srcva,
 		waitEnvs[cnt].perm = perm;
 		waitEnvs[cnt].flag = 1;
 		cnt++;
+		sys_yield();
     }
 
 	e->env_ipc_value = value;
