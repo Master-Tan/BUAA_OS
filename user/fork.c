@@ -25,11 +25,11 @@ int make_shared(void *va) {
     //pgdir_entry = pgdir + PDX(va);
     //pgtable = (Pte *)(0x80000000 + (*(pgdir_entry))) + PTX(va);
     // check whether the page table exists
-    if ((((Pde *)(*vpd))[i >> PDSHIFT] & PTE_V) == 0 || (((Pte *)(*vpt))[(int)va >> PGSHIFT]) == 0) {
+    if ((((Pde *)(*vpd))[i >> PDSHIFT] & PTE_V) == 0 || (((Pte *)(*vpt))[(int)va >> PGSHIFT] & PTE_V) == 0) {
     //        if ((ret = page_alloc(&page)) < 0) return ret;
       //      *pgdir_entry = (page2pa(page)) | PTE_V | PTE_R;
         //    page->pp_ref++;
-		if ((ret = syscall_mem_alloc(syscall_getenvid(), va, PTE_V | PTE_R | PTE_LIBRARY)) < 0) {
+		if ((ret = syscall_mem_alloc(0, va, PTE_V | PTE_R)) < 0) {
 			return -1;
 		}
     } else {
