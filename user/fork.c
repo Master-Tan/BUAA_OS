@@ -3,7 +3,59 @@
 #include "lib.h"
 #include <mmu.h>
 #include <env.h>
+#include <pmap.h>
 
+// user/lib.h
+int make_shared(void *va) {
+
+	int envid = syscall_getenvid();
+
+	struct Env *curenv;
+    extern struct Env *envs;
+    extern struct Env *env;
+    u_int i, j;
+    int ret;
+
+    curenv = envs + ENVX(syscall_getenvid());
+
+	Pde *pgdir;
+	pgdir = curenv->env_pgdir;
+
+	Pde *pgdir_entry;
+    Pte *pgtable;
+    struct Page *page;
+
+    pgdir_entry = pgdir + PDX(va);
+    
+    // check whether the page table exists
+    if ((*pgdir_entry & PTE_V) == 0) {
+    //        if ((ret = page_alloc(&page)) < 0) return ret;
+      //      *pgdir_entry = (page2pa(page)) | PTE_V | PTE_R;
+        //    page->pp_ref++;
+		if ((ret = syscall_mem_alloc(syscall_getenvid(), va, PTE_V)) < 0) {
+			return -1;
+		}
+    }
+    //pgtable = (Pte *)(KADDR(PTE_ADDR(*pgdir_entry)));
+    //*ppte = pgtable + PTX(va);
+
+	int perm = ((Pte *)(* vpt))[(PTX(va))] & 0xfff;
+
+	if (va >= UTOP) {
+        return -1;
+    }   
+    if (!(perm & PTE_V) || (perm & PTE_COW)) { // !!!
+        return -1;
+    }
+
+	int addr = (PTX(va)) >> PGSHIFT;
+	if (syscall_mem_map(0, addr, envid, addr, perm | PTE_LIBRARY) < 0) {
+		return -1;
+	}
+	
+	return pgdir_entry;
+
+}
 
 /* ----------------- help functions ---------------- */
 
