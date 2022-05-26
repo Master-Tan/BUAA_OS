@@ -31,7 +31,9 @@ int make_shared(void *va) {
 		if ((ret = syscall_mem_alloc(syscall_getenvid(), va, PTE_V | PTE_R)) < 0) {
 			return -1;
 		}
-    }
+    } else {
+		return -1;
+	}
     //pgtable = (Pte *)(KADDR(PTE_ADDR(*pgdir_entry)));
     //*ppte = pgtable + PTX(va);
 
