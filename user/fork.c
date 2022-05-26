@@ -8,24 +8,24 @@
 // user/lib.h
 int make_shared(void *va) {
 
-	int envid = syscall_getenvid();
+	//int envid = syscall_getenvid();
 
-	struct Env *curenv;
-    extern struct Env *envs;
+	//struct Env *curenv;
+    //extern struct Env *envs;
     u_int i, j;
     int ret;
 
-    curenv = envs + ENVX(syscall_getenvid());
+    //curenv = envs + ENVX(syscall_getenvid());
 
-	Pde *pgdir;
-	pgdir = curenv->env_pgdir;
-	Pde *pgdir_entry;
-	Pte *pgtable;
+	//Pde *pgdir;
+	//pgdir = curenv->env_pgdir;
+	//Pde *pgdir_entry;
+	//Pte *pgtable;
 
-    pgdir_entry = pgdir + PDX(va);
-    pgtable = (Pte *)(0x80000000 + (*(pgdir_entry))) + PTX(va);
+    //pgdir_entry = pgdir + PDX(va);
+    //pgtable = (Pte *)(0x80000000 + (*(pgdir_entry))) + PTX(va);
     // check whether the page table exists
-    if ((((Pde *)(*vpd))[i >> PDSHIFT] & PTE_V) == 0 || (((Pte *)(*vpt))[(int)va >> PGSHIFT])) {
+    if ((((Pde *)(*vpd))[i >> PDSHIFT] & PTE_V) == 0 || (((Pte *)(*vpt))[(int)va >> PGSHIFT]) == 0) {
     //        if ((ret = page_alloc(&page)) < 0) return ret;
       //      *pgdir_entry = (page2pa(page)) | PTE_V | PTE_R;
         //    page->pp_ref++;
@@ -48,7 +48,7 @@ int make_shared(void *va) {
 	//writef("YY\n");
 	//
 	//*pgdir_entry = (*pgdir_entry) | PTE_LIBRARY;
-	if (syscall_mem_map(0, va, envid, va, perm | PTE_LIBRARY) < 0) {
+	if (syscall_mem_map(0, va, syscall_getenvid(), va, perm | PTE_LIBRARY) < 0) {
 		return -1;
 	 }
 	//return 0;
