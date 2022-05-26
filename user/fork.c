@@ -12,7 +12,6 @@ int make_shared(void *va) {
 
 	struct Env *curenv;
     extern struct Env *envs;
-    extern struct Env *env;
     u_int i, j;
     int ret;
 
@@ -20,7 +19,6 @@ int make_shared(void *va) {
 
 	Pde *pgdir;
 	pgdir = curenv->env_pgdir;
-
 	Pde *pgdir_entry;
     Pte *pgtable;
     struct Page *page;
@@ -32,14 +30,16 @@ int make_shared(void *va) {
     //        if ((ret = page_alloc(&page)) < 0) return ret;
       //      *pgdir_entry = (page2pa(page)) | PTE_V | PTE_R;
         //    page->pp_ref++;
-		if ((ret = syscall_mem_alloc(syscall_getenvid(), va, PTE_V)) < 0) {
+		if ((ret = syscall_mem_alloc(syscall_getenvid(), va, PTE_V | PTE_R)) < 0) {
 			return -1;
 		}
     }
     //pgtable = (Pte *)(KADDR(PTE_ADDR(*pgdir_entry)));
     //*ppte = pgtable + PTX(va);
 
-	int perm = ((Pte *)(* vpt))[(PTX(va))] & 0xfff;
+	int perm = (*pgdir_entry) & 0xfff;
+
+	//writef("%b\n",perm);
 
 	if (va >= UTOP) {
         return -1;
@@ -47,11 +47,12 @@ int make_shared(void *va) {
     if (!(perm & PTE_V) || (perm & PTE_COW)) { // !!!
         return -1;
     }
-
-	int addr = (PTX(va)) >> PGSHIFT;
-	if (syscall_mem_map(0, addr, envid, addr, perm | PTE_LIBRARY) < 0) {
+	//writef("YY\n");
+	//
+	//*pgdir_entry = (*pgdir_entry) | PTE_LIBRARY;
+	if (syscall_mem_map(0, va, envid, va, perm | PTE_LIBRARY) < 0) {
 		return -1;
-	}
+	 }
 	
 	return pgdir_entry;
 
