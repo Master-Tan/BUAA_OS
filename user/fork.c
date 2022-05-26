@@ -24,7 +24,7 @@ int make_shared(void *va) {
 		return -1;
 	}
 
-	int perm = ((Pte *)(*vpt))[u_(int)va >> PGSHIFT] & 0xfff;
+	int perm = ((Pte *)(*vpt))[(u_int)va >> PGSHIFT] & 0xfff;
 
 	if (syscall_mem_map(0, va, syscall_getenvid(), va, perm | PTE_LIBRARY) < 0) {
 		return -1;
