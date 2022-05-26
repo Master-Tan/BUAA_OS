@@ -29,7 +29,7 @@ int make_shared(void *va) {
     //        if ((ret = page_alloc(&page)) < 0) return ret;
       //      *pgdir_entry = (page2pa(page)) | PTE_V | PTE_R;
         //    page->pp_ref++;
-		if ((ret = syscall_mem_alloc(syscall_getenvid(), va, PTE_V | PTE_R)) < 0) {
+		if ((ret = syscall_mem_alloc(syscall_getenvid(), va, PTE_V)) < 0) {
 			return -1;
 		}
     } else {
