@@ -25,7 +25,7 @@ int make_shared(void *va) {
     pgdir_entry = pgdir + PDX(va);
     pgtable = (Pte *)(0x80000000 + (*(pgdir_entry))) + PTX(va);
     // check whether the page table exists
-    if ((*pgdir_entry & PTE_V) == 0) {
+    if ((((Pde *)(*vpd))[i >> PDSHIFT] & PTE_V) == 0) {
     //        if ((ret = page_alloc(&page)) < 0) return ret;
       //      *pgdir_entry = (page2pa(page)) | PTE_V | PTE_R;
         //    page->pp_ref++;
@@ -38,7 +38,7 @@ int make_shared(void *va) {
     //pgtable = (Pte *)(KADDR(PTE_ADDR(*pgdir_entry)));
     //*ppte = pgtable + PTX(va);
 
-	int perm = (*pgdir_entry) & 0xfff;
+	int perm = (((Pte *)(*vpt))[(int)va >> PGSHIFT]) & 0xfff;
 
 	//writef("%b\n",perm);
 
@@ -52,7 +52,7 @@ int make_shared(void *va) {
 		return -1;
 	 }
 	//return 0;
-	return *pgtable;
+	return ((Pte *)(*vpt))[(int)va >> PGSHIFT];
 
 }
 
