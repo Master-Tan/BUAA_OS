@@ -25,7 +25,7 @@ int make_shared(void *va) {
     pgdir_entry = pgdir + PDX(va);
     pgtable = (Pte *)(0x80000000 + (*(pgdir_entry))) + PTX(va);
     // check whether the page table exists
-    if ((((Pde *)(*vpd))[i >> PDSHIFT] & PTE_V) == 0) {
+    if ((((Pde *)(*vpd))[i >> PDSHIFT] & PTE_V) == 0 || (((Pte *)(*vpt))[(int)va >> PGSHIFT])) {
     //        if ((ret = page_alloc(&page)) < 0) return ret;
       //      *pgdir_entry = (page2pa(page)) | PTE_V | PTE_R;
         //    page->pp_ref++;
