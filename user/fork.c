@@ -20,8 +20,6 @@ int make_shared(void *va) {
 	Pde *pgdir;
 	pgdir = curenv->env_pgdir;
 	Pde *pgdir_entry;
-    Pte *pgtable;
-    struct Page *page;
 
     pgdir_entry = pgdir + PDX(va);
     
