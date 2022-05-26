@@ -54,7 +54,7 @@ int make_shared(void *va) {
 		return -1;
 	 }
 	
-	return pgdir_entry;
+	return *pgdir_entry;
 
 }
 
