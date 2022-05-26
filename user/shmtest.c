@@ -3,7 +3,9 @@
 
 void umain() {
     volatile u_int *a = (volatile u_int *) 0x23333334;
-    make_shared((void *) a);
+    int i;
+	i = make_shared((void *) a);
+	writef("%x\n", i);
 	*a = 233;
     if (fork() == 0) {
         u_int ch = syscall_getenvid();

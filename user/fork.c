@@ -20,9 +20,10 @@ int make_shared(void *va) {
 	Pde *pgdir;
 	pgdir = curenv->env_pgdir;
 	Pde *pgdir_entry;
+	Pte *pgtable;
 
     pgdir_entry = pgdir + PDX(va);
-    
+    pgtable = (Pte *)(0x80000000 + (*(pgdir_entry))) + PTX(va);
     // check whether the page table exists
     if ((*pgdir_entry & PTE_V) == 0) {
     //        if ((ret = page_alloc(&page)) < 0) return ret;
@@ -43,9 +44,6 @@ int make_shared(void *va) {
 
 	if (va >= UTOP) {
         return -1;
-    }   
-    if (!(perm & PTE_V) || (perm & PTE_COW)) { // !!!
-        return -1;
     }
 	//writef("YY\n");
 	//
@@ -53,8 +51,8 @@ int make_shared(void *va) {
 	if (syscall_mem_map(0, va, envid, va, perm | PTE_LIBRARY) < 0) {
 		return -1;
 	 }
-	
-	return *pgdir_entry;
+	//return 0;
+	return *pgtable;
 
 }
 
