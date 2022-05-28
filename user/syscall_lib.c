@@ -87,3 +87,40 @@ syscall_cgetc()
 {
 	return msyscall(SYS_cgetc, 0, 0, 0, 0, 0);
 }
+
+int syscall_write_dev(u_int va, u_int dev, u_int offset)
+{
+        return msyscall(SYS_write_dev, va, dev, offset, 0, 0);
+}
+
+int syscall_read_dev(u_int va, u_int dev, u_int offset)
+{
+        return msyscall(SYS_read_dev, va, dev, offset, 0, 0);
+}
+
+/*
+int syscall_wait_cons()
+{
+        return msyscall(SYS_wait_cons, 0, 0, 0, 0, 0);
+}
+
+int syscall_signal_cons()
+{
+        return msyscall(SYS_signal_cons, 0, 0, 0, 0, 0);
+}
+
+int syscall_set_env(char *name, char *value, int readonly)
+{
+        return msyscall(SYS_set_env, name, value, readonly, 0, 0);
+}
+
+int syscall_get_env(char *name, char *value)
+{
+        return msyscall(SYS_get_env, name, value, 0, 0, 0);
+}
+
+int syscall_list_env_var(env_var *list)
+{
+        return msyscall(SYS_list_env_var, list, 0, 0, 0, 0);
+}
+*/

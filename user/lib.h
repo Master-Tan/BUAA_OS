@@ -66,6 +66,15 @@ int syscall_ipc_can_send(u_int envid, u_int value, u_int srcva, u_int perm);
 void syscall_ipc_recv(u_int dstva);
 int syscall_cgetc();
 
+int syscall_write_dev(u_int va, u_int dev, u_int offset);
+int syscall_read_dev(u_int va, u_int dev, u_int offset);
+/*
+int syscall_wait_cons();
+int syscall_signal_cons();
+int syscall_set_env(char *name, char *value, int readonly);
+int syscall_get_env(char *name, char *value);
+int syscall_list_env_var(env_var *list);
+*/
 // string.c
 int strlen(const char *s);
 char *strcpy(char *dst, const char *src);
