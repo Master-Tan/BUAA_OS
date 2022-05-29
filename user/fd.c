@@ -209,7 +209,7 @@ read(int fdnum, void *buf, u_int n)
 	if (debug) {
 		writef("read %d %p %d via dev %s\n", fdnum, buf, n, dev->dev_name);
 	}
-	r = (*dev->dev_read)(fd, buf, n, fd->fdoffset);
+	r = (*dev->dev_read)(fd, buf, n, fd->fd_offset);
 	if (r > 0) {
 		fd->fd_offset += r;
 	}
