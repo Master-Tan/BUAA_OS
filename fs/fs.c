@@ -107,6 +107,7 @@ unmap_block(u_int blockno)
 
 	r = syscall_mem_unmap(0, addr);
 	if (r < 0) {
+		writef("unmap_block faild!");
 		return r;
 	}
 
@@ -227,7 +228,7 @@ free_block(u_int blockno)
 
 	// Step 2: Update the flag bit in bitmap.
 	// you can use bit operation to update flags, such as  a |= (1 << n) .
-	bitmap[blockno / 32] |= 1 << (blockno % 32);
+	bitmap[blockno / 32] |= (1 << (blockno % 32));
 
 }
 
@@ -551,7 +552,7 @@ file_dirty(struct File *f, u_int offset)
 int
 dir_lookup(struct File *dir, char *name, struct File **file)
 {
-/*
+
 	int r;
 	u_int i, j, nblock;
 	void *blk;
@@ -559,14 +560,16 @@ dir_lookup(struct File *dir, char *name, struct File **file)
 
 	// Step 1: Calculate nblock: how many blocks are there in this dir？
 
-	nblock = dir->f_size / BY2BLK;
+	// nblock = dir->f_size / BY2BLK;
+
+	nblock = ROUND(dir->f_size, BY2BLK) / BY2BLK;
 
 	for (i = 0; i < nblock; i++) {
 		// Step 2: Read the i'th block of the dir.
 		// Hint: Use file_get_block.
 
 		r = file_get_block(dir, i, &blk);
-		if (r != 0) {
+		if (r < 0) {
 			return r;
 		}
 		f = (struct File *)blk;
@@ -582,7 +585,7 @@ dir_lookup(struct File *dir, char *name, struct File **file)
 		}
 
 	}
-*/
+
 	return -E_NOT_FOUND;
 }
 
