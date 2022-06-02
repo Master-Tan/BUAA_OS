@@ -40,4 +40,5 @@ void fs_test(void);
 int raid4_valid(u_int diskno);
 int raid4_write(u_int blockno, void *src);
 int raid4_read(u_int blockno, void *dst);
-void* get(char *out, void *b1, void *b2, void *b3, void *b4);
+void get(char *out, void *b1, void *b2, void *b3, void *b4);
+int checktld(char *out, void *b1, void *b2, void *b3, void *b4);

@@ -53,14 +53,50 @@ int raid4_read(u_int blockno, void *dst) {
 		}
 	}
 	if (count == 0) {
-		return 0;
+		for (i = 1; i <= 4; i++) {
+			ide_read(i, blockno * 2, dst + (i - 1) * 0x200, 0x1);
+			ide_read(i, blockno * 2 + 1, dst + (i - 1) * 0x200 + 0x800, 0x1);
+		}
+		char *out[0x200];
+		int flag;
+		ide_write(5, blockno * 2, out, 0x1);
+		flag = checktld(out, dst, dst + 0x200, dst + 0x400, dst + 0x600);
+		if (flag == -1) {
+			return -1;
+		}
+		ide_write(5, blockno * 2 + 1, out, 0x1);
+		flag = checktld(out, dst + 0x800, dst + 0x200 + 0x800, dst + 0x400+ 0x800, dst + 0x600 + 0x800);
+		return flag;
 	} else if (count > 1) {
 		return count;
 	} else {
+
 	}
 }
 
-void* get(char *out, void *b1, void *b2, void *b3, void *b4) {
+int checktld(char *out, void *b1, void *b2, void *b3, void *b4) {
+	char *p1;
+    char *p2;
+    char *p3;
+    char *p4;
+    int len = 0x200;
+
+    p1 = b1;
+    p2 = b2;
+    p3 = b3;
+    p4 = b4;
+
+    char *k = &out[0];
+    while (--len >= 0) {
+        if ((*k++) != ((*p1++) ^ (*p2++) ^ (*p3++) ^ (*p4++))) {
+			return -1;
+		}
+    }
+
+    return 0;
+}
+
+void get(char *out, void *b1, void *b2, void *b3, void *b4) {
     
 	user_bzero(out, 0x200);
 
