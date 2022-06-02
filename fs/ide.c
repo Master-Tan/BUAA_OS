@@ -53,11 +53,11 @@ int raid4_read(u_int blockno, void *dst) {
 		}
 	}
 	if (count == 0) {
-
+		return 0;
 	} else if (count > 1) {
 		return count;
 	} else {
-
+		return 0;
 	}
 }
 
