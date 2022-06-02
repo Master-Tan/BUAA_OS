@@ -28,7 +28,7 @@ FSIMGFILES := motd newmotd
 
 CFLAGS += -nostdlib -static
 
-all: serv.x fs.img serv.b
+all: serv.x fs.img serv.b extra.x extra.b
 
 %.x: %.b.c
 	echo cc1 $<
@@ -57,6 +57,11 @@ all: serv.x fs.img serv.b
 %.o: $(user_dir)/lib.h
 
 fs.img: $(FSIMGFILES)
+	dd if=/dev/zero of=../gxemul/fs1.img bs=4096 count=64 2>/dev/null
+	dd if=/dev/zero of=../gxemul/fs2.img bs=4096 count=64 2>/dev/null
+	dd if=/dev/zero of=../gxemul/fs3.img bs=4096 count=64 2>/dev/null
+	dd if=/dev/zero of=../gxemul/fs4.img bs=4096 count=64 2>/dev/null
+	dd if=/dev/zero of=../gxemul/fs5.img bs=4096 count=64 2>/dev/null
 	dd if=/dev/zero of=../gxemul/fs.img bs=4096 count=1024 2>/dev/null
 	gcc $(INCLUDES) fsformat.c -o $(tools_dir)/fsformat -m32
 	chmod +x $(tools_dir)/fsformat
