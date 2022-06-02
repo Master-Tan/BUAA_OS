@@ -560,41 +560,45 @@ env_create(u_char *binary, int size)
 
 void env_free(struct Env *e)
 {
-    Pte *pt;
-    u_int pdeno, pteno, pa;
-
-    /* Hint: Note the environment's demise.*/
-    printf("[%08x] free env %08x\n", curenv ? curenv->env_id : 0, e->env_id);
-
-    /* Hint: Flush all mapped pages in the user portion of the address space */
-    for (pdeno = 0; pdeno < PDX(UTOP); pdeno++) {
-        /* Hint: only look at mapped page tables. */
-        if (!(e->env_pgdir[pdeno] & PTE_V)) {
-            continue;
-        }
-        /* Hint: find the pa and va of the page table. */
-        pa = PTE_ADDR(e->env_pgdir[pdeno]);
-        pt = (Pte *)KADDR(pa);
-        /* Hint: Unmap all PTEs in this page table. */
-        for (pteno = 0; pteno <= PTX(~0); pteno++)
-            if (pt[pteno] & PTE_V) {
-                page_remove(e->env_pgdir, (pdeno << PDSHIFT) | (pteno << PGSHIFT));
-            }
-        /* Hint: free the page table itself. */
-        e->env_pgdir[pdeno] = 0;
-        page_decref(pa2page(pa));
-    }
-    /* Hint: free the page directory. */
-    pa = e->env_cr3;
-    e->env_pgdir = 0;
-    e->env_cr3 = 0;
-    /* Hint: free the ASID */
-    asid_free(e->env_id >> (1 + LOG2NENV));
-    page_decref(pa2page(pa));
-    /* Hint: return the environment to the free list. */
-    e->env_status = ENV_FREE;
-    LIST_INSERT_HEAD(&env_free_list, e, env_link);
-    LIST_REMOVE(e, env_sched_link);
+	Pte *pt;
+u_int pdeno, pteno, pa;
+/* Hint: Note the environment's demise.*/
+printf("[%08x] free env %08x\n", curenv ? curenv->env_id : 0, e->env_id);
+/* Hint: Flush all mapped pages in the user portion of the address
+space */
+for (pdeno = 0; pdeno < PDX(UTOP); pdeno++) {
+/* Hint: only look at mapped page tables. */
+if (!(e->env_pgdir[pdeno] & PTE_V)) {
+continue;
+}
+/* Hint: find the pa and va of the page table. */
+pa = PTE_ADDR(e->env_pgdir[pdeno]);
+pt = (Pte *)KADDR(pa);
+/* Hint: Unmap all PTEs in this page table. */
+for (pteno = 0; pteno <= PTX(~0); pteno++)
+if (pt[pteno] & PTE_V) {
+page_remove(e->env_pgdir, (pdeno << PDSHIFT) | (pteno <<
+PGSHIFT));
+}
+/* Hint: free the page table itself. */
+e->env_pgdir[pdeno] = 0;
+page_decref(pa2page(pa));
+/* Hint: invalidate page table in TLB */
+tlb_invalidate(e->env_pgdir, UVPT + (pdeno << PGSHIFT));
+}
+/* Hint: free the page directory. */
+pa = e->env_cr3;
+e->env_pgdir = 0;
+e->env_cr3 = 0;
+/* Hint: free the ASID */
+asid_free(e->env_id >> (1 + LOG2NENV));
+page_decref(pa2page(pa));
+/* Hint: invalidate page directory in TLB. */
+tlb_invalidate(e->env_pgdir, UVPT + (UVPT >> 10));
+/* Hint: return the environment to the free list. */
+e->env_status = ENV_FREE;
+LIST_INSERT_HEAD(&env_free_list, e, env_link);
+LIST_REMOVE(e, env_sched_link);
 }
 
 /* Overview:
