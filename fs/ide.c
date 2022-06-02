@@ -23,11 +23,25 @@ int time_read() {
 }
 
 void raid0_write(u_int secno, void *src, u_int nsecs) {
-
+	int i;
+	for (i = 0; i < nsecs; i++) {
+		if ((i + secno) % 2 == 0) {
+			ide_write(0x1, (secno + i) / 2, src + (i * 0x200), 0x1);
+		} else {
+			ide_write(0x2, (secno + i) / 2, src + (i * 0x200), 0x1);
+		}
+	}
 }
 
 void raid0_read(u_int secno, void *dst, u_int nsecs) {
-
+	int i;
+    for (i = 0; i < nsecs; i++) {
+        if ((i + secno) % 2 == 0) {
+            ide_read(0x1, (secno + i) / 2, dst + (i * 0x200), 0x1);
+		} else {
+	        ide_read(0x2, (secno + i) / 2, dst + (i * 0x200), 0x1);
+        }
+	}
 }
 
 // Overview:
