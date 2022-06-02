@@ -6,6 +6,27 @@
 #include "lib.h"
 #include <mmu.h>
 
+int time_read() {
+
+	u_int zero = 0;
+
+	if (syscall_write_dev((u_int)&zero, 0x15000000, 4) < 0) {
+		user_panic("time_read panic");
+    }
+
+	u_int time;
+	if (syscall_read_dev((u_int)&time, 0x15000010 ,40) < 0) {
+        user_panic("time_read panic");
+	}
+
+	return time;
+}
+
+void raid0_write(u_int secno, void *src, u_int nsecs) {
+
+}
+
+
 // Overview:
 // 	read data from IDE disk. First issue a read request through
 // 	disk register and then copy data from disk buffer
