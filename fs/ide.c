@@ -116,7 +116,6 @@ void get(char *out, void *b1, void *b2, void *b3, void *b4) {
 		(*k++) = (*p1++) ^ (*p2++) ^ (*p3++) ^ (*p4++);
 	}
 
-    return out;
 }
 // Overview:
 // 	read data from IDE disk. First issue a read request through
