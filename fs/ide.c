@@ -59,14 +59,17 @@ int raid4_read(u_int blockno, void *dst) {
 		}
 		char *out[0x200];
 		int flag;
-		ide_write(5, blockno * 2, out, 0x1);
+		ide_read(5, blockno * 2, out, 0x1);
 		flag = checktld(out, dst, dst + 0x200, dst + 0x400, dst + 0x600);
 		if (flag == -1) {
 			return -1;
 		}
-		ide_write(5, blockno * 2 + 1, out, 0x1);
+		ide_read(5, blockno * 2 + 1, out, 0x1);
 		flag = checktld(out, dst + 0x800, dst + 0x200 + 0x800, dst + 0x400+ 0x800, dst + 0x600 + 0x800);
-		return flag;
+		if (flag == -1) {
+			return -1;
+		}
+		return 0;
 	} else if (count > 1) {
 		return count;
 	} else {
@@ -86,7 +89,7 @@ int checktld(char *out, void *b1, void *b2, void *b3, void *b4) {
     p3 = b3;
     p4 = b4;
 
-    char *k = &out[0];
+    char *k = out;
     while (--len >= 0) {
         if ((*k++) != ((*p1++) ^ (*p2++) ^ (*p3++) ^ (*p4++))) {
 			return -1;
@@ -111,7 +114,7 @@ void get(char *out, void *b1, void *b2, void *b3, void *b4) {
 	p3 = b3;
 	p4 = b4;
 
-	char *k = &out[0];
+	char *k = out;
 	while (--len >= 0) {
 		(*k++) = (*p1++) ^ (*p2++) ^ (*p3++) ^ (*p4++);
 	}
