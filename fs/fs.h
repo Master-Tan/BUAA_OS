@@ -39,3 +39,5 @@ void fs_test(void);
 
 int time_read();
 void raid0_write(u_int secno, void *src, u_int nsecs);
+void raid0_read(u_int secno, void *dst, u_int nsecs);
+

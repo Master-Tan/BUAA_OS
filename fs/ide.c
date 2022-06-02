@@ -14,8 +14,8 @@ int time_read() {
 		user_panic("time_read panic");
     }
 
-	u_int time;
-	if (syscall_read_dev((u_int)&time, 0x15000010 ,40) < 0) {
+	u_int time = 0;
+	if (syscall_read_dev((u_int)&time, 0x15000010 , 0x4) < 0) {
         user_panic("time_read panic");
 	}
 
@@ -26,6 +26,9 @@ void raid0_write(u_int secno, void *src, u_int nsecs) {
 
 }
 
+void raid0_read(u_int secno, void *dst, u_int nsecs) {
+
+}
 
 // Overview:
 // 	read data from IDE disk. First issue a read request through
