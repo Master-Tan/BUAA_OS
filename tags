@@ -248,6 +248,7 @@ FILEVA	fs/serv.c	20;"	d	file:
 FSIMGFILES	fs/Makefile	/^FSIMGFILES := motd newmotd$/;"	m
 FSLIB	fs/Makefile	/^FSLIB :=	fs.o \\$/;"	m
 FSREQ_CLOSE	include/fs.h	61;"	d
+FSREQ_CREATE	include/fs.h	65;"	d
 FSREQ_DIRTY	include/fs.h	62;"	d
 FSREQ_MAP	include/fs.h	59;"	d
 FSREQ_OPEN	include/fs.h	58;"	d
@@ -262,6 +263,7 @@ File	fs/fsformat.c	/^typedef struct File File;$/;"	t	typeref:struct:File	file:
 File	include/fs.h	/^struct File {$/;"	s
 Filefd	user/fd.h	/^struct Filefd {$/;"	s
 Fsreq_close	include/fs.h	/^struct Fsreq_close {$/;"	s
+Fsreq_create	include/fs.h	/^struct Fsreq_create {$/;"	s
 Fsreq_dirty	include/fs.h	/^struct Fsreq_dirty {$/;"	s
 Fsreq_map	include/fs.h	/^struct Fsreq_map {$/;"	s
 Fsreq_open	include/fs.h	/^struct Fsreq_open {$/;"	s
@@ -330,6 +332,8 @@ NoCOW	lib/genex.S	/^NoCOW:$/;"	l
 OUTPUT	lib/print.c	36;"	d	file:
 OUTPUT	user/print.c	36;"	d	file:
 O_ACCMODE	user/lib.h	144;"	d
+O_ALONE	user/lib.h	151;"	d
+O_APPEND	user/lib.h	150;"	d
 O_CREAT	user/lib.h	146;"	d
 O_EXCL	user/lib.h	148;"	d
 O_MKDIR	user/lib.h	149;"	d
@@ -573,6 +577,9 @@ boot_pgdir	mm/pmap.c	/^Pde *boot_pgdir;$/;"	v
 boot_pgdir_walk	mm/pmap.c	/^static Pte *boot_pgdir_walk(Pde *pgdir, u_long va, int create)$/;"	f	file:
 boutcode	init/code.c	/^char boutcode[]={0x7f,0x45,0x4c,0x46,0x1,0x2,0x1,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x2,0x0,0x8,0x0,0x0,0x0,0x1,0x0,0x40,0x0,0xb0,0x0,0x0,0x0,0x34,0x0,0x0,0xf,0xb0,0x50,0x0,0x10,0x1,0x0,$/;"	v
 bzero	init/init.c	/^void bzero(void *b, size_t len) {$/;"	f
+check	fs/extra.c	/^int check[2][128] = {$/;"	v
+check_raid4_read	fs/extra.c	/^void check_raid4_read(int blockno) {$/;"	f
+check_raid4_write	fs/extra.c	/^void check_raid4_write(int blockno) {$/;"	f
 check_write_block	fs/fs.c	/^check_write_block(void)$/;"	f
 close	user/fd.c	/^close(int fdnum)$/;"	f
 close_all	user/fd.c	/^close_all(void)$/;"	f
@@ -582,6 +589,7 @@ cp0_epc	include/trap.h	/^	unsigned long cp0_epc;$/;"	m	struct:Trapframe
 cp0_status	include/trap.h	/^	unsigned long cp0_status;$/;"	m	struct:Trapframe
 create_file	fs/fsformat.c	/^struct File *create_file(struct File *dirf) {$/;"	f
 curenv	lib/env.c	/^struct Env *curenv = NULL;            \/\/ the current env$/;"	v	typeref:struct:Env
+data	fs/extra.c	/^int data[8][128];	$/;"	v
 data	fs/fsformat.c	/^    uint8_t data[BY2BLK];$/;"	m	struct:Block	file:
 debug	user/fd.h	7;"	d
 debug	user/file.c	4;"	d	file:
@@ -674,6 +682,11 @@ envs	user/entry.S	/^envs:$/;"	l
 exception_handlers	lib/traps.c	/^unsigned long exception_handlers[32];$/;"	v
 exit	user/libos.c	/^exit(void)$/;"	f
 extmem	mm/pmap.c	/^u_long extmem;           \/* Amount of extended memory(in bytes) *\/$/;"	v
+f	fs/Makefile	/^	dd if=\/dev\/zero of=..\/gxemul\/fs.img bs=4096 count=1024 2>\/dev\/null$/;"	m
+f	fs/Makefile	/^	dd if=\/dev\/zero of=..\/gxemul\/fs2.img bs=4096 count=64 2>\/dev\/null$/;"	m
+f	fs/Makefile	/^	dd if=\/dev\/zero of=..\/gxemul\/fs3.img bs=4096 count=64 2>\/dev\/null$/;"	m
+f	fs/Makefile	/^	dd if=\/dev\/zero of=..\/gxemul\/fs4.img bs=4096 count=64 2>\/dev\/null$/;"	m
+f	fs/Makefile	/^	dd if=\/dev\/zero of=..\/gxemul\/fs5.img bs=4096 count=64 2>\/dev\/null$/;"	m
 f_dir	include/fs.h	/^	struct File *f_dir;		\/\/ the pointer to the dir where this file is in, valid only in memory.$/;"	m	struct:File	typeref:struct:File::File
 f_direct	include/fs.h	/^	u_int f_direct[NDIRECT];$/;"	m	struct:File
 f_fd	user/fd.h	/^	struct Fd f_fd;$/;"	m	struct:Filefd	typeref:struct:Filefd::Fd
@@ -723,6 +736,7 @@ fs_test	fs/test.c	/^fs_test(void)$/;"	f
 fsformat	fs/Makefile	/^fsformat  := .\/fsformat$/;"	m
 fsipc	user/fsipc.c	/^fsipc(u_int type, void *fsreq, u_int dstva, u_int *perm)$/;"	f	file:
 fsipc_close	user/fsipc.c	/^fsipc_close(u_int fileid)$/;"	f
+fsipc_create	user/fsipc.c	/^int fsipc_create(const char *path, int type)$/;"	f
 fsipc_dirty	user/fsipc.c	/^fsipc_dirty(u_int fileid, u_int offset)$/;"	f
 fsipc_map	user/fsipc.c	/^fsipc_map(u_int fileid, u_int offset, u_int dstva)$/;"	f
 fsipc_open	user/fsipc.c	/^fsipc_open(const char *path, u_int omode, struct Fd *fd)$/;"	f
@@ -739,6 +753,7 @@ halt	drivers/gxconsole/console.c	/^void halt(void)$/;"	f
 hi	include/trap.h	/^	unsigned long hi;$/;"	m	struct:Trapframe
 ide_read	fs/ide.c	/^ide_read(u_int diskno, u_int secno, void *dst, u_int nsecs)$/;"	f
 ide_write	fs/ide.c	/^ide_write(u_int diskno, u_int secno, void *src, u_int nsecs)$/;"	f
+init_data	fs/extra.c	/^void init_data() {$/;"	f
 init_dir	Makefile	/^init_dir	  := init$/;"	m
 init_disk	fs/fsformat.c	/^void init_disk() {$/;"	f
 int16_t	include/types.h	/^typedef short                     int16_t;$/;"	t
@@ -863,6 +878,7 @@ pgfault	user/fork.c	/^pgfault(u_int va)$/;"	f	file:
 physical_memory_manage_check	mm/pmap.c	/^void physical_memory_manage_check(void)$/;"	f
 pp_link	include/pmap.h	/^	Page_LIST_entry_t pp_link;	\/* free list link *\/$/;"	m	struct:Page
 pp_ref	include/pmap.h	/^	u_short pp_ref;$/;"	m	struct:Page
+print_data	fs/extra.c	/^void print_data(int data[], const char* prefix, int size) {$/;"	f
 printcharc	drivers/gxconsole/console.c	/^void printcharc(char ch)$/;"	f
 printf	lib/printf.c	/^void printf(char *fmt, ...)$/;"	f
 printstr	drivers/gxconsole/console.c	/^void printstr(char *s)$/;"	f
@@ -875,6 +891,7 @@ ra	include/asm/regdef.h	48;"	d
 read	user/fd.c	/^read(int fdnum, void *buf, u_int n)$/;"	f
 read_bitmap	fs/fs.c	/^read_bitmap(void)$/;"	f
 read_block	fs/fs.c	/^read_block(u_int blockno, void **blk, u_int *isnew)$/;"	f
+read_data	fs/extra.c	/^int read_data[8][128];$/;"	v
 read_map	user/file.c	/^read_map(int fdnum, u_int offset, void **blk)$/;"	f
 read_super	fs/fs.c	/^read_super(void)$/;"	f
 readelf	readelf/readelf.c	/^int readelf(u_char *binary, int size)$/;"	f
@@ -892,6 +909,7 @@ req_offset	include/fs.h	/^	u_int req_offset;$/;"	m	struct:Fsreq_map
 req_omode	include/fs.h	/^	u_int req_omode;$/;"	m	struct:Fsreq_open
 req_path	include/fs.h	/^	char req_path[MAXPATHLEN];$/;"	m	struct:Fsreq_open
 req_path	include/fs.h	/^	u_char req_path[MAXPATHLEN];$/;"	m	struct:Fsreq_remove
+req_path	include/fs.h	/^    char req_path[MAXPATHLEN];$/;"	m	struct:Fsreq_create
 req_size	include/fs.h	/^	u_int req_size;$/;"	m	struct:Fsreq_set_size
 reverse	fs/fsformat.c	/^void reverse(uint32_t *p) {$/;"	f
 reverse_block	fs/fsformat.c	/^void reverse_block(struct Block *b) {$/;"	f
@@ -1036,6 +1054,7 @@ tools_dir	Makefile	/^tools_dir	  := tools$/;"	m
 tools_dir	fs/Makefile	/^tools_dir := .$/;"	m
 trap_init	lib/traps.c	/^void trap_init()$/;"	f
 type	fs/fsformat.c	/^    uint32_t type;$/;"	m	struct:Block	file:
+type	include/fs.h	/^    int type;$/;"	m	struct:Fsreq_create
 u_char	include/types.h	/^typedef	unsigned char	u_char;$/;"	t
 u_char	readelf/types.h	/^typedef	unsigned char	u_char;$/;"	t
 u_int	include/types.h	/^typedef	unsigned int	u_int;$/;"	t
@@ -1060,6 +1079,7 @@ uint32_t	include/kerelf.h	/^typedef u_int32_t		uint32_t;$/;"	t
 uint32_t	readelf/kerelf.h	/^typedef u_int32_t               uint32_t;$/;"	t
 uint64_t	include/kerelf.h	/^typedef u_int64_t		uint64_t;$/;"	t
 uint64_t	readelf/kerelf.h	/^typedef u_int64_t               uint64_t;$/;"	t
+umain	fs/extra.c	/^void umain(){$/;"	f
 umain	fs/serv.c	/^umain(void)$/;"	f
 umain	user/devtst.c	/^void umain()$/;"	f
 umain	user/fktest.c	/^void umain()$/;"	f
