@@ -79,11 +79,9 @@ open(const char *path, int mode)
 	}
 	int fdnum;
 	fdnum = fd2num(fd);
-	/*
-	if (mode & O_APPND) {
+	if (mode & O_APPEND) {
 		seek(fdnum, size);	
 	}
-	*/
 	return fdnum;
 
 }
