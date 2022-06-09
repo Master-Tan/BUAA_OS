@@ -52,7 +52,7 @@ open(const char *path, int mode)
 	r = fsipc_open(path, mode, fd);
 	if (r != 0) {
 		if (mode & O_CREAT) {
-			r = file_create(path, file);
+			r = fsipc_create(path, file);
 			if (r != 0) {
 				return r;
 			}
