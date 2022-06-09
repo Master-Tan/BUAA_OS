@@ -134,6 +134,8 @@ int	remove(const char *path);
 int	ftruncate(int fd, u_int size);
 int	sync(void);
 
+int list_dir(const char* path, char* ans);
+
 #define user_assert(x)	\
 	do {	if (!(x)) user_panic("assertion failed: %s", #x); } while (0)
 
