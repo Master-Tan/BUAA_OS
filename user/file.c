@@ -48,10 +48,19 @@ open(const char *path, int mode)
 
 	// Step 2: Get the file descriptor of the file to open.
 	// Hint: Read fsipc.c, and choose a function.
-
+	struct File **file;
 	r = fsipc_open(path, mode, fd);
 	if (r != 0) {
-		return r;
+		if (mode & O_CREAT) {
+			r = file_create(path, file);
+			if (r != 0) {
+				return r;
+			}
+			r = fsipc_open(path, mode, fd);
+			if (r != 0) {
+				return r;
+			}
+		}
 	}
 
 	// Step 3: Set the start address storing the file's content. Set size and fileid correctly.
