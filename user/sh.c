@@ -129,8 +129,26 @@ again:
 			//		set "rightpipe" to the child envid
 			//		goto runit, to execute this piece of the pipeline
 			//			and then wait for the right side to finish
-			user_panic("| not implemented");
-			break;
+			
+			pipe(p);
+            if ((rightpipe = fork()) == 0)
+            {
+				dup(p[0], 0);
+                close(p[0]);
+                close(p[1]);
+                goto again;
+			}
+			else
+            {
+				dup(p[1], 1);
+                close(p[1]);
+				close(p[0]);
+				goto runit;
+			}
+            break;
+
+			// user_panic("| not implemented");
+			// break;
 		}
 	}
 
