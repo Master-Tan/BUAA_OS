@@ -118,6 +118,7 @@ int spawn(char *prog, char **argv)
 	Elf32_Phdr* ph;
 	// Note 0: some variable may be not used,you can cancel them as you like
 	// Step 1: Open the file specified by `prog` (prog is the path of the program)
+int count;
 
 	if((r=open(prog, O_RDONLY))<0){
 		user_panic("spawn ::open line 102 RDONLY wrong !\n");
@@ -129,12 +130,13 @@ int spawn(char *prog, char **argv)
             return r;
 
     elf = (Elf32_Ehdr *)elfbuf;
-
 	// Before Step 2 , You had better check the "target" spawned is a execute bin 
 	
 	if (!usr_is_elf_format(elf) || elf->e_type != 2)
                 return -E_INVAL;
-
+	size = elf->e_phentsize;
+    text_start = elf->e_phoff;
+	count = elf->e_phnum;
 	// Step 2: Allocate an env (Hint: using syscall_env_alloc())
 
 	 r = syscall_env_alloc();
@@ -161,7 +163,41 @@ int spawn(char *prog, char **argv)
 	//       the file is opened successfully, and env is allocated successfully.
 	// Note2: You can achieve this func in any way ，remember to ensure the correctness
 	//        Maybe you can review lab3 
-	
+
+		for (i = 0; i < count; i++)
+        {
+                r = seek(fd, text_start);
+                if (r < 0)
+                {
+                        user_panic("seek failed!");
+                }
+                r = readn(fd, elfbuf, size);
+                if (r < 0)
+                {
+                        user_panic("readn failed!");
+                }
+                ph = (Elf32_Phdr *)elfbuf;
+                if (ph->p_type == PT_LOAD)
+                {
+                        r = usr_load_elf(fd, ph, child_envid);
+                        if (r < 0)
+                        {
+                                user_panic("load faild %d!", r);
+                        }
+                }
+                //writef("out load!\n");
+                text_start += size;
+        }
+
+
+		// to replace mul
+        int res = 0;
+        for (i = 0 ; i < count; i++)
+        {
+                res += size;
+        }
+
+/*	
 	text_start = elf->e_phoff;
     size = elf->e_phentsize;
     for (i = 0; i < elf->e_phnum; ++i)
@@ -180,7 +216,7 @@ int spawn(char *prog, char **argv)
        	}
 		text_start += size;
     }
-
+*/
 	// Your code ends here
 
 	struct Trapframe *tf;
