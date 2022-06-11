@@ -146,6 +146,8 @@ again:
 				goto runit;
 			}
             break;
+		default:
+			break;
 
 			// user_panic("| not implemented");
 			// break;
