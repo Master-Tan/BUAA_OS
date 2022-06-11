@@ -118,18 +118,9 @@ int spawn(char *prog, char **argv)
 	Elf32_Phdr* ph;
 	// Note 0: some variable may be not used,you can cancel them as you like
 	// Step 1: Open the file specified by `prog` (prog is the path of the program)
-	char progname[32];
-    int name_len = strlen(prog);
-    strcpy(progname, prog);
-    if (name_len <= 2 || prog[name_len - 1] != 'b' || prog[name_len - 2] != '.')
-    {
-            strcat(progname, ".b");
-    }
 
 	if((r=open(prog, O_RDONLY))<0){
-		//user_panic("spawn ::open line 102 RDONLY wrong !\n");
-		progname[strlen(progname) - 2] = 0;
-		writef("command [%s] is not found.\n", progname);
+		user_panic("spawn ::open line 102 RDONLY wrong !\n");
 		return r;
 	}
 	// Your code begins here
