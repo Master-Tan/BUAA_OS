@@ -82,6 +82,7 @@ void user_bzero(void *v, u_int n)
 static void
 pgfault(u_int va)
 {
+/*
 		u_int *tmp = USTACKTOP;
         //      writef("fork.c:pgfault():\t va:%x\n",va);
         u_long perm = ((Pte *)(*vpt))[VPN(va)] & 0xfff;
@@ -98,8 +99,8 @@ pgfault(u_int va)
         syscall_mem_map(0, tmp, 0, va, perm);
         //unmap the temporary place
         syscall_mem_unmap(0, tmp);
+*/
 
-/*
 	u_int *tmp;
 	int ret;
 	//	writef("fork.c:pgfault():\t va:%x\n",va);
@@ -131,7 +132,7 @@ pgfault(u_int va)
 	}
 	
 	return;
-*/
+
 }
 
 /* Overview:
@@ -160,7 +161,7 @@ duppage(u_int envid, u_int pn)
 	addr = pn << PGSHIFT;
 	perm = ((Pte *)(* vpt))[pn] & 0xfff;
 	//	user_panic("duppage not implemented");
-
+/*
 		int flag = 0;
         if ((perm & PTE_R) && !(perm & PTE_LIBRARY))
         {
@@ -170,8 +171,8 @@ duppage(u_int envid, u_int pn)
         syscall_mem_map(0, addr, envid, addr, perm);
         if (flag)
                 syscall_mem_map(0, addr, 0, addr, perm);
+*/
 
-/*
 	if ((perm & PTE_R) == 0) {
 		if (syscall_mem_map(0, addr, envid, addr, perm) < 0) {
 			user_panic("user panic mem map error_1!");
@@ -195,7 +196,7 @@ duppage(u_int envid, u_int pn)
 			user_panic("user panic mem map error_5!");
 		}
 	}
-*/
+
 }
 
 /* Overview:
