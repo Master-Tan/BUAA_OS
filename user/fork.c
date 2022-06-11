@@ -141,7 +141,18 @@ duppage(u_int envid, u_int pn)
 	addr = pn << PGSHIFT;
 	perm = ((Pte *)(* vpt))[pn] & 0xfff;
 	//	user_panic("duppage not implemented");
-	
+
+		int flag = 0;
+        if ((perm & PTE_R) && !(perm & PTE_LIBRARY))
+        {
+                perm |= PTE_COW;
+                flag = 1;
+        }
+        syscall_mem_map(0, addr, envid, addr, perm);
+        if (flag)
+                syscall_mem_map(0, addr, 0, addr, perm);
+
+/*
 	if ((perm & PTE_R) == 0) {
 		if (syscall_mem_map(0, addr, envid, addr, perm) < 0) {
 			user_panic("user panic mem map error_1!");
@@ -165,6 +176,7 @@ duppage(u_int envid, u_int pn)
 			user_panic("user panic mem map error_5!");
 		}
 	}
+*/
 }
 
 /* Overview:
