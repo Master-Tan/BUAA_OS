@@ -83,8 +83,6 @@ runcmd(char *s)
 	char *argv[MAXARGS], *t;
 	int argc, c, i, r, p[2], fd, rightpipe;
 	int fdnum;
-	int pid;
-    struct Stat state;
 	rightpipe = 0;
 	gettoken(s, 0);
 again:
@@ -108,11 +106,6 @@ again:
 			}
 			// Your code here -- open t for reading,
 			// dup it onto fd 0, and then close the fd you got.
-			r = stat(t, &state);
-            if (r < 0) {
-				writef("cannot open file\n");
-				exit();
-            }
             fdnum = open(t, O_RDONLY);
             dup(fdnum, 0);
             close(fdnum);
@@ -128,7 +121,6 @@ again:
 
 			// Your code here -- open t for writing,
 			// dup it onto fd 1, and then close the fd you got.
-			r = stat(t, &state);
             fdnum = open(t, O_WRONLY | O_CREAT);
             dup(fdnum, 1);
             close(fdnum);
