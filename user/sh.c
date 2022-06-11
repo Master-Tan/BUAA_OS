@@ -102,38 +102,36 @@ again:
 			argv[argc++] = t;
 			break;
 		case '<':
-			if(gettoken(0, &t) != 'w'){
+			if(gettoken(0, &t) != 'w') {
 				writef("syntax error: < not followed by word\n");
 				exit();
 			}
 			// Your code here -- open t for reading,
 			// dup it onto fd 0, and then close the fd you got.
 			r = stat(t, &state);
-                        if (r < 0)
-                        {
-                                writef("cannot open file\n");
-                                exit();
-                        }
-                        fdnum = open(t, O_RDONLY);
-                        dup(fdnum, 0);
-                        close(fdnum);
+            if (r < 0) {
+				writef("cannot open file\n");
+				exit();
+            }
+            fdnum = open(t, O_RDONLY);
+            dup(fdnum, 0);
+            close(fdnum);
 
 			//user_panic("< redirection not implemented");
 			break;
 		case '>':
-			if (gettoken(0, &t) != 'w')
-                        {
-                                writef("syntax error: > not followed by word\n");
-                                exit();
-                        }
+			if (gettoken(0, &t) != 'w') {
+                writef("syntax error: > not followed by word\n");
+                exit();
+            }
 
 
 			// Your code here -- open t for writing,
 			// dup it onto fd 1, and then close the fd you got.
 			r = stat(t, &state);
-                        fdnum = open(t, O_WRONLY | O_CREAT);
-                        dup(fdnum, 1);
-                        close(fdnum);
+            fdnum = open(t, O_WRONLY | O_CREAT);
+            dup(fdnum, 1);
+            close(fdnum);
 
 
 			//user_panic("> redirection not implemented");
@@ -156,15 +154,12 @@ again:
 			//			and then wait for the right side to finish
 			
 			pipe(p);
-            if ((rightpipe = fork()) == 0)
-            {
+            if ((rightpipe = fork()) == 0) {
 				dup(p[0], 0);
                 close(p[0]);
                 close(p[1]);
                 goto again;
-			}
-			else
-            {
+			} else {
 				dup(p[1], 1);
                 close(p[1]);
 				close(p[0]);
