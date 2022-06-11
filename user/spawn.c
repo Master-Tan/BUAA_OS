@@ -102,43 +102,33 @@ int
 usr_load_elf(int fd , Elf32_Phdr *ph, int child_envid){
 	//Hint: maybe this function is useful 
 	//      If you want to use this func, you should fill it ,it's not hard
-	 u_long va = ph->p_vaddr;
-        u_int32_t sgsize = ph->p_memsz;
-        u_int32_t bin_size = ph->p_filesz;
-        u_char *bin;
-        u_long i;
-        int r;
-        u_long offset = va - ROUNDDOWN(va, BY2PG);
-        r = read_map(fd, ph->p_offset, &bin);
-        if (r < 0)
-                return r;
-        if (offset != 0)
-        {
-                if ((r = syscall_mem_alloc(child_envid, va, PTE_V | PTE_R)) < 0)
-                        return r;
-                if ((r = syscall_mem_map(child_envid, va, 0, USTACKTOP, PTE_V | PTE_R)) < 0)
-                        return r;
-                user_bcopy(bin, USTACKTOP + offset, MIN(BY2PG - offset, bin_size));
-                if ((r = syscall_mem_unmap(0, USTACKTOP)) < 0)
-                        return r;
-        }
+	u_long va = ph->p_vaddr;
+    u_int32_t sgsize = ph->p_memsz;
+    u_int32_t bin_size = ph->p_filesz;
+    u_char *bin;
+    u_long i;
+    int r;
+    u_long offset = va - ROUNDDOWN(va, BY2PG);
+    r = read_map(fd, ph->p_offset, &bin);
+    if (r < 0)
+        return r;
+    if (offset != 0) {
+        if ((r = syscall_mem_alloc(child_envid, va, PTE_V | PTE_R)) < 0) return r;
+        if ((r = syscall_mem_map(child_envid, va, 0, USTACKTOP, PTE_V | PTE_R)) < 0) return r;
+        user_bcopy(bin, USTACKTOP + offset, MIN(BY2PG - offset, bin_size));
+        if ((r = syscall_mem_unmap(0, USTACKTOP)) < 0) return r;
+    }
 		
-	for (i = offset ? MIN(BY2PG - offset, bin_size) : 0; i < bin_size; i += BY2PG)
-        {
-                if ((r = syscall_mem_alloc(child_envid, va + i, PTE_V | PTE_R)) < 0)
-                        return r;
-                if ((r = syscall_mem_map(child_envid, va + i, 0, USTACKTOP, PTE_V | PTE_R)) < 0)
-                        return r;
-                user_bcopy(bin + i, USTACKTOP, MIN(BY2PG, bin_size - i));
-                if ((r = syscall_mem_unmap(0, USTACKTOP)) < 0)
-                        return r;
-        }
-        while (i < sgsize)
-        {
-                if ((r = syscall_mem_alloc(child_envid, va + i, PTE_V | PTE_R)) < 0)
-                        return r;
-                i += BY2PG;
-        }
+	for (i = offset ? MIN(BY2PG - offset, bin_size) : 0; i < bin_size; i += BY2PG) {
+		if ((r = syscall_mem_alloc(child_envid, va + i, PTE_V | PTE_R)) < 0) return r;
+        if ((r = syscall_mem_map(child_envid, va + i, 0, USTACKTOP, PTE_V | PTE_R)) < 0) return r;
+        user_bcopy(bin + i, USTACKTOP, MIN(BY2PG, bin_size - i));
+        if ((r = syscall_mem_unmap(0, USTACKTOP)) < 0) return r;
+    }
+    while (i < sgsize) {
+        if ((r = syscall_mem_alloc(child_envid, va + i, PTE_V | PTE_R)) < 0) return r;
+        i += BY2PG;
+    }
 	
 	return 0;
 }
@@ -179,16 +169,14 @@ int count;
 */
 	// Step 2: Allocate an env (Hint: using syscall_env_alloc())
 
-	 r = syscall_env_alloc();
-        if (r < 0)
-                return r;
-        if (r == 0)
-        {
-                env = envs + ENVX(syscall_getenvid());
-                return 0;
-        }
-        child_envid = r;
-
+	r = syscall_env_alloc();
+    if (r < 0)
+		return r;
+    if (r == 0) {
+        env = envs + ENVX(syscall_getenvid());
+        return 0;
+    }
+    child_envid = r;
 
 	// Step 3: Using init_stack(...) to initialize the stack of the allocated env
 

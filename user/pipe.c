@@ -88,13 +88,12 @@ _pipeisclosed(struct Fd *fd, struct Pipe *p)
 	
     do
 	{
-            runs = env->env_runs;
-            pfd = pageref(fd);
-            pfp = pageref(p);
+        runs = env->env_runs;
+        pfd = pageref(fd);
+        pfp = pageref(p);
     } while (runs != env->env_runs);
 
-    if (pfd == pfp)
-            return 1;
+    if (pfd == pfp) return 1;
 
     //      user_panic("_pipeisclosed not implemented");
 	return 0;
@@ -189,8 +188,6 @@ static int
 pipestat(struct Fd *fd, struct Stat *stat)
 {
 	struct Pipe *p;
-
-	
 
 }
 
