@@ -118,14 +118,49 @@ int spawn(char *prog, char **argv)
 	Elf32_Phdr* ph;
 	// Note 0: some variable may be not used,you can cancel them as you like
 	// Step 1: Open the file specified by `prog` (prog is the path of the program)
+	char progname[32];
+    int name_len = strlen(prog);
+    strcpy(progname, prog);
+    if (name_len <= 2 || prog[name_len - 1] != 'b' || prog[name_len - 2] != '.')
+    {
+            strcat(progname, ".b");
+    }
+
 	if((r=open(prog, O_RDONLY))<0){
-		user_panic("spawn ::open line 102 RDONLY wrong !\n");
+		//user_panic("spawn ::open line 102 RDONLY wrong !\n");
+		progname[strlen(progname) - 2] = 0;
+		writef("command [%s] is not found.\n", progname);
 		return r;
 	}
 	// Your code begins here
+	fd = r;
+    if ((r = readn(fd, elfbuf, sizeof(Elf32_Ehdr))) < 0)
+            return r;
+
+    elf = (Elf32_Ehdr *)elfbuf;
+
 	// Before Step 2 , You had better check the "target" spawned is a execute bin 
+	
+	if (!usr_is_elf_format(elf) || elf->e_type != 2)
+                return -E_INVAL;
+
 	// Step 2: Allocate an env (Hint: using syscall_env_alloc())
+
+	 r = syscall_env_alloc();
+        if (r < 0)
+                return r;
+        if (r == 0)
+        {
+                env = envs + ENVX(syscall_getenvid());
+                return 0;
+        }
+        child_envid = r;
+
+
 	// Step 3: Using init_stack(...) to initialize the stack of the allocated env
+
+	init_stack(child_envid, argv, &esp);
+
 	// Step 3: Map file's content to new env's text segment
 	//        Hint 1: what is the offset of the text segment in file? try to use objdump to find out.
 	//        Hint 2: using read_map(...)
@@ -135,6 +170,26 @@ int spawn(char *prog, char **argv)
 	//       the file is opened successfully, and env is allocated successfully.
 	// Note2: You can achieve this func in any way ，remember to ensure the correctness
 	//        Maybe you can review lab3 
+	
+	text_start = elf->e_phoff;
+    size = elf->e_phentsize;
+    for (i = 0; i < elf->e_phnum; ++i)
+    {
+        if ((r = seek(fd, text_start)) < 0)
+            return r;
+        if ((r = readn(fd, elfbuf, size)) < 0)
+            return r;
+        ph = (Elf32_Phdr *)elfbuf;
+        if (ph->p_type == PT_LOAD)
+        {
+        	// writef("copy %d\n", i);
+            r = usr_load_elf(fd, ph, child_envid);
+            if (r < 0)
+            	return r;
+       	}
+		text_start += size;
+    }
+
 	// Your code ends here
 
 	struct Trapframe *tf;
