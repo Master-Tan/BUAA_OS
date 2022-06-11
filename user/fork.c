@@ -82,6 +82,24 @@ void user_bzero(void *v, u_int n)
 static void
 pgfault(u_int va)
 {
+		u_int *tmp = USTACKTOP;
+        //      writef("fork.c:pgfault():\t va:%x\n",va);
+        u_long perm = ((Pte *)(*vpt))[VPN(va)] & 0xfff;
+        if ((perm & PTE_COW) == 0)
+        {
+                user_panic("pgfault err: COW not found");
+        }
+        perm -= PTE_COW;
+        //map the new page at a temporary place
+        syscall_mem_alloc(0, tmp, perm);
+        //copy the content
+        user_bcopy(ROUNDDOWN(va, BY2PG), tmp, BY2PG);
+        //map the page on the appropriate place
+        syscall_mem_map(0, tmp, 0, va, perm);
+        //unmap the temporary place
+        syscall_mem_unmap(0, tmp);
+
+/*
 	u_int *tmp;
 	int ret;
 	//	writef("fork.c:pgfault():\t va:%x\n",va);
@@ -113,6 +131,7 @@ pgfault(u_int va)
 	}
 	
 	return;
+*/
 }
 
 /* Overview:
