@@ -172,9 +172,11 @@ int count;
 	
 	if (!usr_is_elf_format(elf) || elf->e_type != 2)
                 return -E_INVAL;
+/*
 	size = elf->e_phentsize;
     text_start = elf->e_phoff;
 	count = elf->e_phnum;
+*/
 	// Step 2: Allocate an env (Hint: using syscall_env_alloc())
 
 	 r = syscall_env_alloc();
@@ -201,7 +203,7 @@ int count;
 	//       the file is opened successfully, and env is allocated successfully.
 	// Note2: You can achieve this func in any way ，remember to ensure the correctness
 	//        Maybe you can review lab3 
-
+/*
 		for (i = 0; i < count; i++)
         {
                 r = seek(fd, text_start);
@@ -234,8 +236,8 @@ int count;
         {
                 res += size;
         }
-
-/*	
+*/
+	
 	text_start = elf->e_phoff;
     size = elf->e_phentsize;
     for (i = 0; i < elf->e_phnum; ++i)
@@ -254,7 +256,7 @@ int count;
        	}
 		text_start += size;
     }
-*/
+
 	// Your code ends here
 
 	struct Trapframe *tf;
