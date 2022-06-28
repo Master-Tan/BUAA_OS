@@ -79,6 +79,9 @@ BLOCK_FILE	fs/fsformat.c	/^    BLOCK_FILE  = 5,$/;"	e	enum:__anon1	file:
 BLOCK_FREE	fs/fsformat.c	/^    BLOCK_FREE  = 0,$/;"	e	enum:__anon1	file:
 BLOCK_INDEX	fs/fsformat.c	/^    BLOCK_INDEX = 6,$/;"	e	enum:__anon1	file:
 BLOCK_SUPER	fs/fsformat.c	/^    BLOCK_SUPER = 3,$/;"	e	enum:__anon1	file:
+BLUE	user/sh.h	7;"	d
+BOLD_GREEN	user/sh.h	2;"	d
+BROWN	user/sh.h	14;"	d
 BUILD_HANDLER	lib/genex.S	/^BUILD_HANDLER mod	page_fault_handler cli$/;"	l
 BUILD_HANDLER	lib/genex.S	/^BUILD_HANDLER reserved do_reserved cli$/;"	l
 BUILD_HANDLER	lib/genex.S	/^BUILD_HANDLER tlb	do_refill	cli$/;"	l
@@ -86,7 +89,7 @@ BY2BLK	include/fs.h	11;"	d
 BY2FILE	include/fs.h	26;"	d
 BY2PG	fs/fsformat.c	15;"	d	file:
 BY2PG	include/mmu.h	16;"	d
-BY2PIPE	user/pipe.c	20;"	d	file:
+BY2PIPE	user/pipe.c	21;"	d	file:
 BY2SECT	fs/fs.h	8;"	d
 Block	fs/fsformat.c	/^struct Block {$/;"	s	file:
 CC	drivers/Makefile	/^CC			  := $(CROSS_COMPILE)gcc$/;"	m
@@ -153,8 +156,10 @@ CP0_XCONTEXT	include/asm-mips3k/cp0regdef.h	29;"	d
 CP0_XCONTEXT	include/asm/cp0regdef.h	29;"	d
 CROSS_COMPILE	drivers/Makefile	/^CROSS_COMPILE := \/opt\/eldk\/usr\/bin\/mips_4KC-$/;"	m
 CROSS_COMPILE	include.mk	/^CROSS_COMPILE :=  \/OSLAB\/compiler\/usr\/bin\/mips_4KC-$/;"	m
+CYAN	user/sh.h	10;"	d
 Ctod	lib/print.c	16;"	d	file:
 Ctod	user/print.c	16;"	d	file:
+DARK_GRAY	user/sh.h	9;"	d
 DEV_CONS_ADDRESS	drivers/gxconsole/dev_cons.h	13;"	d
 DEV_CONS_HALT	drivers/gxconsole/dev_cons.h	16;"	d
 DEV_CONS_LENGTH	drivers/gxconsole/dev_cons.h	14;"	d
@@ -245,7 +250,7 @@ FEXPORT	include/asm/asm.h	43;"	d
 FILE2BLK	include/fs.h	39;"	d
 FILEBASE	user/fd.h	10;"	d
 FILEVA	fs/serv.c	20;"	d	file:
-FSIMGFILES	fs/Makefile	/^FSIMGFILES := motd newmotd$/;"	m
+FSIMGFILES	fs/Makefile	/^FSIMGFILES := motd newmotd $(user_dir)\/testarg.b $(user_dir)\/init.b $(USERAPPS)$/;"	m
 FSLIB	fs/Makefile	/^FSLIB :=	fs.o \\$/;"	m
 FSREQ_CLOSE	include/fs.h	61;"	d
 FSREQ_DIRTY	include/fs.h	62;"	d
@@ -268,6 +273,7 @@ Fsreq_open	include/fs.h	/^struct Fsreq_open {$/;"	s
 Fsreq_remove	include/fs.h	/^struct Fsreq_remove {$/;"	s
 Fsreq_set_size	include/fs.h	/^struct Fsreq_set_size {$/;"	s
 GET_ENV_ASID	include/env.h	14;"	d
+GREEN	user/sh.h	5;"	d
 HALT_ADDRESS	drivers/gxconsole/console.c	18;"	d	file:
 INCLUDES	boot/Makefile	/^INCLUDES	  := -I..\/include\/$/;"	m
 INCLUDES	fs/Makefile	/^INCLUDES = -I..\/include\/ -I..\/user\/$/;"	m
@@ -292,6 +298,12 @@ LD	include.mk	/^LD            := $(CROSS_COMPILE)ld$/;"	m
 LEAF	include/asm-mips3k/asm.h	14;"	d
 LEAF	include/asm/asm.h	14;"	d
 LIB_H	user/lib.h	2;"	d
+LIGHT_BLUE	user/sh.h	8;"	d
+LIGHT_CYAN	user/sh.h	11;"	d
+LIGHT_GRAY	user/sh.h	16;"	d
+LIGHT_GREEN	user/sh.h	6;"	d
+LIGHT_PURPLE	user/sh.h	13;"	d
+LIGHT_RED	user/sh.h	4;"	d
 LIST_EMPTY	include/queue.h	82;"	d
 LIST_ENTRY	include/queue.h	69;"	d
 LIST_FIRST	include/queue.h	87;"	d
@@ -307,6 +319,7 @@ LIST_NEXT	include/queue.h	173;"	d
 LIST_REMOVE	include/queue.h	179;"	d
 LOG2NENV	include/env.h	11;"	d
 LP_MAX_BUF	include/print.h	18;"	d
+MAXARGS	user/sh.c	80;"	d	file:
 MAXERROR	include/error.h	24;"	d
 MAXERROR	include/mmu.h	125;"	d
 MAXFD	user/fd.h	9;"	d
@@ -316,6 +329,7 @@ MAXOPEN	fs/serv.c	19;"	d	file:
 MAXPATHLEN	include/fs.h	18;"	d
 MIN	include/types.h	34;"	d
 MIN	readelf/types.h	33;"	d
+MY_MUL	user/init.c	/^inline int MY_MUL(int a,int b)$/;"	f
 NBLOCK	fs/fsformat.c	22;"	d	file:
 NDIRECT	include/fs.h	21;"	d
 NENV	include/env.h	12;"	d
@@ -387,6 +401,7 @@ PT_PHDR	include/kerelf.h	117;"	d
 PT_PHDR	readelf/kerelf.h	134;"	d
 PT_SHLIB	include/kerelf.h	116;"	d
 PT_SHLIB	readelf/kerelf.h	133;"	d
+PURPLE	user/sh.h	12;"	d
 PUTCHAR_ADDRESS	drivers/gxconsole/console.c	16;"	d	file:
 Page	include/pmap.h	/^struct Page {$/;"	s
 Page_LIST_entry_t	include/pmap.h	/^typedef LIST_ENTRY(Page) Page_LIST_entry_t;$/;"	t
@@ -396,6 +411,7 @@ PrintChar	lib/print.c	/^PrintChar(char * buf, char c, int length, int ladjust)$/
 PrintNum	lib/print.c	/^PrintNum(char * buf, unsigned long u, int base, int negFlag, $/;"	f
 PrintString	lib/print.c	/^PrintString(char * buf, char* s, int length, int ladjust)$/;"	f
 Pte	include/mmu.h	/^typedef u_long Pte;$/;"	t
+RED	user/sh.h	3;"	d
 REQVA	fs/serv.c	26;"	d	file:
 ROUND	include/types.h	47;"	d
 ROUND	readelf/types.h	46;"	d
@@ -406,6 +422,7 @@ SECT2BLK	fs/fs.h	9;"	d
 STATUSF_IP4	include/asm/cp0regdef.h	40;"	d
 STATUS_CU0	include/asm/cp0regdef.h	41;"	d
 STATUS_KUC	include/asm/cp0regdef.h	42;"	d
+SYMBOLS	user/sh.c	20;"	d	file:
 SYS_cgetc	include/unistd.h	22;"	d
 SYS_env_alloc	include/unistd.h	16;"	d
 SYS_env_destroy	include/unistd.h	11;"	d
@@ -470,6 +487,9 @@ TF_REG9	include/trap.h	70;"	d
 TF_SIZE	include/trap.h	109;"	d
 TF_STATUS	include/trap.h	97;"	d
 TIMESTACK	include/mmu.h	102;"	d
+TMPPAGE	user/spawn.c	7;"	d	file:
+TMPPAGETOP	user/spawn.c	8;"	d	file:
+TMPVA	user/testptelibrary.c	2;"	d	file:
 TRUP	include/mmu.h	167;"	d
 T_ALIGN	include/trap.h	22;"	d
 T_BOUND	include/trap.h	10;"	d
@@ -496,6 +516,7 @@ ULIM	include/mmu.h	94;"	d
 UNISTD_H	include/unistd.h	2;"	d
 UPAGES	include/mmu.h	97;"	d
 USED	user/lib.h	18;"	d
+USERAPPS	fs/Makefile	/^USERAPPS :=  $(user_dir)\/num.b  \\$/;"	m
 USERLIB	fs/Makefile	/^USERLIB :=	$(user_dir)\/printf.o \\$/;"	m
 USERLIB	user/Makefile	/^USERLIB := printf.o \\$/;"	m
 USTACKTOP	include/mmu.h	104;"	d
@@ -506,6 +527,9 @@ UXSTACKTOP	include/mmu.h	101;"	d
 VA2PFN	include/mmu.h	28;"	d
 VPN	include/mmu.h	26;"	d
 VPT	include/mmu.h	91;"	d
+WHITE	user/sh.h	17;"	d
+WHITESPACE	user/sh.c	19;"	d	file:
+YELLOW	user/sh.h	15;"	d
 _ARGSET	include/args.h	5;"	d
 _ARGUSED	include/args.h	6;"	d
 _ENV_H_	include/env.h	4;"	d
@@ -531,7 +555,9 @@ __asm_pgfault_handler	user/entry.S	/^__asm_pgfault_handler:$/;"	l
 __pgfault_handler	user/entry.S	/^	__pgfault_handler:$/;"	l
 _cp0regdef_h_	include/asm-mips3k/cp0regdef.h	8;"	d
 _cp0regdef_h_	include/asm/cp0regdef.h	8;"	d
+_gettoken	user/sh.c	/^_gettoken(char *s, char **p1, char **p2)$/;"	f
 _panic	lib/printf.c	/^_panic(const char *file, int line, const char *fmt,...)$/;"	f
+_pipeisclosed	user/pipe.c	/^_pipeisclosed(struct Fd *fd, struct Pipe *p)$/;"	f	file:
 _print_h_	include/print.h	13;"	d
 _printf_h_	include/printf.h	13;"	d
 _start	user/entry.S	/^_start:$/;"	l
@@ -567,15 +593,27 @@ block_is_dirty	fs/fs.c	/^block_is_dirty(u_int blockno)$/;"	f
 block_is_free	fs/fs.c	/^block_is_free(u_int blockno)$/;"	f
 block_is_mapped	fs/fs.c	/^block_is_mapped(u_int blockno)$/;"	f
 bnez	lib/genex.S	/^bnez	t1, timer_irq$/;"	l
+bol	user/num.c	/^int bol = 1;$/;"	v
 boot_dir	Makefile	/^boot_dir	  := boot$/;"	m
 boot_map_segment	mm/pmap.c	/^void boot_map_segment(Pde *pgdir, u_long va, u_long size, u_long pa, int perm)$/;"	f
 boot_pgdir	mm/pmap.c	/^Pde *boot_pgdir;$/;"	v
 boot_pgdir_walk	mm/pmap.c	/^static Pte *boot_pgdir_walk(Pde *pgdir, u_long va, int create)$/;"	f	file:
 boutcode	init/code.c	/^char boutcode[]={0x7f,0x45,0x4c,0x46,0x1,0x2,0x1,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x2,0x0,0x8,0x0,0x0,0x0,0x1,0x0,0x40,0x0,0xb0,0x0,0x0,0x0,0x34,0x0,0x0,0xf,0xb0,0x50,0x0,0x10,0x1,0x0,$/;"	v
+bss	user/init.c	/^char bss[6000];$/;"	v
+buf	user/cat.c	/^char buf[8192];$/;"	v
+buf	user/sh.c	/^char buf[1024];$/;"	v
+buf	user/testfdsharing.c	/^char buf[512], buf2[512];$/;"	v
+buf2	user/testfdsharing.c	/^char buf[512], buf2[512];$/;"	v
 bzero	init/init.c	/^void bzero(void *b, size_t len) {$/;"	f
+cat	user/cat.c	/^cat(int f, char *s)$/;"	f
 check_write_block	fs/fs.c	/^check_write_block(void)$/;"	f
+childofspawn	user/testptelibrary.c	/^void childofspawn(void){$/;"	f
 close	user/fd.c	/^close(int fdnum)$/;"	f
 close_all	user/fd.c	/^close_all(void)$/;"	f
+cons_close	user/console.c	/^cons_close(struct Fd *fd)$/;"	f
+cons_read	user/console.c	/^cons_read(struct Fd *fd, void *vbuf, u_int n, u_int offset)$/;"	f
+cons_stat	user/console.c	/^cons_stat(struct Fd *fd, struct Stat *stat)$/;"	f
+cons_write	user/console.c	/^cons_write(struct Fd *fd, const void *vbuf, u_int n, u_int offset)$/;"	f
 cp0_badvaddr	include/trap.h	/^	unsigned long cp0_badvaddr;$/;"	m	struct:Trapframe
 cp0_cause	include/trap.h	/^	unsigned long cp0_cause;$/;"	m	struct:Trapframe
 cp0_epc	include/trap.h	/^	unsigned long cp0_epc;$/;"	m	struct:Trapframe
@@ -583,10 +621,13 @@ cp0_status	include/trap.h	/^	unsigned long cp0_status;$/;"	m	struct:Trapframe
 create_file	fs/fsformat.c	/^struct File *create_file(struct File *dirf) {$/;"	f
 curenv	lib/env.c	/^struct Env *curenv = NULL;            \/\/ the current env$/;"	v	typeref:struct:Env
 data	fs/fsformat.c	/^    uint8_t data[BY2BLK];$/;"	m	struct:Block	file:
+data	user/init.c	/^} data = {$/;"	v	typeref:struct:__anon7
 debug	user/fd.h	7;"	d
 debug	user/file.c	4;"	d	file:
 debug	user/fsipc.c	5;"	d	file:
 debug	user/pipe.c	4;"	d	file:
+debug	user/spawn.c	6;"	d	file:
+debug_	user/sh.c	/^int debug_ = 0;$/;"	v
 delay	boot/start.S	/^delay:$/;"	l
 dev_close	user/fd.h	/^	int (*dev_close)(struct Fd *);$/;"	m	struct:Dev
 dev_id	user/fd.h	/^	int dev_id;$/;"	m	struct:Dev
@@ -596,9 +637,9 @@ dev_read	user/fd.h	/^	int (*dev_read)(struct Fd *, void *, u_int, u_int);$/;"	m	
 dev_seek	user/fd.h	/^	int (*dev_seek)(struct Fd *, u_int);$/;"	m	struct:Dev
 dev_stat	user/fd.h	/^	int (*dev_stat)(struct Fd *, struct Stat *);$/;"	m	struct:Dev
 dev_write	user/fd.h	/^	int (*dev_write)(struct Fd *, const void *, u_int, u_int);$/;"	m	struct:Dev
-devcons	user/console.c	/^struct Dev devcons = {$/;"	v	typeref:struct:Dev
+devcons	user/console.c	/^struct Dev devcons =$/;"	v	typeref:struct:Dev
 devfile	user/file.c	/^struct Dev devfile = {$/;"	v	typeref:struct:Dev
-devpipe	user/pipe.c	/^struct Dev devpipe = {$/;"	v	typeref:struct:Dev
+devpipe	user/pipe.c	/^struct Dev devpipe =$/;"	v	typeref:struct:Dev
 devtab	user/fd.c	/^static struct Dev *devtab[] = {$/;"	v	typeref:struct:Dev	file:
 diff_msg	fs/test.c	/^static char *diff_msg = "This is a different massage of the day!\\n\\n";$/;"	v	file:
 diff_msg	user/fstest.c	/^static char *diff_msg = "This is a different massage of the day!\\n\\n";$/;"	v	file:
@@ -710,6 +751,7 @@ file_stat	user/file.c	/^file_stat(struct Fd *fd, struct Stat *st)$/;"	f	file:
 file_truncate	fs/fs.c	/^file_truncate(struct File *f, u_int newsize)$/;"	f
 file_write	user/file.c	/^file_write(struct Fd *fd, const void *buf, u_int n, u_int offset)$/;"	f	file:
 finish_fs	fs/fsformat.c	/^void finish_fs(char *name) {$/;"	f
+flag	user/ls.c	/^int flag[256];$/;"	v
 flush_bitmap	fs/fsformat.c	/^void flush_bitmap() {$/;"	f
 fork	user/fork.c	/^fork(void)$/;"	f
 fp	include/asm-mips3k/regdef.h	46;"	d
@@ -733,6 +775,7 @@ fsipcbuf	user/entry.S	/^fsipcbuf:$/;"	l
 fstat	user/fd.c	/^int fstat(int fdnum, struct Stat *stat)$/;"	f
 ftruncate	user/file.c	/^ftruncate(int fdnum, u_int size)$/;"	f
 fwritef	user/fprintf.c	/^int fwritef(int fd, const char *fmt, ...)$/;"	f
+gettoken	user/sh.c	/^gettoken(char *s, char **p1)$/;"	f
 gp	include/asm-mips3k/regdef.h	44;"	d
 gp	include/asm/regdef.h	44;"	d
 halt	drivers/gxconsole/console.c	/^void halt(void)$/;"	f
@@ -741,6 +784,7 @@ ide_read	fs/ide.c	/^ide_read(u_int diskno, u_int secno, void *dst, u_int nsecs)$
 ide_write	fs/ide.c	/^ide_write(u_int diskno, u_int secno, void *src, u_int nsecs)$/;"	f
 init_dir	Makefile	/^init_dir	  := init$/;"	m
 init_disk	fs/fsformat.c	/^void init_disk() {$/;"	f
+init_stack	user/spawn.c	/^init_stack(u_int child, char **argv, u_int *init_esp)$/;"	f
 int16_t	include/types.h	/^typedef short                     int16_t;$/;"	t
 int16_t	readelf/types.h	/^typedef short                     int16_t;$/;"	t
 int32_t	include/types.h	/^typedef int                       int32_t;$/;"	t
@@ -751,6 +795,7 @@ ipc_recv	user/ipc.c	/^ipc_recv(u_int *whom, u_int dstva, u_int *perm)$/;"	f
 ipc_send	user/ipc.c	/^ipc_send(u_int whom, u_int val, u_int srcva, u_int perm)$/;"	f
 is_elf_format	lib/kernel_elfloader.c	/^int is_elf_format(u_char *binary)$/;"	f
 is_elf_format	readelf/readelf.c	/^int is_elf_format(u_char *binary)$/;"	f
+iscons	user/console.c	/^iscons(int fdnum)$/;"	f
 jp	include/asm-mips3k/regdef.h	41;"	d
 jp	include/asm/regdef.h	41;"	d
 k0	include/asm-mips3k/regdef.h	42;"	d
@@ -769,6 +814,7 @@ k1	include/stackframe.h	/^	xori	k1, 0x1000$/;"	v
 kclock_init	lib/kclock.c	/^kclock_init(void)$/;"	f
 lib_dir	Makefile	/^lib_dir		  := lib$/;"	m
 libmain	user/libos.c	/^libmain(int argc, char **argv)$/;"	f
+line	user/num.c	/^int line = 0;$/;"	v
 link_script	Makefile	/^link_script   := $(tools_dir)\/scse0_3.lds$/;"	m
 lo	include/trap.h	/^	unsigned long lo;$/;"	m	struct:Trapframe
 load_elf	lib/kernel_elfloader.c	/^int load_elf(u_char *binary, int size, u_long *entry_point, void *user_data,$/;"	f
@@ -777,6 +823,9 @@ load_icode_check	lib/env.c	/^void load_icode_check() {$/;"	f
 load_icode_mapper	lib/env.c	/^static int load_icode_mapper(u_long va, u_int32_t sgsize,$/;"	f	file:
 loop	boot/start.S	/^loop:$/;"	l
 lp_Print	lib/print.c	/^lp_Print(void (*output)(void *, char *, int), $/;"	f
+ls	user/ls.c	/^ls(char *path, char *prefix)$/;"	f
+ls1	user/ls.c	/^ls1(char *prefix, u_int isdir, u_int size, char *name)$/;"	f
+lsdir	user/ls.c	/^lsdir(char *path, char *prefix)$/;"	f
 mCONTEXT	boot/start.S	/^mCONTEXT:$/;"	l
 main	fs/fsformat.c	/^int main(int argc, char **argv) {$/;"	f
 main	hello.c	/^int main()$/;"	f
@@ -785,6 +834,7 @@ main	readelf/main.c	/^int main(int argc,char *argv[])$/;"	f
 make_link_block	fs/fsformat.c	/^int make_link_block(struct File *dirf, int nblk) {$/;"	f
 map_block	fs/fs.c	/^map_block(u_int blockno)$/;"	f
 maxpa	mm/pmap.c	/^u_long maxpa;            \/* Maximum physical address *\/$/;"	v
+memcmp	user/testfdsharing.c	/^memcmp(char *a, char *b, int n)$/;"	f
 memcpy	lib/syscall_all.c	/^void *memcpy(void *destaddr, void const *srcaddr, u_int len)$/;"	f
 memcpy	user/string.c	/^memcpy(void *destaddr, void const *srcaddr, u_int len)$/;"	f
 mfc0	lib/genex.S	/^mfc0	t0, CP0_CAUSE$/;"	l
@@ -797,6 +847,11 @@ mm_dir	Makefile	/^mm_dir		  := mm$/;"	m
 modules	Makefile	/^modules		  := boot drivers init lib mm user fs$/;"	m
 msg	fs/test.c	/^static char *msg = "This is the NEW message of the day!\\n\\n";$/;"	v	file:
 msg	user/fstest.c	/^static char *msg = "This is the NEW message of the day!\\n\\n";$/;"	v	file:
+msg	user/testpipe.c	/^char *msg = "Now is the time for all good men to come to the aid of their party.";$/;"	v
+msg	user/testptelibrary.c	/^const char *msg = "hello world!\\n";$/;"	v
+msg1	user/init.c	/^	char msg1[5000];$/;"	m	struct:__anon7	file:
+msg2	user/init.c	/^	char msg2[1000];$/;"	m	struct:__anon7	file:
+msg2	user/testptelibrary.c	/^const char *msg2 = "goodbye ,world!\\n";$/;"	v
 myoutput	lib/printf.c	/^static void myoutput(void *arg, char *s, int l)$/;"	f	file:
 nbitblock	fs/fsformat.c	/^uint32_t nbitblock; \/\/ the number of bitmap blocks.$/;"	v
 nbitmap	fs/fs.c	/^u_int nbitmap;		\/\/ number of bitmap blocks$/;"	v
@@ -807,6 +862,7 @@ nop	lib/genex.S	/^nop$/;"	l
 nop	mm/tlb_asm.S	/^nop$/;"	l
 nop	user/entry.S	/^nop$/;"	l
 npage	mm/pmap.c	/^u_long npage;            \/* Amount of memory(in pages) *\/$/;"	v
+num	user/num.c	/^num(int f, const char *s)$/;"	f
 num2fd	user/fd.c	/^num2fd(int fd)$/;"	f
 o_ff	fs/serv.c	/^	struct Filefd *o_ff;	\/\/ va of filefd page$/;"	m	struct:Open	typeref:struct:Open::Filefd	file:
 o_file	fs/serv.c	/^	struct File *o_file;	\/\/ mapped descriptor for open file$/;"	m	struct:Open	typeref:struct:Open::File	file:
@@ -818,6 +874,7 @@ offsetof	readelf/types.h	43;"	d
 open	user/file.c	/^open(const char *path, int mode)$/;"	f
 open_alloc	fs/serv.c	/^open_alloc(struct Open **o)$/;"	f
 open_lookup	fs/serv.c	/^open_lookup(u_int envid, u_int fileid, struct Open **po)$/;"	f
+opencons	user/console.c	/^opencons(void)$/;"	f
 opentab	fs/serv.c	/^struct Open opentab[MAXOPEN] = { { 0, 0, 1 } };$/;"	v	typeref:struct:Open
 p_align	include/kerelf.h	/^	Elf32_Word	p_align;		\/* Segment alignment *\/$/;"	m	struct:__anon3
 p_align	readelf/kerelf.h	/^        Elf32_Word      p_align;                \/* Segment alignment *\/$/;"	m	struct:__anon6
@@ -832,12 +889,12 @@ p_offset	include/kerelf.h	/^	Elf32_Off	p_offset;		\/* Segment file offset *\/$/;
 p_offset	readelf/kerelf.h	/^        Elf32_Off       p_offset;               \/* Segment file offset *\/$/;"	m	struct:__anon6
 p_paddr	include/kerelf.h	/^	Elf32_Addr	p_paddr;		\/* Segment physical address *\/$/;"	m	struct:__anon3
 p_paddr	readelf/kerelf.h	/^        Elf32_Addr      p_paddr;                \/* Segment physical address *\/$/;"	m	struct:__anon6
-p_rpos	user/pipe.c	/^	u_int p_rpos;		    \/\/ read position$/;"	m	struct:Pipe	file:
+p_rpos	user/pipe.c	/^	u_int p_rpos;		\/\/ read position$/;"	m	struct:Pipe	file:
 p_type	include/kerelf.h	/^	Elf32_Word	p_type;			\/* Segment type *\/$/;"	m	struct:__anon3
 p_type	readelf/kerelf.h	/^        Elf32_Word      p_type;                 \/* Segment type *\/$/;"	m	struct:__anon6
 p_vaddr	include/kerelf.h	/^	Elf32_Addr	p_vaddr;		\/* Segment virtual address *\/$/;"	m	struct:__anon3
 p_vaddr	readelf/kerelf.h	/^        Elf32_Addr      p_vaddr;                \/* Segment virtual address *\/$/;"	m	struct:__anon6
-p_wpos	user/pipe.c	/^	u_int p_wpos;		    \/\/ write position$/;"	m	struct:Pipe	file:
+p_wpos	user/pipe.c	/^	u_int p_wpos;		\/\/ write position$/;"	m	struct:Pipe	file:
 pa2page	include/pmap.h	/^pa2page(u_long pa)$/;"	f
 page2kva	include/pmap.h	/^page2kva(struct Page *pp)$/;"	f
 page2pa	include/pmap.h	/^page2pa(struct Page *pp)$/;"	f
@@ -861,6 +918,12 @@ pc	include/trap.h	/^	unsigned long pc;$/;"	m	struct:Trapframe
 pgdir_walk	mm/pmap.c	/^int pgdir_walk(Pde *pgdir, u_long va, int create, Pte **ppte)$/;"	f
 pgfault	user/fork.c	/^pgfault(u_int va)$/;"	f	file:
 physical_memory_manage_check	mm/pmap.c	/^void physical_memory_manage_check(void)$/;"	f
+pipe	user/pipe.c	/^pipe(int pfd[2])$/;"	f
+pipeclose	user/pipe.c	/^pipeclose(struct Fd *fd)$/;"	f	file:
+pipeisclosed	user/pipe.c	/^pipeisclosed(int fdnum)$/;"	f
+piperead	user/pipe.c	/^piperead(struct Fd *fd, void *vbuf, u_int n, u_int offset)$/;"	f	file:
+pipestat	user/pipe.c	/^pipestat(struct Fd *fd, struct Stat *stat)$/;"	f	file:
+pipewrite	user/pipe.c	/^pipewrite(struct Fd *fd, const void *vbuf, u_int n, u_int offset)$/;"	f	file:
 pp_link	include/pmap.h	/^	Page_LIST_entry_t pp_link;	\/* free list link *\/$/;"	m	struct:Page
 pp_ref	include/pmap.h	/^	u_short pp_ref;$/;"	m	struct:Page
 printcharc	drivers/gxconsole/console.c	/^void printcharc(char ch)$/;"	f
@@ -878,6 +941,7 @@ read_block	fs/fs.c	/^read_block(u_int blockno, void **blk, u_int *isnew)$/;"	f
 read_map	user/file.c	/^read_map(int fdnum, u_int offset, void **blk)$/;"	f
 read_super	fs/fs.c	/^read_super(void)$/;"	f
 readelf	readelf/readelf.c	/^int readelf(u_char *binary, int size)$/;"	f
+readline	user/sh.c	/^readline(char *buf, u_int n)$/;"	f
 readn	user/fd.c	/^readn(int fdnum, void *buf, u_int n)$/;"	f
 register_t	include/types.h	/^typedef int32_t                 register_t;$/;"	t
 register_t	readelf/types.h	/^typedef int32_t                 register_t;$/;"	t
@@ -895,6 +959,7 @@ req_path	include/fs.h	/^	u_char req_path[MAXPATHLEN];$/;"	m	struct:Fsreq_remove
 req_size	include/fs.h	/^	u_int req_size;$/;"	m	struct:Fsreq_set_size
 reverse	fs/fsformat.c	/^void reverse(uint32_t *p) {$/;"	f
 reverse_block	fs/fsformat.c	/^void reverse_block(struct Block *b) {$/;"	f
+runcmd	user/sh.c	/^runcmd(char *s)$/;"	f
 s0	include/asm-mips3k/regdef.h	31;"	d
 s0	include/asm/regdef.h	31;"	d
 s1	include/asm-mips3k/regdef.h	32;"	d
@@ -951,6 +1016,8 @@ sp	include/stackframe.h	/^		subu	sp,k1,TF_SIZE$/;"	v
 sp	include/stackframe.h	/^	bltz	sp, 2f$/;"	v
 sp	include/stackframe.h	/^	li	sp, 0x82000000$/;"	v
 sp	include/stackframe.h	/^	lw	sp, KERNEL_SP$/;"	v
+spawn	user/spawn.c	/^int spawn(char *prog, char **argv)$/;"	f
+spawnl	user/spawn.c	/^spawnl(char *prog, char *args, ...)$/;"	f
 st_dev	user/fd.h	/^	struct Dev *st_dev;$/;"	m	struct:Stat	typeref:struct:Stat::Dev
 st_isdir	user/fd.h	/^	u_int st_isdir;$/;"	m	struct:Stat
 st_name	user/fd.h	/^	char st_name[MAXNAMELEN];$/;"	m	struct:Stat
@@ -963,6 +1030,7 @@ strcmp	user/string.c	/^strcmp(const char *p, const char *q)$/;"	f
 strcpy	user/string.c	/^strcpy(char *dst, const char *src)$/;"	f
 strecmp	fs/test.c	/^strecmp(char *a, char *b)$/;"	f
 strlen	user/string.c	/^strlen(const char *s)$/;"	f
+sum	user/init.c	/^sum(char *s, int n)$/;"	f
 super	fs/fs.c	/^struct Super *super;$/;"	v	typeref:struct:Super
 super	fs/fsformat.c	/^struct Super super; \/\/ super block.$/;"	v	typeref:struct:Super
 sync	user/file.c	/^sync(void)$/;"	f
@@ -1061,13 +1129,27 @@ uint32_t	readelf/kerelf.h	/^typedef u_int32_t               uint32_t;$/;"	t
 uint64_t	include/kerelf.h	/^typedef u_int64_t		uint64_t;$/;"	t
 uint64_t	readelf/kerelf.h	/^typedef u_int64_t               uint64_t;$/;"	t
 umain	fs/serv.c	/^umain(void)$/;"	f
+umain	user/cat.c	/^umain(int argc, char **argv)$/;"	f
 umain	user/devtst.c	/^void umain()$/;"	f
+umain	user/echo.c	/^umain(int argc, char **argv)$/;"	f
 umain	user/fktest.c	/^void umain()$/;"	f
 umain	user/fstest.c	/^void umain()$/;"	f
+umain	user/icode.c	/^umain(void)$/;"	f
 umain	user/idle.c	/^void umain()$/;"	f
+umain	user/init.c	/^umain(int argc, char **argv)$/;"	f
+umain	user/ls.c	/^umain(int argc, char **argv)$/;"	f
+umain	user/num.c	/^umain(int argc, char **argv)$/;"	f
 umain	user/pingpong.c	/^umain(void)$/;"	f
+umain	user/sh.c	/^umain(int argc, char **argv)$/;"	f
+umain	user/testarg.c	/^void umain(int argc, char **argv)$/;"	f
+umain	user/testfdsharing.c	/^umain(int argc, char **argv)$/;"	f
+umain	user/testpipe.c	/^umain(void)$/;"	f
+umain	user/testpiperace.c	/^umain(void)$/;"	f
+umain	user/testptelibrary.c	/^void umain (int argc, char **argv)$/;"	f
 umain	user/tltest.c	/^void umain() {$/;"	f
 unmap_block	fs/fs.c	/^unmap_block(u_int blockno)$/;"	f
+usage	user/ls.c	/^usage(void)$/;"	f
+usage	user/sh.c	/^usage(void)$/;"	f
 user_PrintChar	user/print.c	/^user_PrintChar(char *buf, char c, int length, int ladjust)$/;"	f
 user_PrintNum	user/print.c	/^user_PrintNum(char *buf, unsigned long u, int base, int negFlag,$/;"	f
 user_PrintString	user/print.c	/^user_PrintString(char *buf, char *s, int length, int ladjust)$/;"	f
@@ -1076,11 +1158,14 @@ user_bcopy	user/fork.c	/^void user_bcopy(const void *src, void *dst, size_t len)
 user_bzero	user/fork.c	/^void user_bzero(void *v, u_int n)$/;"	f
 user_dir	Makefile	/^user_dir	  := user$/;"	m
 user_dir	fs/Makefile	/^user_dir := ..\/user$/;"	m
+user_disk	Makefile	/^user_disk     := gxemul\/fs.img$/;"	m
 user_lp_Print	user/print.c	/^user_lp_Print(void (*output)(void *, const char *, int),$/;"	f
 user_myoutput	user/printf.c	/^static void user_myoutput(void *arg, const char *s, int l)$/;"	f	file:
 user_out2string	user/fprintf.c	/^static void user_out2string(void *arg, const char *s, int l)$/;"	f	file:
 user_panic	user/lib.h	33;"	d
 user_theFatalMsg	user/print.c	/^static const char user_theFatalMsg[] = "fatal error in user_lp_Print!";$/;"	v	file:
+usr_is_elf_format	user/spawn.c	/^int usr_is_elf_format(u_char *binary){$/;"	f
+usr_load_elf	user/spawn.c	/^usr_load_elf(int fd , Elf32_Phdr *ph, int child_envid){$/;"	f
 v0	include/asm-mips3k/regdef.h	17;"	d
 v0	include/asm/regdef.h	17;"	d
 v0	include/stackframe.h	/^		and	v0, v1 $/;"	v
@@ -1111,6 +1196,7 @@ va_is_mapped	fs/fs.c	/^va_is_mapped(u_int va)$/;"	f
 vmlinux_elf	Makefile	/^vmlinux_elf	  := gxemul\/vmlinux$/;"	m
 vpd	user/entry.S	/^vpd:$/;"	l
 vpt	user/entry.S	/^vpt:$/;"	l
+wait	user/wait.c	/^wait(u_int envid)$/;"	f
 walk_path	fs/fs.c	/^walk_path(char *path, struct File **pdir, struct File **pfile, char *lastelem)$/;"	f
 write	user/fd.c	/^write(int fdnum, const void *buf, u_int n)$/;"	f
 write_block	fs/fs.c	/^write_block(u_int blockno)$/;"	f

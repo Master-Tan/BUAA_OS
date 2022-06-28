@@ -1,3 +1,4 @@
+#include "sh.h"
 #include "lib.h"
 #include <args.h>
 
@@ -83,6 +84,8 @@ runcmd(char *s)
 	char *argv[MAXARGS], *t;
 	int argc, c, i, r, p[2], fd, rightpipe;
 	int fdnum;
+	int hangup;
+	hangup = 0;
 	rightpipe = 0;
 	gettoken(s, 0);
 again:
@@ -158,6 +161,15 @@ again:
 				goto runit;
 			}
             break;
+		
+		// challenge begin
+		case '&':
+			hangup = 1;
+			break;
+		case ';':
+			break;
+		// challenge end	
+
 		default:
 			break;
 
@@ -172,19 +184,71 @@ runit:
 		return;
 	}
 	argv[argc] = 0;
+/*
 	if (1) {
 		writef("[%08x] SPAWN:", env->env_id);
 		for (i=0; argv[i]; i++)
 			writef(" %s", argv[i]);
 		writef("\n");
 	}
+*/
+	// spawn
+	
+	// challenge begin
+	char prog_name[64];
+    int prog_name_len = strlen(argv[0]);
+    strcpy(prog_name, argv[0]);
+    prog_name[prog_name_len++] = '.';
+	prog_name[prog_name_len++] = 'b';
+	// strcat(prog_name, ".b");
+    // prog_name_len += 2;
+    prog_name[prog_name_len] = '\0';
 
-	if ((r = spawn(argv[0], argv)) < 0)
+	int child_envid;
+	if ((r = spawn(prog_name, argv)) < 0)
 		writef("spawn %s: %e\n", argv[0], r);
+	child_envid = r;
+
+	if (hangup == 1) {
+		writef("[%d] WAIT\t", child_envid);
+		writef(YELLOW(AAAAA));
+		for (i = 0; i < argc; ++i) writef("%s ", argv[i]);
+        writef("\n");
+		//writef("Super Shell: command not found " RED([%s]) "\n", prog_name);
+	}
+	if ((r = syscall_set_env_status(child_envid, ENV_RUNNABLE)) < 0) {
+        writef("set child runnable is wrong\n");
+    }
+	r = child_envid;
+	// challenge end
+
+	// spawn down
 	close_all();
 	if (r >= 0) {
 		if (debug_) writef("[%08x] WAIT %s %08x\n", env->env_id, argv[0], r);
-		wait(r);
+
+		// challenge begin
+		if (hangup == 0) {
+			wait(r);
+		} else {
+			int pid = fork;
+			if (pid < 0) {
+				writef("fork wrong!\n");
+			}
+			if (pid == 0) {
+				wait(r);
+				writef("\n[%d] DONE\t", r);
+				for (i = 0; i < argc; i++) {
+					writef("%s ", argv[i]);
+				}
+				char curpath[MAXPATHLEN];
+                curpath_get(curpath);
+                writef("\n" LIGHT_BLUE(%s) " " BOLD_GREEN($) " ", curpath);
+                writef("\b \b");
+                exit();
+
+			}
+		}
 	}
 	if (rightpipe) {
 		if (debug_) writef("[%08x] WAIT right-pipe %08x\n", env->env_id, rightpipe);
