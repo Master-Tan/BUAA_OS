@@ -564,7 +564,7 @@ void env_free(struct Env *e)
     u_int pdeno, pteno, pa;
 
     /* Hint: Note the environment's demise.*/
-    printf("[%08x] free env %08x\n", curenv ? curenv->env_id : 0, e->env_id);
+    //printf("[%08x] free env %08x\n", curenv ? curenv->env_id : 0, e->env_id);
 
     /* Hint: Flush all mapped pages in the user portion of the address space */
     for (pdeno = 0; pdeno < PDX(UTOP); pdeno++) {
@@ -627,7 +627,7 @@ env_destroy(struct Env *e)
         bcopy((void *)KERNEL_SP - sizeof(struct Trapframe),
               (void *)TIMESTACK - sizeof(struct Trapframe),
               sizeof(struct Trapframe));
-        printf("i am killed ... \n");
+//        printf("i am killed ... \n");
         sched_yield();
     }
 }
@@ -821,5 +821,30 @@ void load_icode_check() {
 
     env_free(e);
     printf("load_icode_check() succeeded!\n");
+}
+// String Functions
+char *strcpy(char *dst, const char *src) {
+    char *ret;
+    ret = dst;
+    while ((*dst++ = *src++) != 0);
+    return ret;
+}
+
+u_int strhash(const char *str) {
+    unsigned int hash = 5381;
+    unsigned int i = 0;
+    while (*str) hash = ((hash << 5) + hash) + (*str++);
+    return hash % ((1 << 8) - 1);
+}
+
+int
+strcmp(const char *p, const char *q) {
+    while (*p && *p == *q)
+        p++, q++;
+    if ((u_int) * p < (u_int) * q)
+        return -1;
+    if ((u_int) * p > (u_int) * q)
+        return 1;
+    return 0;
 }
 

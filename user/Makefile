@@ -1,5 +1,12 @@
 INCLUDES = -I../include/
 
+#CROSS_COMPILE := /usr/eldk/usr/bin/mips_4KC-
+#CC           := $(CROSS_COMPILE)gcc
+#CFLAGS       := -O -G 0 -mno-abicalls -fno-builtin -Wa,-xgot -Wall -fPIC
+#LD           := $(CROSS_COMPILE)ld
+# For embedding one program in another
+
+
 USERLIB := printf.o \
 		print.o \
 		libos.o \
@@ -16,11 +23,13 @@ USERLIB := printf.o \
 		wait.o \
 		spawn.o \
 		console.o \
-		fprintf.o
+		fprintf.o \
+		sh_curpath.o \
+		sh_history.o
 
 CFLAGS += -nostdlib -static
 
-all: echo.x echo.b num.x num.b testptelibrary.b testptelibrary.x testarg.b testpipe.x testpiperace.x icode.x init.b sh.b cat.b ls.b\
+all: echo.x echo.b num.x num.b testptelibrary.b testptelibrary.x testarg.b testpipe.x testpiperace.x icode.x init.b sh.b cat.b ls.b mkdir.b tree.b touch.b history.b declare.b unset.b\
 	devtst.x devtst.b tltest.x tltest.b fktest.x fktest.b pingpong.x pingpong.b idle.x fstest.x fstest.b $(USERLIB) entry.o syscall_wrap.o
 
 %.x: %.b.c 

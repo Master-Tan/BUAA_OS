@@ -1,3 +1,4 @@
+#include "color.h"
 #include "lib.h"
 
 int flag[256];
@@ -11,12 +12,16 @@ ls(char *path, char *prefix)
 	int r;
 	struct Stat st;
 
-	if ((r=stat(path, &st)) < 0)
-		user_panic("stat %s: %e", path, r);
+	if ((r=stat(path, &st)) < 0) {
+		writef("stat %s: %e", path, r);
+		fwritef(1, "\n");
+		return;
+	}
 	if (st.st_isdir && !flag['d'])
 		lsdir(path, prefix);
 	else
 		ls1(0, st.st_isdir, st.st_size, path);
+	fwritef(1, "\n");
 }
 
 void
@@ -34,6 +39,7 @@ lsdir(char *path, char *prefix)
 		user_panic("short read in directory %s", path);
 	if (n < 0)
 		user_panic("error reading directory %s: %e", path, n);
+	close(fd);
 }
 
 void
@@ -78,8 +84,9 @@ umain(int argc, char **argv)
 		break;
 	}ARGEND
 
-	if (argc == 0)
+	if (argc == 0) {
 		ls("/", "");
+	}
 	else {
 		for (i=0; i<argc; i++)
 			ls(argv[i], argv[i]);

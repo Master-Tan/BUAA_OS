@@ -158,3 +158,18 @@ fsipc_sync(void)
 	return fsipc(FSREQ_SYNC, fsipcbuf, 0, 0);
 }
 
+int
+fsipc_create(const char *path, u_int type) {
+    struct Fsreq_create *req;
+
+    req = (struct Fsreq_create *) fsipcbuf;
+
+    // The path is too long.
+    if (strlen(path) >= MAXPATHLEN) {
+        return -E_BAD_PATH;
+    }
+    strcpy((char *) req->req_path, path);
+    req->req_type = type;
+    return fsipc(FSREQ_CREATE, req, 0, 0);
+}
+

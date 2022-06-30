@@ -84,3 +84,4 @@ sys_call_table:                         // 系统调用函数的入口表 Syscal
     /* 在此处增加内核系统调用的入口地址 */
     .word sys_write_dev
     .word sys_read_dev
+	.word sys_env_var

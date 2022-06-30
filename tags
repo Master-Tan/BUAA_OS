@@ -70,6 +70,9 @@ ARGEND	include/args.h	21;"	d
 ARGF	include/args.h	22;"	d
 AT	include/asm-mips3k/regdef.h	16;"	d
 AT	include/asm/regdef.h	16;"	d
+BACK_GRE	user/color.h	21;"	d
+BACK_RED	user/color.h	20;"	d
+BACK_YEL	user/color.h	22;"	d
 BD_IF_END	lib/syscall.S	/^BD_IF_END:$/;"	l
 BIT2BLK	include/fs.h	12;"	d
 BLOCK_BMAP	fs/fsformat.c	/^    BLOCK_BMAP  = 2,$/;"	e	enum:__anon1	file:
@@ -79,9 +82,9 @@ BLOCK_FILE	fs/fsformat.c	/^    BLOCK_FILE  = 5,$/;"	e	enum:__anon1	file:
 BLOCK_FREE	fs/fsformat.c	/^    BLOCK_FREE  = 0,$/;"	e	enum:__anon1	file:
 BLOCK_INDEX	fs/fsformat.c	/^    BLOCK_INDEX = 6,$/;"	e	enum:__anon1	file:
 BLOCK_SUPER	fs/fsformat.c	/^    BLOCK_SUPER = 3,$/;"	e	enum:__anon1	file:
-BLUE	user/sh.h	7;"	d
-BOLD_GREEN	user/sh.h	2;"	d
-BROWN	user/sh.h	14;"	d
+BLUE	user/color.h	7;"	d
+BOLD_GREEN	user/color.h	2;"	d
+BROWN	user/color.h	14;"	d
 BUILD_HANDLER	lib/genex.S	/^BUILD_HANDLER mod	page_fault_handler cli$/;"	l
 BUILD_HANDLER	lib/genex.S	/^BUILD_HANDLER reserved do_reserved cli$/;"	l
 BUILD_HANDLER	lib/genex.S	/^BUILD_HANDLER tlb	do_refill	cli$/;"	l
@@ -156,10 +159,11 @@ CP0_XCONTEXT	include/asm-mips3k/cp0regdef.h	29;"	d
 CP0_XCONTEXT	include/asm/cp0regdef.h	29;"	d
 CROSS_COMPILE	drivers/Makefile	/^CROSS_COMPILE := \/opt\/eldk\/usr\/bin\/mips_4KC-$/;"	m
 CROSS_COMPILE	include.mk	/^CROSS_COMPILE :=  \/OSLAB\/compiler\/usr\/bin\/mips_4KC-$/;"	m
-CYAN	user/sh.h	10;"	d
+CURPATH_KEY	user/sh_curpath.c	/^const char *CURPATH_KEY = "curpath";$/;"	v
+CYAN	user/color.h	10;"	d
 Ctod	lib/print.c	16;"	d	file:
 Ctod	user/print.c	16;"	d	file:
-DARK_GRAY	user/sh.h	9;"	d
+DARK_GRAY	user/color.h	9;"	d
 DEV_CONS_ADDRESS	drivers/gxconsole/dev_cons.h	13;"	d
 DEV_CONS_HALT	drivers/gxconsole/dev_cons.h	16;"	d
 DEV_CONS_LENGTH	drivers/gxconsole/dev_cons.h	14;"	d
@@ -190,9 +194,9 @@ ELFMAG3	readelf/kerelf.h	94;"	d
 END	include/asm-mips3k/asm.h	35;"	d
 END	include/asm/asm.h	35;"	d
 ENVX	include/env.h	13;"	d
-ENV_CREATE	include/env.h	76;"	d
-ENV_CREATE2	include/env.h	64;"	d
-ENV_CREATE_PRIORITY	include/env.h	69;"	d
+ENV_CREATE	include/env.h	82;"	d
+ENV_CREATE2	include/env.h	70;"	d
+ENV_CREATE_PRIORITY	include/env.h	75;"	d
 ENV_FREE	include/env.h	17;"	d
 ENV_NOT_RUNNABLE	include/env.h	19;"	d
 ENV_RUNNABLE	include/env.h	18;"	d
@@ -201,6 +205,8 @@ E_BAD_ENV	include/error.h	8;"	d
 E_BAD_ENV	include/mmu.h	109;"	d
 E_BAD_PATH	include/error.h	20;"	d
 E_BAD_PATH	include/mmu.h	121;"	d
+E_ENV_VAR_NOT_FOUND	include/error.h	27;"	d
+E_ENV_VAR_READONLY	include/error.h	28;"	d
 E_FILE_EXISTS	include/error.h	21;"	d
 E_FILE_EXISTS	include/mmu.h	122;"	d
 E_INVAL	include/error.h	10;"	d
@@ -250,9 +256,10 @@ FEXPORT	include/asm/asm.h	43;"	d
 FILE2BLK	include/fs.h	39;"	d
 FILEBASE	user/fd.h	10;"	d
 FILEVA	fs/serv.c	20;"	d	file:
-FSIMGFILES	fs/Makefile	/^FSIMGFILES := motd newmotd $(user_dir)\/testarg.b $(user_dir)\/init.b $(USERAPPS)$/;"	m
+FSIMGFILES	fs/Makefile	/^FSIMGFILES := motd newmotd $(user_dir)\/testcat $(user_dir)\/testarg.b $(user_dir)\/init.b $(USERAPPS)$/;"	m
 FSLIB	fs/Makefile	/^FSLIB :=	fs.o \\$/;"	m
 FSREQ_CLOSE	include/fs.h	61;"	d
+FSREQ_CREATE	include/fs.h	65;"	d
 FSREQ_DIRTY	include/fs.h	62;"	d
 FSREQ_MAP	include/fs.h	59;"	d
 FSREQ_OPEN	include/fs.h	58;"	d
@@ -267,13 +274,14 @@ File	fs/fsformat.c	/^typedef struct File File;$/;"	t	typeref:struct:File	file:
 File	include/fs.h	/^struct File {$/;"	s
 Filefd	user/fd.h	/^struct Filefd {$/;"	s
 Fsreq_close	include/fs.h	/^struct Fsreq_close {$/;"	s
+Fsreq_create	include/fs.h	/^struct Fsreq_create {$/;"	s
 Fsreq_dirty	include/fs.h	/^struct Fsreq_dirty {$/;"	s
 Fsreq_map	include/fs.h	/^struct Fsreq_map {$/;"	s
 Fsreq_open	include/fs.h	/^struct Fsreq_open {$/;"	s
 Fsreq_remove	include/fs.h	/^struct Fsreq_remove {$/;"	s
 Fsreq_set_size	include/fs.h	/^struct Fsreq_set_size {$/;"	s
 GET_ENV_ASID	include/env.h	14;"	d
-GREEN	user/sh.h	5;"	d
+GREEN	user/color.h	5;"	d
 HALT_ADDRESS	drivers/gxconsole/console.c	18;"	d	file:
 INCLUDES	boot/Makefile	/^INCLUDES	  := -I..\/include\/$/;"	m
 INCLUDES	fs/Makefile	/^INCLUDES = -I..\/include\/ -I..\/user\/$/;"	m
@@ -298,12 +306,12 @@ LD	include.mk	/^LD            := $(CROSS_COMPILE)ld$/;"	m
 LEAF	include/asm-mips3k/asm.h	14;"	d
 LEAF	include/asm/asm.h	14;"	d
 LIB_H	user/lib.h	2;"	d
-LIGHT_BLUE	user/sh.h	8;"	d
-LIGHT_CYAN	user/sh.h	11;"	d
-LIGHT_GRAY	user/sh.h	16;"	d
-LIGHT_GREEN	user/sh.h	6;"	d
-LIGHT_PURPLE	user/sh.h	13;"	d
-LIGHT_RED	user/sh.h	4;"	d
+LIGHT_BLUE	user/color.h	8;"	d
+LIGHT_CYAN	user/color.h	11;"	d
+LIGHT_GRAY	user/color.h	16;"	d
+LIGHT_GREEN	user/color.h	6;"	d
+LIGHT_PURPLE	user/color.h	13;"	d
+LIGHT_RED	user/color.h	4;"	d
 LIST_EMPTY	include/queue.h	82;"	d
 LIST_ENTRY	include/queue.h	69;"	d
 LIST_FIRST	include/queue.h	87;"	d
@@ -319,7 +327,7 @@ LIST_NEXT	include/queue.h	173;"	d
 LIST_REMOVE	include/queue.h	179;"	d
 LOG2NENV	include/env.h	11;"	d
 LP_MAX_BUF	include/print.h	18;"	d
-MAXARGS	user/sh.c	80;"	d	file:
+MAXARGS	user/sh.c	94;"	d	file:
 MAXERROR	include/error.h	24;"	d
 MAXERROR	include/mmu.h	125;"	d
 MAXFD	user/fd.h	9;"	d
@@ -343,14 +351,15 @@ NULL	readelf/types.h	8;"	d
 NoCOW	lib/genex.S	/^NoCOW:$/;"	l
 OUTPUT	lib/print.c	36;"	d	file:
 OUTPUT	user/print.c	36;"	d	file:
-O_ACCMODE	user/lib.h	144;"	d
-O_CREAT	user/lib.h	146;"	d
-O_EXCL	user/lib.h	148;"	d
-O_MKDIR	user/lib.h	149;"	d
-O_RDONLY	user/lib.h	141;"	d
-O_RDWR	user/lib.h	143;"	d
-O_TRUNC	user/lib.h	147;"	d
-O_WRONLY	user/lib.h	142;"	d
+O_ACCMODE	user/lib.h	160;"	d
+O_APP	user/lib.h	166;"	d
+O_CREAT	user/lib.h	162;"	d
+O_EXCL	user/lib.h	164;"	d
+O_MKDIR	user/lib.h	165;"	d
+O_RDONLY	user/lib.h	157;"	d
+O_RDWR	user/lib.h	159;"	d
+O_TRUNC	user/lib.h	163;"	d
+O_WRONLY	user/lib.h	158;"	d
 Open	fs/serv.c	/^struct Open {$/;"	s	file:
 PADDR	include/mmu.h	146;"	d
 PDMAP	include/mmu.h	17;"	d
@@ -401,7 +410,7 @@ PT_PHDR	include/kerelf.h	117;"	d
 PT_PHDR	readelf/kerelf.h	134;"	d
 PT_SHLIB	include/kerelf.h	116;"	d
 PT_SHLIB	readelf/kerelf.h	133;"	d
-PURPLE	user/sh.h	12;"	d
+PURPLE	user/color.h	12;"	d
 PUTCHAR_ADDRESS	drivers/gxconsole/console.c	16;"	d	file:
 Page	include/pmap.h	/^struct Page {$/;"	s
 Page_LIST_entry_t	include/pmap.h	/^typedef LIST_ENTRY(Page) Page_LIST_entry_t;$/;"	t
@@ -411,7 +420,7 @@ PrintChar	lib/print.c	/^PrintChar(char * buf, char c, int length, int ladjust)$/
 PrintNum	lib/print.c	/^PrintNum(char * buf, unsigned long u, int base, int negFlag, $/;"	f
 PrintString	lib/print.c	/^PrintString(char * buf, char* s, int length, int ladjust)$/;"	f
 Pte	include/mmu.h	/^typedef u_long Pte;$/;"	t
-RED	user/sh.h	3;"	d
+RED	user/color.h	3;"	d
 REQVA	fs/serv.c	26;"	d	file:
 ROUND	include/types.h	47;"	d
 ROUND	readelf/types.h	46;"	d
@@ -426,6 +435,7 @@ SYMBOLS	user/sh.c	20;"	d	file:
 SYS_cgetc	include/unistd.h	22;"	d
 SYS_env_alloc	include/unistd.h	16;"	d
 SYS_env_destroy	include/unistd.h	11;"	d
+SYS_env_var	include/unistd.h	25;"	d
 SYS_getenvid	include/unistd.h	9;"	d
 SYS_ipc_can_send	include/unistd.h	20;"	d
 SYS_ipc_recv	include/unistd.h	21;"	d
@@ -487,8 +497,8 @@ TF_REG9	include/trap.h	70;"	d
 TF_SIZE	include/trap.h	109;"	d
 TF_STATUS	include/trap.h	97;"	d
 TIMESTACK	include/mmu.h	102;"	d
-TMPPAGE	user/spawn.c	7;"	d	file:
-TMPPAGETOP	user/spawn.c	8;"	d	file:
+TMPPAGE	user/spawn.c	8;"	d	file:
+TMPPAGETOP	user/spawn.c	9;"	d	file:
 TMPVA	user/testptelibrary.c	2;"	d	file:
 TRUP	include/mmu.h	167;"	d
 T_ALIGN	include/trap.h	22;"	d
@@ -527,9 +537,9 @@ UXSTACKTOP	include/mmu.h	101;"	d
 VA2PFN	include/mmu.h	28;"	d
 VPN	include/mmu.h	26;"	d
 VPT	include/mmu.h	91;"	d
-WHITE	user/sh.h	17;"	d
+WHITE	user/color.h	17;"	d
 WHITESPACE	user/sh.c	19;"	d	file:
-YELLOW	user/sh.h	15;"	d
+YELLOW	user/color.h	15;"	d
 _ARGSET	include/args.h	5;"	d
 _ARGUSED	include/args.h	6;"	d
 _ENV_H_	include/env.h	4;"	d
@@ -601,6 +611,8 @@ boot_pgdir_walk	mm/pmap.c	/^static Pte *boot_pgdir_walk(Pde *pgdir, u_long va, i
 boutcode	init/code.c	/^char boutcode[]={0x7f,0x45,0x4c,0x46,0x1,0x2,0x1,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x2,0x0,0x8,0x0,0x0,0x0,0x1,0x0,0x40,0x0,0xb0,0x0,0x0,0x0,0x34,0x0,0x0,0xf,0xb0,0x50,0x0,0x10,0x1,0x0,$/;"	v
 bss	user/init.c	/^char bss[6000];$/;"	v
 buf	user/cat.c	/^char buf[8192];$/;"	v
+buf	user/declare.c	/^char buf[8192];$/;"	v
+buf	user/history.c	/^char buf[8192];$/;"	v
 buf	user/sh.c	/^char buf[1024];$/;"	v
 buf	user/testfdsharing.c	/^char buf[512], buf2[512];$/;"	v
 buf2	user/testfdsharing.c	/^char buf[512], buf2[512];$/;"	v
@@ -618,16 +630,23 @@ cp0_badvaddr	include/trap.h	/^	unsigned long cp0_badvaddr;$/;"	m	struct:Trapfram
 cp0_cause	include/trap.h	/^	unsigned long cp0_cause;$/;"	m	struct:Trapframe
 cp0_epc	include/trap.h	/^	unsigned long cp0_epc;$/;"	m	struct:Trapframe
 cp0_status	include/trap.h	/^	unsigned long cp0_status;$/;"	m	struct:Trapframe
+create	user/file.c	/^create(const char *path, int type) {$/;"	f
 create_file	fs/fsformat.c	/^struct File *create_file(struct File *dirf) {$/;"	f
 curenv	lib/env.c	/^struct Env *curenv = NULL;            \/\/ the current env$/;"	v	typeref:struct:Env
+curpath_extend	user/sh_curpath.c	/^int curpath_extend(char *path) {$/;"	f
+curpath_get	user/sh_curpath.c	/^int curpath_get(char *path) {$/;"	f
+curpath_get_parent	user/sh_curpath.c	/^int curpath_get_parent(char *path) {$/;"	f
+curpath_init	user/sh_curpath.c	/^void curpath_init(char *path) {$/;"	f
+curpath_set	user/sh_curpath.c	/^int curpath_set(char *path) {$/;"	f
 data	fs/fsformat.c	/^    uint8_t data[BY2BLK];$/;"	m	struct:Block	file:
 data	user/init.c	/^} data = {$/;"	v	typeref:struct:__anon7
 debug	user/fd.h	7;"	d
 debug	user/file.c	4;"	d	file:
 debug	user/fsipc.c	5;"	d	file:
 debug	user/pipe.c	4;"	d	file:
-debug	user/spawn.c	6;"	d	file:
+debug	user/spawn.c	7;"	d	file:
 debug_	user/sh.c	/^int debug_ = 0;$/;"	v
+declare	user/declare.c	/^declare(char *namevalue) {$/;"	f
 delay	boot/start.S	/^delay:$/;"	l
 dev_close	user/fd.h	/^	int (*dev_close)(struct Fd *);$/;"	m	struct:Dev
 dev_id	user/fd.h	/^	int dev_id;$/;"	m	struct:Dev
@@ -714,6 +733,7 @@ envs	lib/env.c	/^struct Env *envs = NULL;        \/\/ All environments$/;"	v	typ
 envs	user/entry.S	/^envs:$/;"	l
 exception_handlers	lib/traps.c	/^unsigned long exception_handlers[32];$/;"	v
 exit	user/libos.c	/^exit(void)$/;"	f
+export	user/declare.c	/^export() {$/;"	f
 extmem	mm/pmap.c	/^u_long extmem;           \/* Amount of extended memory(in bytes) *\/$/;"	v
 f_dir	include/fs.h	/^	struct File *f_dir;		\/\/ the pointer to the dir where this file is in, valid only in memory.$/;"	m	struct:File	typeref:struct:File::File
 f_direct	include/fs.h	/^	u_int f_direct[NDIRECT];$/;"	m	struct:File
@@ -751,7 +771,13 @@ file_stat	user/file.c	/^file_stat(struct Fd *fd, struct Stat *st)$/;"	f	file:
 file_truncate	fs/fs.c	/^file_truncate(struct File *f, u_int newsize)$/;"	f
 file_write	user/file.c	/^file_write(struct Fd *fd, const void *buf, u_int n, u_int offset)$/;"	f	file:
 finish_fs	fs/fsformat.c	/^void finish_fs(char *name) {$/;"	f
+flag	user/declare.c	/^int flag[256];$/;"	v
 flag	user/ls.c	/^int flag[256];$/;"	v
+flag	user/mkdir.c	/^int flag[256];$/;"	v
+flag	user/touch.c	/^int flag[256];$/;"	v
+flag	user/tree.c	/^int flag[256];$/;"	v
+flag	user/unset.c	/^int flag[256];$/;"	v
+flush	user/sh.c	/^flush(char *buf) {$/;"	f
 flush_bitmap	fs/fsformat.c	/^void flush_bitmap() {$/;"	f
 fork	user/fork.c	/^fork(void)$/;"	f
 fp	include/asm-mips3k/regdef.h	46;"	d
@@ -765,6 +791,7 @@ fs_test	fs/test.c	/^fs_test(void)$/;"	f
 fsformat	fs/Makefile	/^fsformat  := .\/fsformat$/;"	m
 fsipc	user/fsipc.c	/^fsipc(u_int type, void *fsreq, u_int dstva, u_int *perm)$/;"	f	file:
 fsipc_close	user/fsipc.c	/^fsipc_close(u_int fileid)$/;"	f
+fsipc_create	user/fsipc.c	/^fsipc_create(const char *path, u_int type) {$/;"	f
 fsipc_dirty	user/fsipc.c	/^fsipc_dirty(u_int fileid, u_int offset)$/;"	f
 fsipc_map	user/fsipc.c	/^fsipc_map(u_int fileid, u_int offset, u_int dstva)$/;"	f
 fsipc_open	user/fsipc.c	/^fsipc_open(const char *path, u_int omode, struct Fd *fd)$/;"	f
@@ -780,6 +807,10 @@ gp	include/asm-mips3k/regdef.h	44;"	d
 gp	include/asm/regdef.h	44;"	d
 halt	drivers/gxconsole/console.c	/^void halt(void)$/;"	f
 hi	include/trap.h	/^	unsigned long hi;$/;"	m	struct:Trapframe
+history	user/history.c	/^history(int f, char *s) {$/;"	f
+history_init	user/sh_history.c	/^void history_init() {$/;"	f
+history_read	user/sh_history.c	/^int history_read(char (*cmd)[128]) {$/;"	f
+history_save	user/sh_history.c	/^void history_save(char *s) {$/;"	f
 ide_read	fs/ide.c	/^ide_read(u_int diskno, u_int secno, void *dst, u_int nsecs)$/;"	f
 ide_write	fs/ide.c	/^ide_write(u_int diskno, u_int secno, void *src, u_int nsecs)$/;"	f
 init_dir	Makefile	/^init_dir	  := init$/;"	m
@@ -842,6 +873,7 @@ mfc0	lib/genex.S	/^mfc0	t2, CP0_STATUS$/;"	l
 mips_detect_memory	mm/pmap.c	/^void mips_detect_memory()$/;"	f
 mips_init	init/init.c	/^void mips_init() {$/;"	f
 mips_vm_init	mm/pmap.c	/^void mips_vm_init()$/;"	f
+mkdir	user/mkdir.c	/^mkdir(char *path) {$/;"	f
 mkenvid	lib/env.c	/^u_int mkenvid(struct Env *e) {$/;"	f
 mm_dir	Makefile	/^mm_dir		  := mm$/;"	m
 modules	Makefile	/^modules		  := boot drivers init lib mm user fs$/;"	m
@@ -928,6 +960,7 @@ pp_link	include/pmap.h	/^	Page_LIST_entry_t pp_link;	\/* free list link *\/$/;"	
 pp_ref	include/pmap.h	/^	u_short pp_ref;$/;"	m	struct:Page
 printcharc	drivers/gxconsole/console.c	/^void printcharc(char ch)$/;"	f
 printf	lib/printf.c	/^void printf(char *fmt, ...)$/;"	f
+printline	user/tree.c	/^void printline(char r, int n, int ret) {$/;"	f
 printstr	drivers/gxconsole/console.c	/^void printstr(char *s)$/;"	f
 qaddr_t	include/types.h	/^typedef	quad_t *	qaddr_t;$/;"	t
 qaddr_t	readelf/types.h	/^typedef	quad_t *	qaddr_t;$/;"	t
@@ -956,7 +989,9 @@ req_offset	include/fs.h	/^	u_int req_offset;$/;"	m	struct:Fsreq_map
 req_omode	include/fs.h	/^	u_int req_omode;$/;"	m	struct:Fsreq_open
 req_path	include/fs.h	/^	char req_path[MAXPATHLEN];$/;"	m	struct:Fsreq_open
 req_path	include/fs.h	/^	u_char req_path[MAXPATHLEN];$/;"	m	struct:Fsreq_remove
+req_path	include/fs.h	/^    u_char req_path[MAXPATHLEN];$/;"	m	struct:Fsreq_create
 req_size	include/fs.h	/^	u_int req_size;$/;"	m	struct:Fsreq_set_size
+req_type	include/fs.h	/^    u_int req_type;$/;"	m	struct:Fsreq_create
 reverse	fs/fsformat.c	/^void reverse(uint32_t *p) {$/;"	f
 reverse_block	fs/fsformat.c	/^void reverse_block(struct Block *b) {$/;"	f
 runcmd	user/sh.c	/^runcmd(char *s)$/;"	f
@@ -986,6 +1021,7 @@ sched_yield	lib/sched.c	/^void sched_yield(void)$/;"	f
 seek	user/fd.c	/^seek(int fdnum, u_int offset)$/;"	f
 serve	fs/serv.c	/^serve(void)$/;"	f
 serve_close	fs/serv.c	/^serve_close(u_int envid, struct Fsreq_close *rq)$/;"	f
+serve_create	fs/serv.c	/^serve_create(u_int envid, struct Fsreq_create *rq) {$/;"	f
 serve_dirty	fs/serv.c	/^serve_dirty(u_int envid, struct Fsreq_dirty *rq)$/;"	f
 serve_init	fs/serv.c	/^serve_init(void)$/;"	f
 serve_map	fs/serv.c	/^serve_map(u_int envid, struct Fsreq_map *rq)$/;"	f
@@ -1025,10 +1061,14 @@ st_size	user/fd.h	/^	u_int st_size;$/;"	m	struct:Stat
 stat	user/fd.c	/^stat(const char *path, struct Stat *stat)$/;"	f
 static_assert	include/types.h	42;"	d
 static_assert	readelf/types.h	41;"	d
+strcat	user/string.c	/^char *strcat(char *dest, const char *src) {$/;"	f
 strchr	user/string.c	/^strchr(const char *s, char c)$/;"	f
+strcmp	lib/env.c	/^strcmp(const char *p, const char *q) {$/;"	f
 strcmp	user/string.c	/^strcmp(const char *p, const char *q)$/;"	f
+strcpy	lib/env.c	/^char *strcpy(char *dst, const char *src) {$/;"	f
 strcpy	user/string.c	/^strcpy(char *dst, const char *src)$/;"	f
 strecmp	fs/test.c	/^strecmp(char *a, char *b)$/;"	f
+strhash	lib/env.c	/^u_int strhash(const char *str) {$/;"	f
 strlen	user/string.c	/^strlen(const char *s)$/;"	f
 sum	user/init.c	/^sum(char *s, int n)$/;"	f
 super	fs/fs.c	/^struct Super *super;$/;"	v	typeref:struct:Super
@@ -1037,6 +1077,7 @@ sync	user/file.c	/^sync(void)$/;"	f
 sys_call_table	lib/syscall.S	/^sys_call_table:                         \/\/ 系统调用函数的入口表 Syscall Table$/;"	l
 sys_env_alloc	lib/syscall_all.c	/^int sys_env_alloc(void)$/;"	f
 sys_env_destroy	lib/syscall_all.c	/^int sys_env_destroy(int sysno, u_int envid)$/;"	f
+sys_env_var	lib/syscall_all.c	/^int sys_env_var(int sysno, char *name, char *value, u_int op) {$/;"	f
 sys_getenvid	lib/syscall_all.c	/^u_int sys_getenvid(void)$/;"	f
 sys_ipc_can_send	lib/syscall_all.c	/^int sys_ipc_can_send(int sysno, u_int envid, u_int value, u_int srcva,$/;"	f
 sys_ipc_recv	lib/syscall_all.c	/^void sys_ipc_recv(int sysno, u_int dstva)$/;"	f
@@ -1054,6 +1095,7 @@ sys_yield	lib/syscall_all.c	/^void sys_yield(void)$/;"	f
 syscall_cgetc	user/syscall_lib.c	/^syscall_cgetc()$/;"	f
 syscall_env_alloc	user/lib.h	/^inline static int syscall_env_alloc(void)$/;"	f
 syscall_env_destroy	user/syscall_lib.c	/^syscall_env_destroy(u_int envid)$/;"	f
+syscall_env_var	user/syscall_lib.c	/^int syscall_env_var(char *name, char *value, u_int op) {$/;"	f
 syscall_getenvid	user/syscall_lib.c	/^syscall_getenvid(void)$/;"	f
 syscall_ipc_can_send	user/syscall_lib.c	/^syscall_ipc_can_send(u_int envid, u_int value, u_int srcva, u_int perm)$/;"	f
 syscall_ipc_recv	user/syscall_lib.c	/^syscall_ipc_recv(u_int dstva)$/;"	f
@@ -1102,7 +1144,10 @@ tlb_invalidate	mm/pmap.c	/^void tlb_invalidate(Pde *pgdir, u_long va)$/;"	f
 tlbra	boot/start.S	/^tlbra:$/;"	l
 tools_dir	Makefile	/^tools_dir	  := tools$/;"	m
 tools_dir	fs/Makefile	/^tools_dir := .$/;"	m
+touch	user/touch.c	/^touch(char *path, char *prefix) {$/;"	f
 trap_init	lib/traps.c	/^void trap_init()$/;"	f
+tree	user/tree.c	/^tree(char *path, char *prefix) {$/;"	f
+tree_start	user/tree.c	/^tree_start(char *path, u_int recursive) {$/;"	f
 type	fs/fsformat.c	/^    uint32_t type;$/;"	m	struct:Block	file:
 u_char	include/types.h	/^typedef	unsigned char	u_char;$/;"	t
 u_char	readelf/types.h	/^typedef	unsigned char	u_char;$/;"	t
@@ -1130,14 +1175,17 @@ uint64_t	include/kerelf.h	/^typedef u_int64_t		uint64_t;$/;"	t
 uint64_t	readelf/kerelf.h	/^typedef u_int64_t               uint64_t;$/;"	t
 umain	fs/serv.c	/^umain(void)$/;"	f
 umain	user/cat.c	/^umain(int argc, char **argv)$/;"	f
+umain	user/declare.c	/^umain(int argc, char **argv) {$/;"	f
 umain	user/devtst.c	/^void umain()$/;"	f
 umain	user/echo.c	/^umain(int argc, char **argv)$/;"	f
 umain	user/fktest.c	/^void umain()$/;"	f
 umain	user/fstest.c	/^void umain()$/;"	f
+umain	user/history.c	/^umain(int argc, char **argv) {$/;"	f
 umain	user/icode.c	/^umain(void)$/;"	f
 umain	user/idle.c	/^void umain()$/;"	f
 umain	user/init.c	/^umain(int argc, char **argv)$/;"	f
 umain	user/ls.c	/^umain(int argc, char **argv)$/;"	f
+umain	user/mkdir.c	/^umain(int argc, char **argv) {$/;"	f
 umain	user/num.c	/^umain(int argc, char **argv)$/;"	f
 umain	user/pingpong.c	/^umain(void)$/;"	f
 umain	user/sh.c	/^umain(int argc, char **argv)$/;"	f
@@ -1147,13 +1195,23 @@ umain	user/testpipe.c	/^umain(void)$/;"	f
 umain	user/testpiperace.c	/^umain(void)$/;"	f
 umain	user/testptelibrary.c	/^void umain (int argc, char **argv)$/;"	f
 umain	user/tltest.c	/^void umain() {$/;"	f
+umain	user/touch.c	/^umain(int argc, char **argv) {$/;"	f
+umain	user/tree.c	/^umain(int argc, char **argv) {$/;"	f
+umain	user/unset.c	/^umain(int argc, char **argv) {$/;"	f
 unmap_block	fs/fs.c	/^unmap_block(u_int blockno)$/;"	f
+unset	user/unset.c	/^unset(char *name) {$/;"	f
+usage	user/declare.c	/^usage(void) {$/;"	f
+usage	user/history.c	/^usage(void) {$/;"	f
 usage	user/ls.c	/^usage(void)$/;"	f
+usage	user/mkdir.c	/^usage(void) {$/;"	f
 usage	user/sh.c	/^usage(void)$/;"	f
+usage	user/touch.c	/^usage(void) {$/;"	f
+usage	user/tree.c	/^void usage(void) {$/;"	f
+usage	user/unset.c	/^usage(void) {$/;"	f
 user_PrintChar	user/print.c	/^user_PrintChar(char *buf, char c, int length, int ladjust)$/;"	f
 user_PrintNum	user/print.c	/^user_PrintNum(char *buf, unsigned long u, int base, int negFlag,$/;"	f
 user_PrintString	user/print.c	/^user_PrintString(char *buf, char *s, int length, int ladjust)$/;"	f
-user_assert	user/lib.h	137;"	d
+user_assert	user/lib.h	153;"	d
 user_bcopy	user/fork.c	/^void user_bcopy(const void *src, void *dst, size_t len)$/;"	f
 user_bzero	user/fork.c	/^void user_bzero(void *v, u_int n)$/;"	f
 user_dir	Makefile	/^user_dir	  := user$/;"	m
@@ -1197,6 +1255,7 @@ vmlinux_elf	Makefile	/^vmlinux_elf	  := gxemul\/vmlinux$/;"	m
 vpd	user/entry.S	/^vpd:$/;"	l
 vpt	user/entry.S	/^vpt:$/;"	l
 wait	user/wait.c	/^wait(u_int envid)$/;"	f
+walk	user/tree.c	/^walk(char *path, int level, int rec) {$/;"	f
 walk_path	fs/fs.c	/^walk_path(char *path, struct File **pdir, struct File **pfile, char *lastelem)$/;"	f
 write	user/fd.c	/^write(int fdnum, const void *buf, u_int n)$/;"	f
 write_block	fs/fs.c	/^write_block(u_int blockno)$/;"	f

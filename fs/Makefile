@@ -20,7 +20,9 @@ USERLIB :=	$(user_dir)/printf.o \
 		$(user_dir)/spawn.o \
 		$(user_dir)/pipe.o \
 		$(user_dir)/console.o \
-		$(user_dir)/fprintf.o
+		$(user_dir)/fprintf.o \
+		$(user_dir)/sh_curpath.o \
+		$(user_dir)/sh_history.o
 
 FSLIB :=	fs.o \
 		ide.o \
@@ -31,10 +33,16 @@ USERAPPS :=  $(user_dir)/num.b  \
 			 $(user_dir)/ls.b \
 			 $(user_dir)/sh.b  \
 			 $(user_dir)/cat.b \
-		 $(user_dir)/testptelibrary.b
+		 	 $(user_dir)/testptelibrary.b \
+		 	 $(user_dir)/touch.b \
+			 $(user_dir)/tree.b \
+			 $(user_dir)/mkdir.b \
+			 $(user_dir)/history.b \
+			 $(user_dir)/unset.b \
+			 $(user_dir)/declare.b
 
 
-FSIMGFILES := motd newmotd $(user_dir)/testarg.b $(user_dir)/init.b $(USERAPPS)
+FSIMGFILES := motd newmotd $(user_dir)/testcat $(user_dir)/testarg.b $(user_dir)/init.b $(USERAPPS)
 
 CFLAGS += -nostdlib -static
 

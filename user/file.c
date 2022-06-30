@@ -79,11 +79,9 @@ open(const char *path, int mode)
 	}
 	int fdnum;
 	fdnum = fd2num(fd);
-	/*
-	if (mode & O_APPND) {
+	if (mode & O_APP) {
 		seek(fdnum, size);	
 	}
-	*/
 	return fdnum;
 
 }
@@ -298,3 +296,13 @@ sync(void)
 {
 	return fsipc_sync();
 }
+
+int
+create(const char *path, int type) {
+    int r;
+    if ((r = fsipc_create(path, type)) < 0) {
+        return r;
+    }
+    return 0;
+}
+

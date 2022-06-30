@@ -1,4 +1,5 @@
 #include "lib.h"
+#include "color.h"
 #include <mmu.h>
 #include <env.h>
 #include <kerelf.h>
@@ -149,7 +150,7 @@ int spawn(char *prog, char **argv)
 int count;
 
 	if((r=open(prog, O_RDONLY))<0){
-		user_panic("spawn ::open line 102 RDONLY wrong !\n");
+		writef(RED(spawn ::open line 102 RDONLY wrong !\n));
 		return r;
 	}
 	// Your code begins here
@@ -248,7 +249,7 @@ int count;
 	// Your code ends here
 
 	struct Trapframe *tf;
-	writef("\n::::::::::spawn size : %x  sp : %x::::::::\n",size,esp);
+//	writef("\n::::::::::spawn size : %x  sp : %x::::::::\n",size,esp);
 	tf = &(envs[ENVX(child_envid)].env_tf);
 	tf->pc = UTEXT;
 	tf->regs[29]=esp;

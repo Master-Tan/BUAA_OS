@@ -4,9 +4,91 @@
 #include <printf.h>
 #include <pmap.h>
 #include <sched.h>
+#include <error.h>
+#include "../user/color.h"
 
 extern char *KERNEL_SP;
 extern struct Env *curenv;
+
+
+// 0 - create
+// 1 - get
+// 2 - set
+// 3 - unset
+// 4 - get environment list
+// 5 - create readonly
+// 6 - set loacl
+// 7 - clear local
+// 8 - get loacl list
+int sys_env_var(int sysno, char *name, char *value, u_int op) {
+    const int MOD = 1 << 8;
+    static char name_table[1 << 8][64];
+    static char value_table[1 << 8][256];
+    static int is_readonly[1 << 8];
+	static int is_local[1 << 8];
+
+    if (op == 4) {
+        int pos = 0, i;
+        for (i = 0; i < MOD; ++i)
+            if (name_table[i][0]) {
+				if (!is_local[i]) printf(GREEN(%s) " = %s\n", name_table[i], value_table[i]);
+            }
+		return 0;
+    } else if (op == 7) {
+		int pos = 0, i;
+        for (i = 0; i < MOD; ++i)
+            if (name_table[i][0]) {
+                if (is_local[i]) {
+					name_table[i][0] = 0;
+					value_table[i][0] = 0;
+				}
+            }
+        return 0;
+	} else if (op == 8) {
+		int pos = 0, i;
+        for (i = 0; i < MOD; ++i)
+            if (name_table[i][0]) {
+                if (is_local[i]) printf(GREEN(%s) " = %s\n", name_table[i], value_table[i]);
+            }
+        return 0;
+	}
+    u_int pos = strhash(name);
+
+    while (name_table[pos][0]) {
+        if (strcmp(name_table[pos], name) == 0) { // FOUND
+            //if (op == 0) return 0;
+            break;
+        } else {
+            ++pos;
+            if (pos == MOD) pos = 0;
+        }
+    }
+    if (op == 0) {
+        strcpy(name_table[pos], name);
+        strcpy(value_table[pos], value);
+    } else if (op == 1) {
+        if (strcmp(name_table[pos], name)) return -E_ENV_VAR_NOT_FOUND;
+        strcpy(value, value_table[pos]);
+    } else if (op == 2) {
+        if (strcmp(name_table[pos], name)) return -E_ENV_VAR_NOT_FOUND;
+        if (is_readonly[pos]) return -E_ENV_VAR_READONLY;
+        strcpy(value_table[pos], value);
+    } else if (op == 3) {
+        if (strcmp(name_table[pos], name)) return -E_ENV_VAR_NOT_FOUND;
+        if (is_readonly[pos]) return -E_ENV_VAR_READONLY;;
+        int p = 0;
+        while (p < 64 && name_table[pos][p]) name_table[pos][p++] = 0;
+        p = 0;
+        while (p < 256 && value_table[pos][p]) value_table[pos][p++] = 0;
+    } else if (op == 5) {
+        strcpy(name_table[pos], name);
+        strcpy(value_table[pos], value);
+        is_readonly[pos] = 1;
+    } else if (op == 6) {
+		is_local[pos] = 1;
+	}
+    return 0;
+}
 
 /* Overview:
  * 	This function is used to print a character on screen.
@@ -94,7 +176,7 @@ int sys_env_destroy(int sysno, u_int envid)
 		return r;
 	}
 
-	printf("[%08x] destroying %08x\n", curenv->env_id, e->env_id);
+	//printf("[%08x] destroying %08x\n", curenv->env_id, e->env_id);
 	env_destroy(e);
 	return 0;
 }
