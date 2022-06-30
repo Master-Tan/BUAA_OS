@@ -1,7 +1,7 @@
 #include "color.h"
 #include "lib.h"
-int flag[256];
 
+int flag[256];
 
 void
 touch(char *path, char *prefix) {
@@ -46,13 +46,10 @@ umain(int argc, char **argv) {
     {
         default:
             usage();
-        case 'd':
-        case 'F':
-        case 'l':
-            flag[(u_char) ARGC()]++;
         break;
     }
     ARGEND
+
     if (argc == 0) {
         return;
     } else {

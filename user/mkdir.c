@@ -34,7 +34,7 @@ mkdir(char *path) {
 
 void
 usage(void) {
-    fwritef(1, "usage: mkdir [-dFl] [file...]\n");
+    fwritef(1, "usage: mkdir [file...]\n");
     exit();
 }
 
@@ -45,10 +45,6 @@ umain(int argc, char **argv) {
     {   
         default:
             usage();
-        case 'd':
-        case 'F':
-        case 'l':
-            flag[(u_char) ARGC()]++;
         break;
     }
     ARGEND

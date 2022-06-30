@@ -283,7 +283,6 @@ runit:
 				char curpath[MAXPATHLEN];
                 curpath_get(curpath);
                 writef("\n" LIGHT_BLUE(%s) " " BOLD_GREEN($) " ", curpath);
-                writef("\b \b");
                 exit();
 			}
 		}
@@ -338,7 +337,10 @@ readline(char *buf, u_int n)
                 for (i; i>=0; --i) writef("\b \b");
                 strcpy(buf, cmds[++cmdi]);
                 writef("%s", buf);
-            } else {
+            } else if (cmdi == cmdn - 1) {
+				i -= 3;
+                for (i; i>=0; --i) writef("\b \b");
+			} else {
                 buf[i - 2] = buf[i - 1] = buf[i] = '\0';
             }
 

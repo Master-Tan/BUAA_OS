@@ -284,7 +284,6 @@ seek(int fdnum, u_int offset)
 	return 0;
 }
 
-
 int fstat(int fdnum, struct Stat *stat)
 {
 	int r;

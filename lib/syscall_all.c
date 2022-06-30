@@ -31,7 +31,13 @@ int sys_env_var(int sysno, char *name, char *value, u_int op) {
         int pos = 0, i;
         for (i = 0; i < MOD; ++i)
             if (name_table[i][0]) {
-				if (!is_local[i]) printf(GREEN(%s) " = %s\n", name_table[i], value_table[i]);
+				if (!is_local[i]) {
+					if (is_readonly[i]) {
+						printf(GREEN(%s) " = %s\t\t(READ_ONLY)\n", name_table[i], value_table[i    ]);
+					} else {
+						printf(GREEN(%s) " = %s\n", name_table[i], value_table[i    ]);
+					}
+				}
             }
 		return 0;
     } else if (op == 7) {
@@ -48,7 +54,13 @@ int sys_env_var(int sysno, char *name, char *value, u_int op) {
 		int pos = 0, i;
         for (i = 0; i < MOD; ++i)
             if (name_table[i][0]) {
-                if (is_local[i]) printf(GREEN(%s) " = %s\n", name_table[i], value_table[i]);
+                if (is_local[i]) {
+					if (is_readonly[i]) {
+                        printf(GREEN(%s) " = %s\t\t(READ_ONLY)\n", name_table[i], value_table[i    ]);
+                    } else {
+                        printf(GREEN(%s) " = %s\n", name_table[i], value_table[i    ]);
+                    }
+				}
             }
         return 0;
 	}

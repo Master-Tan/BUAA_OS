@@ -4,7 +4,10 @@
 int flag[256];
 
 void
-tree(char *path, char *prefix) {
+tree(char *path) {
+	fwritef(1, GREEN(.)" "PURPLE(%s\n), path);
+	walk(path, 0, -1);
+	/*
     int r, fd;
     struct Stat st;
     if ((r = stat(path, &st)) < 0)
@@ -15,15 +18,16 @@ tree(char *path, char *prefix) {
         tree_start(path, -1);
         //ls1(0, st.st_isdir, st.st_size, path);
     }
+	*/
 }
-
+/*
 void
 tree_start(char *path, u_int recursive) {
     fwritef(1, GREEN(.)" "PURPLE(%s\n), path);
     walk(path, 0, recursive);
     return;
 }
-
+*/
 void
 walk(char *path, int level, int rec) {
     int fd, n;
@@ -37,12 +41,13 @@ walk(char *path, int level, int rec) {
     while ((n = readn(fd, &f, sizeof f)) == sizeof f) {
         if (f.f_name[0]) {
             dir = &f;
-            printline(' ', level * 4, 0);
-            fwritef(1, YELLOW(|-- ));
+            int i = 0;
+		    for (i = 0; i < (level * 4); i++) fwritef(1, "%c", ' ');
+			fwritef(1, YELLOW(|-- ));
             if (dir->f_type == FTYPE_REG)
                 fwritef(1, "%s", dir->f_name);
             else
-                fwritef(1, LIGHT_BLUE(%s), dir->f_name);
+                fwritef(1, LIGHT_CYAN(%s), dir->f_name);
 
             fwritef(1, "\n");
 
@@ -55,45 +60,34 @@ walk(char *path, int level, int rec) {
         }
     }
 }
-
+/*
 void printline(char r, int n, int ret) {
     int i = 0;
     for (i = 0; i < n; i++) fwritef(1, "%c", r);
     if (ret) fwritef(1, "\n");
 }
-
+*/
 void usage(void) {
-    fwritef(1, "usage: tree [-dFl] [file...]\n");
+    fwritef(1, "usage: tree [PATH]\n");
     exit();
 }
 
 void
 umain(int argc, char **argv) {
-    int i;
-    char curpath[MAXPATHLEN];
-
 	ARGBEGIN
     {
         default:
             usage();
-        case 'd':
-        case 'F':
-        case 'l':
-            flag[(u_char) ARGC()]++;
         break;
     }
     ARGEND
 
-    //syscall_curpath(curpath, 0);
     if (argc == 0) {
-        //tree(curpath, "");
-        tree("/", "");
-    } else {
+        tree("/");
+    } else if (argc == 1) {
+		tree(argv[0]);	
+	} else {
 		writef(RED(arg error!\n));
-/*
-		for (i = 0; i < argc; i++)
-            tree(argv[i], argv[i]);
-*/
 	}
 
 }
